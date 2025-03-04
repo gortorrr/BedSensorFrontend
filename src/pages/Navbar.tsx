@@ -99,7 +99,10 @@ const Navbar: React.FC = () => {
               >
                 <div>{React.createElement(menu?.icon, { size: "25" })}</div>
                 <h2
-                  className={`whitespace-pre duration-500 ${!open ? "opacity-0 translate-x-28 overflow-hidden" : ""}`}
+                    style={{
+                        transitionDelay: `${index + 3}00ms`,
+                      }}
+                    className={`whitespace-pre duration-500 ${!open ? "opacity-0 translate-x-28 overflow-hidden" : ""}`}
                 >
                   {menu?.name}
                 </h2>
@@ -118,7 +121,10 @@ const Navbar: React.FC = () => {
                   >
                     <sub.icon size={25} />
                     <h2
-                      className={`whitespace-pre duration-500 ${!open ? "opacity-0 translate-x-28 overflow-hidden" : ""}`}
+                        style={{
+                            transitionDelay: `${index + 3}00ms`,
+                        }}
+                        className={`whitespace-pre duration-500 ${!open ? "opacity-0 translate-x-28 overflow-hidden" : ""}`}
                     >
                       {sub?.name}
                     </h2>
@@ -134,6 +140,9 @@ const Navbar: React.FC = () => {
             >
               <div>{React.createElement(menu?.icon, { size: "25" })}</div>
               <h2
+                style={{
+                    transitionDelay: `${index + 3}00ms`,
+                  }}  
                 className={`whitespace-pre duration-500 ${!open ? "opacity-0 translate-x-28 overflow-hidden" : ""}`}
               >
                 {menu?.name}
