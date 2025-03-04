@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Sensor } from "../../types/sensor";
 import SensorListDialog from "./sensorListDialog";
 import { IoCloseCircle } from "react-icons/io5";
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 interface Props {
   sensor?: Sensor;
@@ -69,8 +70,10 @@ const SensorCard: React.FC<Props> = ({ sensor, sensorList }) => {
           </div>
         </>
       ) : (
-        <div className="flex items-center justify-center cursor-pointer pt-5">
-          <span className="text-4xl text-gray-500">➕</span>
+        <div className="flex items-center justify-center cursor-pointer pt-6">
+          {/* <span className="text-4xl text-gray-500">➕</span> */}
+          <i className="bi bi-patch-plus-fill text-4xl text-[#2E5361]"></i>
+          {/* <i className="bi bi-plus-circle-fill text-4xl text-[#2E5361]"></i> */}
         </div>
       )}
       {isDialogOpen && (
