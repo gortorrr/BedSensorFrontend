@@ -38,7 +38,7 @@ const [expanded, setExpanded] = useState(false);
 
   return (
     <div className={`flex flex-col  bg-[#2E5361] min-h-screen ${open ? "w-72" : "w-16"} duration-500 text-white px-4`}>
-      <div className="py-4 px-4 flex justify-between items-center">
+      <div className="py-4 px-1 flex justify-between items-center">
         {/* User Profile */}
         <div className="flex items-center gap-2">
           {open && <div className="w-10 h-10 bg-gray-600 rounded-full"></div>}
@@ -51,7 +51,7 @@ const [expanded, setExpanded] = useState(false);
         </div>
 
         {/* Toggle Button */}
-        <div className="py-3 ">
+        <div className="py-3">
           <HiMenu size={26} className="cursor-pointer" onClick={() => setOpen(!open)} />
         </div>
       </div>
@@ -62,7 +62,7 @@ const [expanded, setExpanded] = useState(false);
           menu.submenus ? (
             <div key={index}>
               <div
-                className="flex items-center text-lg gap-3.5 font-medium p-2 hover:bg-[#879EA4] rounded-md"
+                className="flex items-center text-lg gap-3.5 font-medium p-2  hover:bg-[#879EA4] rounded-md"
                 onClick={() => setExpanded(!expanded)}
               >
                 <div>{React.createElement(menu?.icon, {size: "25"})}</div>
@@ -117,8 +117,8 @@ const [expanded, setExpanded] = useState(false);
       </nav>
 
       {/* Logout Button */}
-      <div className="p-4 border-gray-700 mt-auto ">
-        <Link to="/" className="flex items-center text-lg gap-3.5 font-medium p-2 hover:bg-[#879EA4] rounded-md ">
+      <div className="p-1 border-gray-700 mt-auto flex-col">
+        <Link to="/" className="flex items-center text-lg gap-3.5 font-medium hover:bg-[#879EA4] rounded-md ">
         <div >{React.createElement(IoLogOut, {size: "35"})}</div>
           <h2 className={`whitespace-pre duration-500 ${!open ? "opacity-0 translate-x-28 overflow-hidden" : ""}`}>ออกจากระบบ</h2>
         </Link>
