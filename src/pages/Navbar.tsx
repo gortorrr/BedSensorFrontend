@@ -40,14 +40,23 @@ const [expanded, setExpanded] = useState(false);
     <div className={`flex flex-col  bg-[#2E5361] min-h-screen ${open ? "w-72" : "w-16"} duration-500 text-white px-4`}>
       <div className="py-4 px-1 flex justify-between items-center">
         {/* User Profile */}
-        <div className="flex items-center gap-2">
-          {open && <div className="w-10 h-10 bg-gray-600 rounded-full"></div>}
-          {open && (
-            <div>
-              <p className="text-sm font-semibold">User1</p>
-              <p className="text-xs text-gray-400">ตำแหน่ง: พยาบาล</p>
+        <div className="flex items-center gap-2 relative">
+        {open && (
+            <img 
+            src="/src/assets/Male User.png" 
+            alt="" 
+            className="w-15 h-15 cursor-pointer absolute left-0"
+            />
+        )}
+        {open && (
+            <div className="ml-16"> {/* เพิ่ม margin ซ้ายเพื่อเลื่อนข้อความไปข้างหลังรูปภาพ */}
+            <p className="text-sm font-semibold">User1</p>
+            <div className="flex">
+                <p className="text-xs text-gray-400 pr-1">ตำแหน่ง:</p>
+                <p className="text-xs text-gray-400">พยาบาล</p>
             </div>
-          )}
+            </div>
+        )}
         </div>
 
         {/* Toggle Button */}
