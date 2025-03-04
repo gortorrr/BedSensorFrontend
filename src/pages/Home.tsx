@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 //import { useBedStore } from "../store/bedStore";
-import BedCard from "../components/bedCard";
+import BedCard from "../components/Home/bedCard";
 import { useBedStore } from "../store/bedStore";
 import Icon from "@mdi/react";
 import { mdiMagnify, mdiPlus } from "@mdi/js";
@@ -50,5 +50,3 @@ const Home: React.FC = () => {
 };
 
 export default Home;
-
-

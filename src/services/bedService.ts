@@ -14,7 +14,47 @@ const beds: Bed[] = [
     },
     patient: {
       patient_name: "พีระดา วังยายฉิม",
+      patient_age: 21,
     },
+    sensors: [
+      {
+        sensor_type: "bed_sensor",
+        sensor_status: true,
+        history_value_sensor: [
+          {
+            history_value_sensor_value: "นั่ง",
+          },
+        ],
+      },
+      {
+        sensor_type: "heart_rate",
+        sensor_status: true,
+        history_value_sensor: [
+          {
+            history_value_sensor_value: "78",
+          },
+        ],
+      },
+      {
+        sensor_type: "spo2",
+
+        sensor_status: true,
+        history_value_sensor: [
+          {
+            history_value_sensor_value: "86",
+          },
+        ],
+      },
+      {
+        sensor_type: "respiration",
+        sensor_status: true,
+        history_value_sensor: [
+          {
+            history_value_sensor_value: "22",
+          },
+        ],
+      },
+    ],
   },
   {
     bed_id: 2,
@@ -30,6 +70,45 @@ const beds: Bed[] = [
     patient: {
       patient_name: "สิริภพ วงศ์ทิม",
     },
+    sensors: [
+      {
+        sensor_type: "bed_sensor",
+        sensor_status: true,
+        history_value_sensor: [
+          {
+            history_value_sensor_value: "นอนตะแคงซ้าย",
+          },
+        ],
+      },
+      {
+        sensor_type: "heart_rate",
+        sensor_status: true,
+        history_value_sensor: [
+          {
+            history_value_sensor_value: "78",
+          },
+        ],
+      },
+      {
+        sensor_type: "spo2",
+
+        sensor_status: true,
+        history_value_sensor: [
+          {
+            history_value_sensor_value: "86",
+          },
+        ],
+      },
+      {
+        sensor_type: "respiration",
+        sensor_status: true,
+        history_value_sensor: [
+          {
+            history_value_sensor_value: "22",
+          },
+        ],
+      },
+    ],
   },
   {
     bed_id: 3,
@@ -45,6 +124,45 @@ const beds: Bed[] = [
     patient: {
       patient_name: "ศุภกร แสงจิต",
     },
+    sensors: [
+      {
+        sensor_type: "bed_sensor",
+        sensor_status: true,
+        history_value_sensor: [
+          {
+            history_value_sensor_value: "นอนตรง",
+          },
+        ],
+      },
+      {
+        sensor_type: "heart_rate",
+        sensor_status: true,
+        history_value_sensor: [
+          {
+            history_value_sensor_value: "78",
+          },
+        ],
+      },
+      {
+        sensor_type: "spo2",
+
+        sensor_status: true,
+        history_value_sensor: [
+          {
+            history_value_sensor_value: "86",
+          },
+        ],
+      },
+      {
+        sensor_type: "respiration",
+        sensor_status: true,
+        history_value_sensor: [
+          {
+            history_value_sensor_value: "22",
+          },
+        ],
+      },
+    ],
   },
   {
     bed_id: 4,
@@ -60,6 +178,45 @@ const beds: Bed[] = [
     patient: {
       patient_name: "สิริกร ยี่ยวน",
     },
+    sensors: [
+      {
+        sensor_type: "bed_sensor",
+        sensor_status: true,
+        history_value_sensor: [
+          {
+            history_value_sensor_value: "ไม่อยู่ที่เตียง",
+          },
+        ],
+      },
+      {
+        sensor_type: "heart_rate",
+        sensor_status: true,
+        history_value_sensor: [
+          {
+            history_value_sensor_value: "78",
+          },
+        ],
+      },
+      {
+        sensor_type: "spo2",
+
+        sensor_status: true,
+        history_value_sensor: [
+          {
+            history_value_sensor_value: "86",
+          },
+        ],
+      },
+      {
+        sensor_type: "respiration",
+        sensor_status: true,
+        history_value_sensor: [
+          {
+            history_value_sensor_value: "22",
+          },
+        ],
+      },
+    ],
   },
 ];
 

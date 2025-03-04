@@ -1,5 +1,6 @@
 import { Patient } from "./patient";
 import { Room } from "./room";
+import { Sensor } from "./sensor";
 
 export interface Bed {
   bed_id: number;
@@ -7,4 +8,5 @@ export interface Bed {
   bed_activated: boolean;
   room: Room;
   patient?: Patient;
+  sensors: Sensor[];
 }
