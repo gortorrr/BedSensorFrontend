@@ -14,4 +14,3 @@ export const useBedStore = create<BedStore>((set) => ({
     set({ beds });
   },
 }));
-
