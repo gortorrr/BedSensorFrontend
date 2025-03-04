@@ -9,4 +9,5 @@ export interface Bed {
   room: Room;
   patient?: Patient;
   sensors: Sensor[];
+  selectedShowSensorId?: number[];
 }
