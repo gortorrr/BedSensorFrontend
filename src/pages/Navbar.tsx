@@ -57,7 +57,7 @@ const [expanded, setExpanded] = useState(false);
       </div>
 
       {/* Navigation Menu */}
-      <nav className="mt-4 flex flex-col gap-4 relative overflow-y-auto">
+      <nav className="mt-4 flex flex-col gap-4 relative">
         {menus.map((menu, index) =>
           menu.submenus ? (
             <div key={index}>
@@ -83,7 +83,7 @@ const [expanded, setExpanded] = useState(false);
                 </div>
               </div>
               <div
-                className={`transition-all ${expanded ? "max-h-auto opacity-100" : "max-h-0 opacity-0"} overflow-hidden duration-300 ml-6 font-medium p-2`}
+                className={`transition-all ${expanded ? "max-h-full opacity-100" : "max-h-0 opacity-0"} overflow-hidden duration-300 ml-6 font-medium p-2`}
               >
                 {menu.submenus.map((sub, i) => (
                   <Link key={i} to={sub.link!} className="flex items-center gap-3.5 px-3 text-lg p-2 hover:bg-[#879EA4] rounded-md">
