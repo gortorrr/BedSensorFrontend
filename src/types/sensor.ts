@@ -7,4 +7,5 @@ export interface Sensor {
   sensor_mac_i?: string;
   sensor_mac_ii?: string;
   history_value_sensor: History_Value_Sensor[];
+  sensor_unit?: string;
 }

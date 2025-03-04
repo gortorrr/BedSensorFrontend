@@ -16,10 +16,12 @@ const beds: Bed[] = [
       patient_name: "พีระดา วังยายฉิม",
       patient_age: 21,
     },
+    selectedShowSensorId: [1],
     sensors: [
       {
         sensor_type: "bed_sensor",
         sensor_status: true,
+        sensor_unit: "",
         history_value_sensor: [
           {
             history_value_sensor_value: "นั่ง",
@@ -27,8 +29,10 @@ const beds: Bed[] = [
         ],
       },
       {
+        sensor_id: 1,
         sensor_type: "heart_rate",
         sensor_status: true,
+        sensor_unit: "bpm",
         history_value_sensor: [
           {
             history_value_sensor_value: "78",
@@ -39,6 +43,7 @@ const beds: Bed[] = [
         sensor_type: "spo2",
 
         sensor_status: true,
+        sensor_unit: "%",
         history_value_sensor: [
           {
             history_value_sensor_value: "86",
@@ -48,6 +53,7 @@ const beds: Bed[] = [
       {
         sensor_type: "respiration",
         sensor_status: true,
+        sensor_unit: "RPM",
         history_value_sensor: [
           {
             history_value_sensor_value: "22",
@@ -70,6 +76,7 @@ const beds: Bed[] = [
     patient: {
       patient_name: "สิริภพ วงศ์ทิม",
     },
+    selectedShowSensorId: [2],
     sensors: [
       {
         sensor_type: "bed_sensor",
@@ -83,6 +90,7 @@ const beds: Bed[] = [
       {
         sensor_type: "heart_rate",
         sensor_status: true,
+        sensor_unit: "bpm",
         history_value_sensor: [
           {
             history_value_sensor_value: "78",
@@ -91,8 +99,9 @@ const beds: Bed[] = [
       },
       {
         sensor_type: "spo2",
-
+        sensor_id: 2,
         sensor_status: true,
+        sensor_unit: "%",
         history_value_sensor: [
           {
             history_value_sensor_value: "86",
@@ -102,6 +111,7 @@ const beds: Bed[] = [
       {
         sensor_type: "respiration",
         sensor_status: true,
+        sensor_unit: "RPM",
         history_value_sensor: [
           {
             history_value_sensor_value: "22",
@@ -124,6 +134,7 @@ const beds: Bed[] = [
     patient: {
       patient_name: "ศุภกร แสงจิต",
     },
+    selectedShowSensorId: [3],
     sensors: [
       {
         sensor_type: "bed_sensor",
@@ -137,6 +148,7 @@ const beds: Bed[] = [
       {
         sensor_type: "heart_rate",
         sensor_status: true,
+        sensor_unit: "bpm",
         history_value_sensor: [
           {
             history_value_sensor_value: "78",
@@ -147,6 +159,7 @@ const beds: Bed[] = [
         sensor_type: "spo2",
 
         sensor_status: true,
+        sensor_unit: "%",
         history_value_sensor: [
           {
             history_value_sensor_value: "86",
@@ -154,8 +167,10 @@ const beds: Bed[] = [
         ],
       },
       {
+        sensor_id: 3,
         sensor_type: "respiration",
         sensor_status: true,
+        sensor_unit: "RPM",
         history_value_sensor: [
           {
             history_value_sensor_value: "22",
@@ -191,6 +206,7 @@ const beds: Bed[] = [
       {
         sensor_type: "heart_rate",
         sensor_status: true,
+        sensor_unit: "bpm",
         history_value_sensor: [
           {
             history_value_sensor_value: "78",
@@ -201,6 +217,7 @@ const beds: Bed[] = [
         sensor_type: "spo2",
 
         sensor_status: true,
+        sensor_unit: "%",
         history_value_sensor: [
           {
             history_value_sensor_value: "86",
@@ -210,6 +227,7 @@ const beds: Bed[] = [
       {
         sensor_type: "respiration",
         sensor_status: true,
+        sensor_unit: "RPM",
         history_value_sensor: [
           {
             history_value_sensor_value: "22",
