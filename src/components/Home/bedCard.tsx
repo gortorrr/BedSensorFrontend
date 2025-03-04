@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Bed } from "../../types/bed";
-import SensorCard from "./SensorCard";
+import SensorCard from "./sensorCard";
 import { Sensor } from "../../types/sensor";
 
 interface Props {
