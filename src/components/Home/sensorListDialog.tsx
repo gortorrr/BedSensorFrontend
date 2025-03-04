@@ -37,7 +37,7 @@ const SensorListDialog: React.FC<Props> = ({
           className="bg-white p-6 rounded-lg w-96 pointer-events-auto"
           onClick={(e) => e.stopPropagation()}
         >
-          <h2 className="text-2xl mb-4">Sensor List</h2>
+          <h2 className="text-2xl mb-4 text-[#2E5361]">Sensor List</h2>
           <ul>
             {filteredSensorList.map((sensor, index) => (
               <li
@@ -52,12 +52,17 @@ const SensorListDialog: React.FC<Props> = ({
               </li>
             ))}
           </ul>
-          <button
-            className="bg-red-500 text-white py-2 px-4 rounded mt-4"
-            onClick={onClose}
-          >
-            Close
-          </button>
+          <div className="flex justify-center">
+  <button
+    className="bg-[#95BAC3] text-white py-2 px-4 rounded-full mt-4 cursor-pointer
+    tracking-wide font-semibold  focus:outline-none focus:shadow-outline hover:bg-[#6B97A1] shadow-lg  transition ease-in duration-300
+    "
+    onClick={onClose}
+  >
+    Close
+  </button>
+</div>
+
         </div>
       </div>
     </>
