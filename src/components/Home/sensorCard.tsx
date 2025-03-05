@@ -38,15 +38,17 @@ const SensorCard: React.FC<Props> = ({ sensor, sensorList }) => {
   };
 
   return (
+    
     <div
-      className="relative border-2 border-gray-300 rounded-lg w-full h-1/3 bg-[#B7D6DE] p-1 transition-all duration-200 overflow-hidden"
+      className="relative border-2 border-gray-300 rounded-lg w-full h-1/3 bg-[#B7D6DE] p-1 transition-all overflow-hidden duration-250 "
       onClick={toggleDialog}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
+      
       {isHovered && selectedSensor && (
         <button
-          className="absolute top-1 right-1 text-white w-6 h-6 flex items-center justify-center rounded-full shadow-md hover:bg-red-700 transition-all duration-150"
+          className="absolute top-1 right-1 text-white w-6 h-6 flex items-center justify-center rounded-full shadow-md hover:bg-red-700 transition-all duration-150 "
           onClick={handleRemoveSensor}
         >
           <IoCloseCircle />
@@ -78,10 +80,11 @@ const SensorCard: React.FC<Props> = ({ sensor, sensorList }) => {
       )}
       {isDialogOpen && (
         <SensorListDialog
-          onClose={toggleDialog}
-          sensorList={sensorList}
-          onSelect={handleSensorSelect}
-        />
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        sensorList={sensorList}
+        onSelect={handleSensorSelect}
+      />
       )}
     </div>
   );

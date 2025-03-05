@@ -1,8 +1,11 @@
 import React, { useEffect } from "react";
 import { Sensor } from "../../types/sensor";
+import { motion, AnimatePresence } from "framer-motion";
+
 
 interface Props {
   sensorList: Sensor[];
+  isOpen: boolean
   onClose: () => void;
   onSelect: (sensor: Sensor) => void;
 }
@@ -11,28 +14,67 @@ const SensorListDialog: React.FC<Props> = ({
   onClose,
   sensorList,
   onSelect,
+  isOpen
 }) => {
   const filteredSensorList = sensorList.filter(
     (sensor) => sensor.sensor_type !== "bed_sensor"
   );
 
   // Prevent scrolling on the body when dialog is open
+  // useEffect(() => {
+  //   document.body.style.overflow = "hidden";
+  //   return () => {
+  //     document.body.style.overflow = "unset";
+  //   };
+  // }, []);
+
   useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "unset";
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
     };
-  }, []);
+
+    document.addEventListener('keydown', handleEscape);
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [onClose]);
 
   return (
+    <AnimatePresence>
+      {isOpen && (
     <>
       {/* Fully transparent overlay with blur */}
-      <div
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
         className="fixed inset-0 z-40 bg-transparent backdrop-blur-sm"
         onClick={onClose}
       />
-       
-      <div className="fixed inset-0 z-50 flex justify-center items-center pointer-events-none">
+
+      {/* Dialog */}
+      <motion.div 
+        initial={{ 
+         opacity: 0, 
+         scale: 0.9,
+         y: 50 
+        }}
+        animate={{ 
+          opacity: 1, 
+          scale: 1,
+          y: 0 
+        }}
+        exit={{ 
+          opacity: 0, 
+          scale: 0.9,
+          y: 50 
+        }}
+        transition={{ 
+          type: "spring", 
+          stiffness: 300, 
+          damping: 20 
+        }}
+         className="fixed inset-0 z-50 flex justify-center items-center pointer-events-none">
         <div
           className="bg-white bg-opacity-70 p-6 rounded-lg w-96 pointer-events-auto shadow-2xl"
           onClick={(e) => e.stopPropagation()}
@@ -63,8 +105,10 @@ const SensorListDialog: React.FC<Props> = ({
             </button>
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
+   )}
+   </AnimatePresence>
   );
 };
 
