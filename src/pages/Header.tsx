@@ -1,8 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Bell, Settings, AlertCircle } from "lucide-react";
 
 export default function Header() {
-  const [isOnline, setIsOnline] = useState(true); // เปลี่ยนเป็น false ถ้าต้องการให้เป็น Offline
+    const [time, setTime] = useState(new Date());
+    const [isOnline, setIsOnline] = useState(true); // เปลี่ยนเป็น false ถ้าต้องการให้เป็น Offline
+
+    useEffect(() => {
+        const interval = setInterval(() => setTime(new Date()), 1000);
+        return () => clearInterval(interval);
+      }, []);
+    
+      const formatDate = (date: Date) => {
+        return `${date.getHours()}:${date.getMinutes().toString().padStart(2, "0")} | ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear() + 543}`;
+      };
 
   return (
     <header className="bg-[#2E5361] text-white flex items-center justify-between px-6 py-3 shadow-md">
@@ -12,6 +22,9 @@ export default function Header() {
         <span className="text-lg font-semibold">โรงพยาบาลมหาวิทยาลัยบูรพา</span>
       </div>
 
+      {/* แสดงเวลาและวันที่ */}
+      <div className="text-sm">{formatDate(time)}</div>
+      
       {/* ไอคอนแจ้งเตือน */}
       <div className="flex items-center space-x-4">
         <button className="relative">
