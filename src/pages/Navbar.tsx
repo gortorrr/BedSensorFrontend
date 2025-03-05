@@ -38,11 +38,10 @@ const Navbar: React.FC = () => {
   const [user, setUser] = useState<{ name: string; role: string; profilePic: string } | null>(null);
 
   const handleLogin = () => {
-    // ตัวอย่างการล็อกอิน
     setUser({
       name: "User1",
       role: "พยาบาล",
-      profilePic: "/src/assets/Male User.png", // หรือเส้นทางของภาพโปรไฟล์จริง
+      profilePic: "/src/assets/Male User.png",
     });
   };
 
@@ -61,7 +60,7 @@ const Navbar: React.FC = () => {
                 <img
                   src={user.profilePic}
                   alt="User Profile"
-                  className="w-15 h-15 cursor-pointer absolute left-0"
+                  className="w-15 h-15 cursor-pointer absolute left-0 transition-transform hover:scale-110"
                 />
               )}
               {open && (
@@ -75,8 +74,10 @@ const Navbar: React.FC = () => {
               )}
             </>
           ) : (
-            // เมื่อผู้ใช้ยังไม่ได้ล็อกอิน ให้เรียก handleLogin เพื่อสมมุติการเข้าสู่ระบบ
-            <button onClick={handleLogin} className="text-sm text-white">
+            <button 
+              onClick={handleLogin} 
+              className="text-sm text-white hover:scale-105 transition-transform"
+            >
               เข้าสู่ระบบ
             </button>
           )}
@@ -84,7 +85,11 @@ const Navbar: React.FC = () => {
 
         {/* Toggle Button */}
         <div className="py-3">
-          <HiMenu size={26} className="cursor-pointer" onClick={() => setOpen(!open)} />
+          <HiMenu 
+            size={26} 
+            className="cursor-pointer hover:scale-110 transition-transform" 
+            onClick={() => setOpen(!open)} 
+          />
         </div>
       </div>
 
@@ -94,15 +99,16 @@ const Navbar: React.FC = () => {
           menu.submenus ? (
             <div key={index}>
               <div
-                className="flex items-center text-lg gap-3.5 font-medium p-2  hover:bg-[#879EA4] rounded-md"
+                className="flex items-center text-lg gap-3.5 font-medium p-2 hover:bg-[#879EA4] rounded-md 
+                  transition-all duration-300 hover:scale-105 active:scale-95"
                 onClick={() => setExpanded(!expanded)}
               >
-                <div>{React.createElement(menu?.icon, { size: "25" })}</div>
+                <div className="transition-transform hover:scale-110">{React.createElement(menu?.icon, { size: "25" })}</div>
                 <h2
-                    style={{
-                        transitionDelay: `${index + 3}00ms`,
-                      }}
-                    className={`whitespace-pre duration-500 ${!open ? "opacity-0 translate-x-28 overflow-hidden" : ""}`}
+                  style={{
+                    transitionDelay: `${index + 3}00ms`,
+                  }}
+                  className={`whitespace-pre duration-500 ${!open ? "opacity-0 translate-x-28 overflow-hidden" : ""}`}
                 >
                   {menu?.name}
                 </h2>
@@ -117,14 +123,15 @@ const Navbar: React.FC = () => {
                   <Link
                     key={i}
                     to={sub.link!}
-                    className="flex items-center gap-3.5 px-3 text-lg p-2 hover:bg-[#879EA4] rounded-md"
+                    className="flex items-center gap-3.5 px-3 text-lg p-2 hover:bg-[#879EA4] rounded-md 
+                      transition-all duration-300 hover:scale-105 active:scale-95"
                   >
-                    <sub.icon size={25} />
+                    <sub.icon size={25} className="transition-transform hover:scale-110" />
                     <h2
-                        style={{
-                            transitionDelay: `${index + 3}00ms`,
-                        }}
-                        className={`whitespace-pre duration-500 ${!open ? "opacity-0 translate-x-28 overflow-hidden" : ""}`}
+                      style={{
+                        transitionDelay: `${index + 3}00ms`,
+                      }}
+                      className={`whitespace-pre duration-500 ${!open ? "opacity-0 translate-x-28 overflow-hidden" : ""}`}
                     >
                       {sub?.name}
                     </h2>
@@ -136,13 +143,14 @@ const Navbar: React.FC = () => {
             <Link
               key={index}
               to={menu.link!}
-              className="flex items-center text-lg gap-3.5 font-medium p-2 hover:bg-[#879EA4] rounded-md"
+              className="flex items-center text-lg gap-3.5 font-medium p-2 hover:bg-[#879EA4] rounded-md 
+                transition-all duration-300 hover:scale-105 active:scale-95"
             >
-              <div>{React.createElement(menu?.icon, { size: "25" })}</div>
+              <div className="transition-transform hover:scale-110">{React.createElement(menu?.icon, { size: "25" })}</div>
               <h2
                 style={{
-                    transitionDelay: `${index + 3}00ms`,
-                  }}  
+                  transitionDelay: `${index + 3}00ms`,
+                }}  
                 className={`whitespace-pre duration-500 ${!open ? "opacity-0 translate-x-28 overflow-hidden" : ""}`}
               >
                 {menu?.name}
@@ -154,17 +162,17 @@ const Navbar: React.FC = () => {
 
       {/* Logout Button */}
       <div className="p-1 border-gray-700 mt-auto flex-col">
-  <button
-    onClick={handleLogout}
-    className="flex items-center w-full text-lg gap-3.5 font-medium hover:bg-[#879EA4] rounded-md p-2" // เพิ่ม w-full และ p-2 เพื่อให้คลุมเต็มพื้นที่
-  >
-    <div>{React.createElement(IoLogOut, { size: "35" })}</div>
-    <h2 className={`whitespace-pre duration-500 ${!open ? "opacity-0 translate-x-28 overflow-hidden" : ""}`}>
-      ออกจากระบบ
-    </h2>
-  </button>
-</div>
-
+        <button
+          onClick={handleLogout}
+          className="flex items-center w-full text-lg gap-3.5 font-medium hover:bg-[#879EA4] rounded-md p-2 
+            transition-all duration-300 hover:scale-105 active:scale-95"
+        >
+          <div className="transition-transform hover:scale-110">{React.createElement(IoLogOut, { size: "35" })}</div>
+          <h2 className={`whitespace-pre duration-500 ${!open ? "opacity-0 translate-x-28 overflow-hidden" : ""}`}>
+            ออกจากระบบ
+          </h2>
+        </button>
+      </div>
     </div>
   );
 };

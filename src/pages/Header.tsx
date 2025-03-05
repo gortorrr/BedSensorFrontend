@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Bell, AlertCircle, FileClock } from "lucide-react";
-import { BsClockHistory } from "react-icons/bs";
 
 export default function Header() {
   const [time, setTime] = useState(new Date());

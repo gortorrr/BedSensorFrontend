@@ -26,15 +26,15 @@ const SensorListDialog: React.FC<Props> = ({
 
   return (
     <>
-      {/* Overlay to prevent interactions with other components */}
+      {/* Fully transparent overlay with blur */}
       <div
-        className="fixed inset-0 z-40 bg-black bg-opacity-50"
+        className="fixed inset-0 z-40 bg-transparent backdrop-blur-sm"
         onClick={onClose}
       />
-
+       
       <div className="fixed inset-0 z-50 flex justify-center items-center pointer-events-none">
         <div
-          className="bg-white p-6 rounded-lg w-96 pointer-events-auto"
+          className="bg-white bg-opacity-70 p-6 rounded-lg w-96 pointer-events-auto shadow-2xl"
           onClick={(e) => e.stopPropagation()}
         >
           <h2 className="text-2xl mb-4 text-[#2E5361]">Sensor List</h2>
@@ -42,7 +42,7 @@ const SensorListDialog: React.FC<Props> = ({
             {filteredSensorList.map((sensor, index) => (
               <li
                 key={index}
-                className="border-b py-2 cursor-pointer hover:bg-gray-200"
+                className="border-b py-2 cursor-pointer hover:bg-gray-200 transition-colors"
                 onClick={() => {
                   onSelect(sensor);
                   onClose();
@@ -53,16 +53,15 @@ const SensorListDialog: React.FC<Props> = ({
             ))}
           </ul>
           <div className="flex justify-center">
-  <button
-    className="bg-[#95BAC3] text-white py-2 px-4 rounded-full mt-4 cursor-pointer
-    tracking-wide font-semibold  focus:outline-none focus:shadow-outline hover:bg-[#6B97A1] shadow-lg  transition ease-in duration-300
-    "
-    onClick={onClose}
-  >
-    Close
-  </button>
-</div>
-
+            <button
+              className="bg-[#95BAC3] text-white py-2 px-4 rounded-full mt-4 cursor-pointer
+              tracking-wide font-semibold focus:outline-none focus:shadow-outline 
+              hover:bg-[#6B97A1] shadow-lg transition ease-in duration-300"
+              onClick={onClose}
+            >
+              Close
+            </button>
+          </div>
         </div>
       </div>
     </>
