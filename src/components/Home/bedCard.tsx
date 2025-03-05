@@ -2,12 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Bed } from "../../types/bed";
 import SensorCard from "./sensorCard";
 import { Sensor } from "../../types/sensor";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   bed: Bed;
 }
 
 const BedCard: React.FC<Props> = ({ bed }) => {
+  const navigate = useNavigate();
+
+  const configBedById = () => {
+    navigate(`/bed-config/${bed.bed_id}`); // ใช้ backticks และ template literals
+  };
   const [showSensorSet, setShowSensorSet] = useState<Sensor[]>([]);
 
   useEffect(() => {
@@ -29,7 +35,9 @@ const BedCard: React.FC<Props> = ({ bed }) => {
           </p>
           <div className="flex gap-2 cursor-pointer">
             <span title="settingNoti">⋮</span>
-            <span title="config">⚙️</span>
+            <span title="config" onClick={configBedById}>
+              ⚙️
+            </span>
           </div>
         </div>
         {/*แสดงค่าจากเซ็นเซอร์เตียง */}

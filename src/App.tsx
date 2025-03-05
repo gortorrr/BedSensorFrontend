@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Home from "./pages/Home";
+import AppRouter from "./routes/AppRouter";
 import Navbar from "./pages/Navbar";
 import Header from "./pages/Header";
 
@@ -21,7 +21,7 @@ const App: React.FC = () => {
       <div className="flex-1">
         {/* ส่ง user และ isOnline ไปที่ Header */}
         <Header user={user} isOnline={isOnline} />
-        <Home />
+        <AppRouter />
       </div>
     </div>
   );
