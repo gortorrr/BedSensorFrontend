@@ -16,6 +16,18 @@ interface MenuItem {
   submenus?: MenuItem[];
 }
 
+interface User {
+  name: string;
+  role: string;
+  profilePic: string;
+}
+
+interface NavbarProps {
+  setUser: (user: User | null) => void;
+  setIsOnline: (status: boolean) => void;
+  user: User | null;
+}
+
 const menus: MenuItem[] = [
   { name: "หน้าหลัก", link: "/", icon: GoHome },
   { name: "โรงพยาบาล", link: "/", icon: FaHospital },
@@ -32,21 +44,23 @@ const menus: MenuItem[] = [
   },
 ];
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC<NavbarProps> = ({ setUser, setIsOnline, user }) => {
   const [open, setOpen] = useState(true);
   const [expanded, setExpanded] = useState(false);
-  const [user, setUser] = useState<{ name: string; role: string; profilePic: string } | null>(null);
 
   const handleLogin = () => {
-    setUser({
+    const userData = {
       name: "User1",
       role: "พยาบาล",
       profilePic: "/src/assets/Male User.png",
-    });
+    };
+    setUser(userData);
+    setIsOnline(true);
   };
 
   const handleLogout = () => {
     setUser(null);
+    setIsOnline(false);
   };
 
   return (
@@ -74,8 +88,8 @@ const Navbar: React.FC = () => {
               )}
             </>
           ) : (
-            <button 
-              onClick={handleLogin} 
+            <button
+              onClick={handleLogin}
               className="text-sm text-white hover:scale-105 transition-transform"
             >
               เข้าสู่ระบบ
@@ -85,10 +99,10 @@ const Navbar: React.FC = () => {
 
         {/* Toggle Button */}
         <div className="py-3">
-          <HiMenu 
-            size={26} 
-            className="cursor-pointer hover:scale-110 transition-transform" 
-            onClick={() => setOpen(!open)} 
+          <HiMenu
+            size={26}
+            className="cursor-pointer hover:scale-110 transition-transform"
+            onClick={() => setOpen(!open)}
           />
         </div>
       </div>
@@ -99,15 +113,12 @@ const Navbar: React.FC = () => {
           menu.submenus ? (
             <div key={index}>
               <div
-                className="flex items-center text-lg gap-3.5 font-medium p-2 hover:bg-[#879EA4] rounded-md 
-                  transition-all duration-300 hover:scale-105 active:scale-95"
+                className="flex items-center text-lg gap-3.5 font-medium p-2 hover:bg-[#879EA4] rounded-md transition-all duration-300 hover:scale-105 active:scale-95"
                 onClick={() => setExpanded(!expanded)}
               >
                 <div className="transition-transform hover:scale-110">{React.createElement(menu?.icon, { size: "25" })}</div>
                 <h2
-                  style={{
-                    transitionDelay: `${index + 3}00ms`,
-                  }}
+                  style={{ transitionDelay: `${index + 3}00ms` }}
                   className={`whitespace-pre duration-500 ${!open ? "opacity-0 translate-x-28 overflow-hidden" : ""}`}
                 >
                   {menu?.name}
@@ -123,14 +134,11 @@ const Navbar: React.FC = () => {
                   <Link
                     key={i}
                     to={sub.link!}
-                    className="flex items-center gap-3.5 px-3 text-lg p-2 hover:bg-[#879EA4] rounded-md 
-                      transition-all duration-300 hover:scale-105 active:scale-95"
+                    className="flex items-center gap-3.5 px-3 text-lg p-2 hover:bg-[#879EA4] rounded-md transition-all duration-300 hover:scale-105 active:scale-95"
                   >
                     <sub.icon size={25} className="transition-transform hover:scale-110" />
                     <h2
-                      style={{
-                        transitionDelay: `${index + 3}00ms`,
-                      }}
+                      style={{ transitionDelay: `${index + 3}00ms` }}
                       className={`whitespace-pre duration-500 ${!open ? "opacity-0 translate-x-28 overflow-hidden" : ""}`}
                     >
                       {sub?.name}
@@ -143,14 +151,11 @@ const Navbar: React.FC = () => {
             <Link
               key={index}
               to={menu.link!}
-              className="flex items-center text-lg gap-3.5 font-medium p-2 hover:bg-[#879EA4] rounded-md 
-                transition-all duration-300 hover:scale-105 active:scale-95"
+              className="flex items-center text-lg gap-3.5 font-medium p-2 hover:bg-[#879EA4] rounded-md transition-all duration-300 hover:scale-105 active:scale-95"
             >
               <div className="transition-transform hover:scale-110">{React.createElement(menu?.icon, { size: "25" })}</div>
               <h2
-                style={{
-                  transitionDelay: `${index + 3}00ms`,
-                }}  
+                style={{ transitionDelay: `${index + 3}00ms` }}
                 className={`whitespace-pre duration-500 ${!open ? "opacity-0 translate-x-28 overflow-hidden" : ""}`}
               >
                 {menu?.name}
