@@ -10,7 +10,7 @@ interface BedIconProps {
   bedsensors: any; // แก้ไข type ให้ถูกต้องตามข้อมูล bedsensor ของคุณ
 }
 
-const BedIcon: React.FC<BedIconProps> = ({ bedsensors }) => {
+const bedIcon: React.FC<BedIconProps> = ({ bedsensors }) => {
   const iconMap: { [key: string]: any } = {
     "นอนตะแคงซ้าย": LeftSide,
     "นอนตะแคงขวา": RightSide,
@@ -34,4 +34,4 @@ const BedIcon: React.FC<BedIconProps> = ({ bedsensors }) => {
   });
 };
 
-export default BedIcon;
+export default bedIcon;
