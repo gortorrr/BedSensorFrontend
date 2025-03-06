@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PatientWindow from "../components/BedConfig/PatientWindow.tsx";
 import BedWindow from "../components/BedConfig/BedWindow.tsx";
 import SensorTableWindow from "../components/BedConfig/SensorTableWindow.tsx";
@@ -17,6 +17,11 @@ const BedConfig: React.FC = () => {
   const [bed, setBed] = useState<Bed | undefined>();
   const [patient, setPatient] = useState<Patient | undefined>();
   const [sensor, setSensor] = useState<Sensor[] | undefined>();
+
+  const navigate = useNavigate();
+  const handleCancel = () => {
+    navigate("/");
+  };
 
   useEffect(() => {
     if (bed_id) {
@@ -65,7 +70,8 @@ const BedConfig: React.FC = () => {
         <button className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892]">
           ยืนยัน
         </button>
-        <button className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400">
+        <button className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400"
+        onClick={handleCancel}>
           ยกเลิก
         </button>
       </div>
