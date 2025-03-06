@@ -39,7 +39,7 @@ const BedConfig: React.FC = () => {
   }, [bed_id, bedStore]);
 
   return (
-    <div className="flex flex-col p-4">
+    <div className="flex flex-col p-4 bg-[#e7f0f3]">
       {/* Header */}
       <div className="flex justify-between p-4 rounded-lg">
         <h2 className="text-[#2E5361] text-4xl font-bold">

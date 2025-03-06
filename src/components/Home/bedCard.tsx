@@ -3,7 +3,7 @@ import { Bed } from "../../types/bed";
 import SensorCard from "./sensorCard";
 import { Sensor } from "../../types/sensor";
 import { useNavigate } from "react-router-dom";
-import BedIcon from "./BedIcon";
+import BedIcon from "./bedIcon";
 
 interface Props {
   bed: Bed;

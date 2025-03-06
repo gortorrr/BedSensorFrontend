@@ -11,7 +11,7 @@ const SensorTableWindow: React.FC<Props> = ({ sensors }) => {
   return (
     <>
       {sensors !== undefined && (
-        <div className="flex flex-col border-2 border-gray-300 p-4 bg-white rounded-md min-h-[620px]">
+        <div className="flex flex-col border-2 border-gray-300 p-4 bg-[#F0F0F0] rounded-md min-h-[620px]">
           <h2 className="text-xl font-semibold mb-4">รายการเซ็นเซอร์</h2>
           <div className="overflow-x-auto ">
             <table className="min-w-full divide-y divide-gray-200">
