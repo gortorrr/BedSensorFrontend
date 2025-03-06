@@ -19,9 +19,22 @@ const BedCard: React.FC<Props> = ({ bed }) => {
 
   // ฟังก์ชันที่ใช้ในการส่งเซ็นเซอร์ไปที่ showSensorSet
   const updateShowSensorSet = (sensor: Sensor) => {
-    setShowSensorSet((prevState) => [...prevState, sensor]); // เพิ่ม sensor ลงใน showSensorSet
-    console.log("Added sensor to showSensorSet:", sensor);
-  };
+    setShowSensorSet((prevState) => {
+        const exists = prevState.some((s) => s.sensor_type === sensor.sensor_type);
+
+        if (exists) {
+            // ถ้ามีอยู่แล้ว -> ให้ลบออก
+            return prevState.filter((s) => s.sensor_type !== sensor.sensor_type);
+        } else {
+            // ถ้ายังไม่มี -> ให้เพิ่มเข้าไป
+            return [...prevState, sensor];
+        }
+    });
+
+    // console.log(exists ? "Removed sensor from showSensorSet:" : "Added sensor to showSensorSet:", sensor);
+};
+
+
   const getFilteredSensorList = () => {
     return bed.sensors.filter(
       (sensor) => !showSensorSet.some((selectedSensor) => selectedSensor.sensor_type === sensor.sensor_type)
@@ -29,13 +42,13 @@ const BedCard: React.FC<Props> = ({ bed }) => {
   };
 
   useEffect(() => {
-    if (bed.selectedShowSensorId && bed.selectedShowSensorId.length > 0) {
-      const filteredSensors = bed.sensors.filter((sensor) =>
-        bed.selectedShowSensorId?.includes(sensor.sensor_id ?? 0)
-      );
-      setShowSensorSet(filteredSensors);
-      console.log(filteredSensors);
-    }
+    // if (bed.selectedShowSensorId && bed.selectedShowSensorId.length > 0) {
+    //   const filteredSensors = bed.sensors.filter((sensor) =>
+    //     bed.selectedShowSensorId?.includes(sensor.sensor_id ?? 0)
+    //   );
+    //   setShowSensorSet(filteredSensors);
+    //   console.log(filteredSensors);
+    // }
   }, [bed.selectedShowSensorId, bed.sensors]);
 
   return (

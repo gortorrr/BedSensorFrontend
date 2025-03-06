@@ -32,7 +32,7 @@ const SensorCard: React.FC<Props> = ({ sensor, sensorList, updateSensorSet }) =>
   };
 
   const handleSensorSelect = (sensor: Sensor) => {
-    setSelectedSensor(sensor);
+    // setSelectedSensor(sensor);
     setIsHovered(false); // รีเซ็ตสถานะ hover เมื่อเลือกเซ็นเซอร์
     setIsDialogOpen(false);
 
@@ -41,10 +41,16 @@ const SensorCard: React.FC<Props> = ({ sensor, sensorList, updateSensorSet }) =>
   };
 
   const handleRemoveSensor = (e: React.MouseEvent) => {
-    e.stopPropagation(); // หยุดการทำงานของ onClick ที่ทำให้เกิด hover
-    setSelectedSensor(undefined); // ลบเซ็นเซอร์ที่เลือก
-    setIsHovered(false); // รีเซ็ตสถานะ hover เมื่อเลือกลบ
-  };
+    e.stopPropagation(); // ป้องกัน hover effect ทำงานผิดพลาด
+
+    if (selectedSensor) {
+        updateSensorSet(selectedSensor); // ใช้ updateShowSensorSet ที่อัปเดตใหม่
+        setSelectedSensor(undefined); // รีเซ็ตค่าเซ็นเซอร์
+        setIsHovered(false); // รีเซ็ต hover
+    }
+};
+
+
 
   return (
     <div
