@@ -24,7 +24,7 @@ const Home: React.FC = () => {
   );
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div style={{ padding: "20px" , backgroundColor: "#e7f0f3" }}>
       <h2 className="text-[#2E5361] text-4xl font-bold mb-4 pl-4">
         รายการเตียงผู้ป่วย
       </h2>
