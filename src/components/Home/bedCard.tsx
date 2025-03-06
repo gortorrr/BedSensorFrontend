@@ -58,8 +58,8 @@ const BedCard: React.FC<Props> = ({ bed }) => {
           <strong></strong> {bed.patient?.patient_name}
         </p>
       </div>
-      <div className="col-span-2 flex flex-col justify-between items-center gap-2 pl-2">
-        {/* Render SensorCards conditionally */}
+      <div className="col-span-2 flex flex-col justify-start items-center gap-2 pl-2 max-h-[300px] overflow-y-auto">
+      {/* Render SensorCards conditionally */}
         {showSensorSet.length > 0 ? (
           <SensorCard sensorList={bed.sensors} sensor={showSensorSet[0]} />
         ) : (
