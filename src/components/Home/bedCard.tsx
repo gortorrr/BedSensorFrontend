@@ -3,6 +3,7 @@ import { Bed } from "../../types/bed";
 import SensorCard from "./sensorCard";
 import { Sensor } from "../../types/sensor";
 import { useNavigate } from "react-router-dom";
+import BedIcon from "./bedIcon";
 
 interface Props {
   bed: Bed;
@@ -12,7 +13,7 @@ const BedCard: React.FC<Props> = ({ bed }) => {
   const navigate = useNavigate();
 
   const configBedById = () => {
-    navigate(`/bed-config/${bed.bed_id}`); // ใช้ backticks และ template literals
+    navigate(`/bed-config/${bed.bed_id}`);
   };
   const [showSensorSet, setShowSensorSet] = useState<Sensor[]>([]);
 
@@ -51,15 +52,18 @@ const BedCard: React.FC<Props> = ({ bed }) => {
           ))}
 
         {/* แถวที่ 2: ไอคอนเตียง */}
-        <div className="text-8xl my-8">🛏️</div>
-
+        <BedIcon
+          bedsensors={bed.sensors?.filter(
+            (sensor) => sensor.sensor_type === "bed_sensor"
+          )}
+        />
         {/* แถวที่ 3: ชื่อผู้ป่วย */}
         <p className="text-lg">
           <strong></strong> {bed.patient?.patient_name}
         </p>
       </div>
       <div className="col-span-2 flex flex-col justify-start items-center gap-2 pl-2 max-h-[300px] overflow-y-auto">
-      {/* Render SensorCards conditionally */}
+        {/* Render SensorCards conditionally */}
         {showSensorSet.length > 0 ? (
           <SensorCard sensorList={bed.sensors} sensor={showSensorSet[0]} />
         ) : (
