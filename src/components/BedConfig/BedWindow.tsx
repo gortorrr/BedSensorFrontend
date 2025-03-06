@@ -9,7 +9,7 @@ const BedWindow: React.FC<Props> = ({ bed_config }) => {
   return (
     <>
       {bed_config && (
-        <div className="border-2 border-gray-300 rounded-md w-full h-1/2 bg-white p-3 h-full">
+        <div className="border-2 border-gray-300 rounded-md w-full h-1/2 bg-gradient-to-br from-[#2E5361] to-[#D1DFE5] p-3 h-full">
           <div className="p-3 text-xl font-semibold">รายละเอียดเตียง</div>
 
           {/* อาคาร */}

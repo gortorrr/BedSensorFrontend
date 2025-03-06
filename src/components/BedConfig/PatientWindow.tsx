@@ -11,7 +11,7 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
   return (
     <>
       {patient_config !== undefined && (
-        <div className="border-2 border-gray-300 rounded-md w-full bg-white p-3 mt-3 h-full">
+        <div className="border-2 border-gray-300 rounded-md w-full bg-gradient-to-br from-[#2E5361] to-[#D1DFE5] p-3 mt-3 h-full">
           <div className="p-3 text-xl font-semibold">รายละเอียดผู้ป่วย</div>
 
           <div className="grid grid-cols-2">

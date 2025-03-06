@@ -39,7 +39,7 @@ const BedConfig: React.FC = () => {
   }, [bed_id, bedStore]);
 
   return (
-    <div className="flex flex-col p-4 bg-[#e7f0f3]">
+    <div className="flex flex-col p-4 bg-[#e7f0f3] min-h-[874px]">
       {/* Header */}
       <div className="flex justify-between p-4 rounded-lg">
         <h2 className="text-[#2E5361] text-4xl font-bold">
@@ -70,8 +70,10 @@ const BedConfig: React.FC = () => {
         <button className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892]">
           ยืนยัน
         </button>
-        <button className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400"
-        onClick={handleCancel}>
+        <button
+          className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400"
+          onClick={handleCancel}
+        >
           ยกเลิก
         </button>
       </div>
