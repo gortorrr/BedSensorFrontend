@@ -22,8 +22,16 @@ const SensorCard: React.FC<Props> = ({ sensor, sensorList }) => {
   }, [sensor]);
 
   const toggleDialog = () => {
+    if (selectedSensor) {
+      console.log("ถ้ามีการเลือกเซ็นเซอร์อยู่แล้ว, ไม่ให้เปิด dialog")
+      return;
+    }
+    
+    console.log("เปิด dialog sensorlist");
+    console.log(sensorList);
     setIsDialogOpen(!isDialogOpen);
   };
+  
 
   const handleSensorSelect = (sensor: Sensor) => {
     setSelectedSensor(sensor);
@@ -33,9 +41,10 @@ const SensorCard: React.FC<Props> = ({ sensor, sensorList }) => {
 
   const handleRemoveSensor = (e: React.MouseEvent) => {
     e.stopPropagation(); // หยุดการทำงานของ onClick ที่ทำให้เกิด hover
-    setSelectedSensor(undefined);
+    setSelectedSensor(undefined); // ลบเซ็นเซอร์ที่เลือก
     setIsHovered(false); // รีเซ็ตสถานะ hover เมื่อเลือกลบ
   };
+  
 
   return (
     <div
