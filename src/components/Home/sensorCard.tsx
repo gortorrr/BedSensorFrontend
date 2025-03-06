@@ -7,13 +7,12 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 interface Props {
   sensor?: Sensor;
   sensorList: Sensor[];
+  updateSensorSet: (sensor: Sensor) => void; // รับฟังก์ชันจาก BedCard
 }
 
-const SensorCard: React.FC<Props> = ({ sensor, sensorList }) => {
+const SensorCard: React.FC<Props> = ({ sensor, sensorList, updateSensorSet }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedSensor, setSelectedSensor] = useState<Sensor | undefined>(
-    sensor
-  );
+  const [selectedSensor, setSelectedSensor] = useState<Sensor | undefined>(sensor);
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
@@ -26,17 +25,19 @@ const SensorCard: React.FC<Props> = ({ sensor, sensorList }) => {
       console.log("ถ้ามีการเลือกเซ็นเซอร์อยู่แล้ว, ไม่ให้เปิด dialog")
       return;
     }
-    
+
     console.log("เปิด dialog sensorlist");
     console.log(sensorList);
     setIsDialogOpen(!isDialogOpen);
   };
-  
 
   const handleSensorSelect = (sensor: Sensor) => {
     setSelectedSensor(sensor);
     setIsHovered(false); // รีเซ็ตสถานะ hover เมื่อเลือกเซ็นเซอร์
     setIsDialogOpen(false);
+
+    // เรียกฟังก์ชันจาก BedCard เพื่อเพิ่มเซ็นเซอร์ไปที่ showSensorSet
+    updateSensorSet(sensor);
   };
 
   const handleRemoveSensor = (e: React.MouseEvent) => {
@@ -44,7 +45,6 @@ const SensorCard: React.FC<Props> = ({ sensor, sensorList }) => {
     setSelectedSensor(undefined); // ลบเซ็นเซอร์ที่เลือก
     setIsHovered(false); // รีเซ็ตสถานะ hover เมื่อเลือกลบ
   };
-  
 
   return (
     <div
