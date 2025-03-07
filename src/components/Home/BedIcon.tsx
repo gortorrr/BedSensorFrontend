@@ -51,9 +51,11 @@ const BedIcon: React.FC<BedIconProps> = ({
 
     const iconPath = iconMap[sensorValue] || Default;
 
+    const iconSize = sensorValue === "นั่งบนเตียง" ? "w-34 h-34" : "w-40 h-40 mb-2";
+
     return (
       <div key={index} className="flex items-center">
-        <img src={iconPath} alt={sensorValue} className="w-40 h-40" />
+        <img src={iconPath} alt={sensorValue} className={`${iconSize}`} />
       </div>
     );
   });

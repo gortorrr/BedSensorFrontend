@@ -57,7 +57,7 @@ const BedCard: React.FC<Props> = ({ bed }) => {
   }, [bed.selectedShowSensorId, bed.sensors]);
 
   return (
-    <div className="grid grid-cols-6 rounded-lg m-1 p-2 bg-gray-200 ">
+    <div className="grid grid-cols-6 rounded-lg m-1 p-2 bg-gray-200">
       <div className="col-span-4 border border-gray-300 rounded-lg p-4 m-2 w-72 flex flex-col items-center bg-white">
         {/* แถวที่ 1: ห้อง + เตียง + ไอคอน */}
         <div className="flex justify-between w-full items-center">
@@ -79,7 +79,7 @@ const BedCard: React.FC<Props> = ({ bed }) => {
             {bed.sensors
               ?.filter((sensor) => sensor.sensor_type === "bed_sensor")
               .map((bedsensor, index) => (
-                <div key={index} className=" my-6 mt-0">
+                <div key={index} className=" my-3 ">
                   {bedsensor.history_value_sensor.slice(-1)[0]
                     ?.history_value_sensor_value ?? 0}
                 </div>
@@ -96,7 +96,7 @@ const BedCard: React.FC<Props> = ({ bed }) => {
           addPatient={configBedById}
         />
         {/* แถวที่ 3: ชื่อผู้ป่วย */}
-        <p className="text-lg">
+        <p className="text-lg mt-auto">
           <strong></strong> {bed.patient?.patient_name}
         </p>
       </div>
