@@ -5,6 +5,7 @@ import Straight from "../../assets/Straight.png";
 import Sit from "../../assets/Sit.png";
 import NotHere from "../../assets/NotHere.png";
 import Default from "../../assets/default.png";
+import { Patient } from "../../types/patient";
 
 interface BedSensor {
   sensor_type: string;
@@ -14,17 +15,34 @@ interface BedSensor {
 }
 
 interface BedIconProps {
+  patient?: Patient;
   bedsensors: BedSensor[];
+  addPatient: () => void;
 }
 
-const BedIcon: React.FC<BedIconProps> = ({ bedsensors }) => {
+const BedIcon: React.FC<BedIconProps> = ({
+  bedsensors,
+  patient,
+  addPatient,
+}) => {
   const iconMap: { [key: string]: string } = {
-    นอนตะแคงซ้าย: LeftSide,
-    นอนตะแคงขวา: RightSide,
-    นอนตรง: Straight,
-    นั่ง: Sit,
-    ไม่อยู่ที่เตียง: NotHere,
+    ตะแคงซ้าย: LeftSide,
+    ตะแคงขวา: RightSide,
+    นอนหงาย: Straight,
+    นั่งบนเตียง: Sit,
+    ไม่อยู่บนเตียง: NotHere,
   };
+
+  if (!patient) {
+    return (
+      <div
+        className="flex items-center justify-center cursor-pointer pt-6"
+        onClick={addPatient}
+      >
+        <i className="bi bi-patch-plus-fill text-7xl text-[#2E5361]"></i>
+      </div>
+    );
+  }
 
   return bedsensors?.map((bedsensor, index) => {
     const sensorValue =

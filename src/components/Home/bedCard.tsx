@@ -3,7 +3,7 @@ import { Bed } from "../../types/bed";
 import SensorCard from "./sensorCard";
 import { Sensor } from "../../types/sensor";
 import { useNavigate } from "react-router-dom";
-import BedIcon from "./bedIcon";
+import BedIcon from "./BedIcon";
 
 interface Props {
   bed: Bed;
@@ -20,24 +20,28 @@ const BedCard: React.FC<Props> = ({ bed }) => {
   // ฟังก์ชันที่ใช้ในการส่งเซ็นเซอร์ไปที่ showSensorSet
   const updateShowSensorSet = (sensor: Sensor) => {
     setShowSensorSet((prevState) => {
-        const exists = prevState.some((s) => s.sensor_type === sensor.sensor_type);
+      const exists = prevState.some(
+        (s) => s.sensor_type === sensor.sensor_type
+      );
 
-        if (exists) {
-            // ถ้ามีอยู่แล้ว -> ให้ลบออก
-            return prevState.filter((s) => s.sensor_type !== sensor.sensor_type);
-        } else {
-            // ถ้ายังไม่มี -> ให้เพิ่มเข้าไป
-            return [...prevState, sensor];
-        }
+      if (exists) {
+        // ถ้ามีอยู่แล้ว -> ให้ลบออก
+        return prevState.filter((s) => s.sensor_type !== sensor.sensor_type);
+      } else {
+        // ถ้ายังไม่มี -> ให้เพิ่มเข้าไป
+        return [...prevState, sensor];
+      }
     });
 
     // console.log(exists ? "Removed sensor from showSensorSet:" : "Added sensor to showSensorSet:", sensor);
-};
-
+  };
 
   const getFilteredSensorList = () => {
     return bed.sensors.filter(
-      (sensor) => !showSensorSet.some((selectedSensor) => selectedSensor.sensor_type === sensor.sensor_type)
+      (sensor) =>
+        !showSensorSet.some(
+          (selectedSensor) => selectedSensor.sensor_type === sensor.sensor_type
+        )
     );
   };
 
@@ -66,21 +70,29 @@ const BedCard: React.FC<Props> = ({ bed }) => {
             </span>
           </div>
         </div>
-        {/*แสดงค่าจากเซ็นเซอร์เตียง */}
-        {bed.sensors
-          ?.filter((sensor) => sensor.sensor_type === "bed_sensor")
-          ?.map((bedsensor, index) => (
-            <div key={index} className="text=xl my-6 mt-0">
-              {bedsensor.history_value_sensor.slice(-1)[0]
-                ?.history_value_sensor_value ?? 0}
-            </div>
-          ))}
+        {/* แสดงค่าจากเซ็นเซอร์เตียง */}
+        {!bed.patient ? (
+          <div className=" my-6 mt-0 text-red-500">ไม่มีผู้ป่วย</div>
+        ) : (
+          <>
+            {bed.sensors
+              ?.filter((sensor) => sensor.sensor_type === "bed_sensor")
+              .map((bedsensor, index) => (
+                <div key={index} className=" my-6 mt-0">
+                  {bedsensor.history_value_sensor.slice(-1)[0]
+                    ?.history_value_sensor_value ?? 0}
+                </div>
+              ))}
+          </>
+        )}
 
         {/* แถวที่ 2: ไอคอนเตียง */}
         <BedIcon
           bedsensors={bed.sensors?.filter(
             (sensor) => sensor.sensor_type === "bed_sensor"
           )}
+          patient={bed.patient}
+          addPatient={configBedById}
         />
         {/* แถวที่ 3: ชื่อผู้ป่วย */}
         <p className="text-lg">
@@ -94,27 +106,42 @@ const BedCard: React.FC<Props> = ({ bed }) => {
             sensor={showSensorSet[0]} // ส่งข้อมูลจาก showSensorSet แทน
             sensorList={getFilteredSensorList()} // ใช้แค่ค่าใน showSensorSet
             updateSensorSet={updateShowSensorSet}
+            patient={bed.patient}
           />
         ) : (
-          <SensorCard sensorList={getFilteredSensorList()} updateSensorSet={updateShowSensorSet} />
+          <SensorCard
+            sensorList={getFilteredSensorList()}
+            updateSensorSet={updateShowSensorSet}
+            patient={bed.patient}
+          />
         )}
         {showSensorSet.length > 1 ? (
           <SensorCard
             sensor={showSensorSet[1]} // ส่งข้อมูลจาก showSensorSet แทน
             sensorList={getFilteredSensorList()} // ใช้แค่ค่าใน showSensorSet
             updateSensorSet={updateShowSensorSet}
+            patient={bed.patient}
           />
         ) : (
-          <SensorCard sensorList={getFilteredSensorList()} updateSensorSet={updateShowSensorSet} />
+          <SensorCard
+            sensorList={getFilteredSensorList()}
+            updateSensorSet={updateShowSensorSet}
+            patient={bed.patient}
+          />
         )}
         {showSensorSet.length > 2 ? (
           <SensorCard
             sensor={showSensorSet[2]} // ส่งข้อมูลจาก showSensorSet แทน
             sensorList={getFilteredSensorList()} // ใช้แค่ค่าใน showSensorSet
             updateSensorSet={updateShowSensorSet}
+            patient={bed.patient}
           />
         ) : (
-          <SensorCard sensorList={getFilteredSensorList()} updateSensorSet={updateShowSensorSet} />
+          <SensorCard
+            sensorList={getFilteredSensorList()}
+            updateSensorSet={updateShowSensorSet}
+            patient={bed.patient}
+          />
         )}
       </div>
     </div>
