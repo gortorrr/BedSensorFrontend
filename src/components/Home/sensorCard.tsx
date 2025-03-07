@@ -67,7 +67,7 @@ const SensorCard: React.FC<Props> = ({
       )}
       {selectedSensor ? (
         <>
-          <p className="font-normal">{selectedSensor.sensor_type}</p>
+          <p className="font-normal">{selectedSensor.sensor_name}</p>
           <div className="flex items-center justify-between pl-1 pr-4">
             <img src="/src/assets/heart.png" alt="" className="w-7 h-7" />
             <div className="relative w-full h-1/3 p-1">
@@ -76,7 +76,9 @@ const SensorCard: React.FC<Props> = ({
                   ?.history_value_sensor_value || "-"}
               </h5>
             </div>
-            <p className="font-normal text-right">%</p>
+            <p className="font-normal text-right">
+              {selectedSensor.sensor_unit}
+            </p>
           </div>
           <div className="flex justify-center -mt-2">
             <img src="/src/assets/rate2.png" alt="" className="w-16 h-9" />
