@@ -1,4 +1,6 @@
 import { Bed } from "../types/bed";
+import http from "./http";
+
 
 const beds: Bed[] = [
   {
@@ -238,10 +240,23 @@ const beds: Bed[] = [
   },
 ];
 
+
+
+
 export const bedService = {
   async fetchBeds(): Promise<Bed[]> {
     return new Promise((resolve) => {
       setTimeout(() => resolve(beds), 500);
     });
   },
+  async loadBedActivatedAll(): Promise<Bed[]> {
+    try {
+      const response = await http.get('beds/activated/all');
+      return response.data; // นำข้อมูลที่ได้จาก response มาใช้
+    } catch (error) {
+      console.error('Error loading activated beds:', error);
+      throw error; // หากเกิดข้อผิดพลาดให้โยนข้อผิดพลาดออกไป
+    }
+  },
+  
 };

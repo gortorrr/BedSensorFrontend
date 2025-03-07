@@ -22,7 +22,6 @@ const Home: React.FC = () => {
           search.toLowerCase()
         ))
   );
-
   return (
     <div style={{ padding: "20px" , backgroundColor: "#e7f0f3" }}>
       <h2 className="text-[#2E5361] text-4xl font-bold mb-4 pl-4">
@@ -55,11 +54,48 @@ const Home: React.FC = () => {
         className="justify-stretch p-4 gap-3"
       >
         {filteredBeds.map((bed) => (
-          <BedCard key={bed.bed_name} bed={bed} />
+          <BedCard key={bed.bed_id} bed={bed} />
         ))}
       </div>
     </div>
   );
 };
+
+//   return (
+//     <div className="overflow-x-auto">
+//       <table className="table-auto w-full border-collapse border border-gray-300">
+//         <thead>
+//           <tr className="bg-gray-200">
+//             <th className="border border-gray-300 px-4 py-2">ID</th>
+//             <th className="border border-gray-300 px-4 py-2">ชื่อเตียง</th>
+//             <th className="border border-gray-300 px-4 py-2">สถานะ</th>
+//             <th className="border border-gray-300 px-4 py-2">ห้อง</th>
+//             <th className="border border-gray-300 px-4 py-2">ผู้ป่วย</th>
+//             <th className="border border-gray-300 px-4 py-2">จัดการ</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {beds.map((bed) => (
+//             <tr key={bed.bed_id} className="hover:bg-gray-100">
+//               <td className="border border-gray-300 px-4 py-2">{bed.bed_id}</td>
+//               <td className="border border-gray-300 px-4 py-2">{bed.bed_name}</td>
+//               <td className="border border-gray-300 px-4 py-2">
+//                 {bed.bed_activated ? "ใช้งานอยู่" : "ปิดใช้งาน"}
+//               </td>
+//               <td className="border border-gray-300 px-4 py-2">
+//                 {bed.room?.room_name || "ไม่มีห้อง"}
+//               </td>
+//               <td className="border border-gray-300 px-4 py-2">
+//                 {bed.patient?.patient_name || "ไม่มีผู้ป่วย"}
+//               </td>
+//               <td className="border border-gray-300 px-4 py-2 flex gap-2">
+//               </td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// };
 
 export default Home;
