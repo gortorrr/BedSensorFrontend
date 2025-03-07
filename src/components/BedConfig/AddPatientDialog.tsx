@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import type { Patient } from "../../types/patient";
 
 interface AddPatientDialogProps {
   isOpen: boolean;
@@ -14,47 +15,55 @@ const AddPatientDialog: React.FC<AddPatientDialogProps> = ({
   if (!isOpen) return null;
 
   // (Mock Data)
-  const patients = [
+  const patients: Patient[] = [
     {
-      id: "P0014",
-      name: "ศุภกร แสงจิต",
-      age: 21,
-      birthDate: "13-11-2003",
-      gender: "ชาย",
-      bloodType: "O",
-      treatment: "ริดสีดวง",
+      patient_id: 14, 
+      patient_name: "ศุภกร แสงจิต",
+      patient_age: 21,
+      patient_dob: "13-11-2003", 
+      patient_gender: "ชาย",
+      patient_bloodtype: "O",  
+      patient_disease: "ริดสีดวง",
+      patient_status: "ไม่เข้ารับการรักษา",
+      patient_date_in: "01-02-2025", 
     },
     {
-      id: "P0015",
-      name: "พีระดา วังยายฉิม",
-      age: 21,
-      birthDate: "13-12-1999",
-      gender: "หญิง",
-      bloodType: "AB",
-      treatment: "ไข้หวัดใหญ่",
+      patient_id: 15,
+      patient_name: "พีระดา วังยายฉิม",
+      patient_age: 21,
+      patient_dob: "13-12-1999",
+      patient_gender: "หญิง",
+      patient_bloodtype: "AB",
+      patient_disease: "ไข้หวัดใหญ่",
+      patient_status: "เข้ารับการรักษา",
+      patient_date_in: "15-03-2025",
     },
     {
-      id: "P0016",
-      name: "สิริภพ วงศ์ทิม",
-      age: 21,
-      birthDate: "09-09-1967",
-      gender: "ชาย",
-      bloodType: "A",
-      treatment: "ผ่าตัดไส้ติ่ง",
+      patient_id: 16,
+      patient_name: "สิริภพ วงศ์ทิม",
+      patient_age: 21,
+      patient_dob: "09-09-1967",
+      patient_gender: "ชาย",
+      patient_bloodtype: "A",
+      patient_disease: "ผ่าตัดไส้ติ่ง",
+      patient_status: "ไม่เข้ารับการรักษา",
+      patient_date_in: "20-02-2025",
     },
     {
-      id: "P0017",
-      name: "สิริกร ยี่ยวน",
-      age: 21,
-      birthDate: "22-11-1989",
-      gender: "หญิง",
-      bloodType: "B",
-      treatment: "โรคหัวใจขาดเลือด",
+      patient_id: 17,
+      patient_name: "สิริกร ยี่ยวน",
+      patient_age: 21,
+      patient_dob: "22-11-1989",
+      patient_gender: "หญิง",
+      patient_bloodtype: "B",
+      patient_disease: "โรคหัวใจขาดเลือด",
+      patient_status: "เข้ารับการรักษา",
+      patient_date_in: "10-03-2025",
     },
   ];
 
   const filteredPatients = patients.filter((patient) =>
-    (patient.name?.toLowerCase() || "").includes(search.toLowerCase())
+    (patient.patient_name?.toLowerCase() || "").includes(search.toLowerCase())
   );
 
   return (
@@ -86,12 +95,12 @@ const AddPatientDialog: React.FC<AddPatientDialogProps> = ({
             <tbody>
               {filteredPatients.length > 0 ? (
                 filteredPatients.map((patient) => (
-                  <tr key={patient.id} className="hover:bg-gray-100">
-                    <td className="border p-3">{patient.id}</td>
-                    <td className="border p-3">{patient.name}</td>
-                    <td className="border p-3 text-center">{patient.age}</td>
-                    <td className="border p-3 text-center">{patient.bloodType}</td>
-                    <td className="border p-3">{patient.treatment}</td>
+                  <tr key={patient.patient_id} className="hover:bg-gray-100">
+                    <td className="border p-3">{patient.patient_id}</td>
+                    <td className="border p-3">{patient.patient_name}</td>
+                    <td className="border p-3 text-center">{patient.patient_age}</td>
+                    <td className="border p-3 text-center">{patient.patient_bloodtype}</td>
+                    <td className="border p-3">{patient.patient_disease}</td>
                     <td className="border p-3 text-center">
                       <button className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892]">
                         เลือก
