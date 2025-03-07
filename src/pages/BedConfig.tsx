@@ -24,16 +24,24 @@ const BedConfig: React.FC = () => {
   };
 
   useEffect(() => {
+    console.log("🛏️ bed_id from URL:", bed_id);
+    console.log("📦 bedStore.beds:", bedStore.beds);
+
     if (bed_id) {
       const bedIdNumber = parseInt(bed_id);
+      console.log("🔍 Searching for bed with ID:", bedIdNumber);
+
       const foundBed = bedStore.beds.find(
         (item) => item.bed_id === bedIdNumber
       );
 
       if (foundBed) {
+        console.log("✅ Found bed:", foundBed);
         setPatient(foundBed.patient);
         setSensor(foundBed.sensors);
         setBed(foundBed);
+      } else {
+        console.warn("⚠️ No bed found with ID:", bedIdNumber);
       }
     }
   }, [bed_id, bedStore]);
@@ -47,7 +55,7 @@ const BedConfig: React.FC = () => {
         </h2>
         <button className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892]">
           <Icon path={mdiPlus} size={1} />
-          <span>เพิ่มผู้ป่วย</span>
+          <span>เพิ่มเซ็นเซอร์ใหม่</span>
         </button>
       </div>
       {/* Content */}

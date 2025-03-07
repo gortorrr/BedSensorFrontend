@@ -13,6 +13,7 @@ const BedCard: React.FC<Props> = ({ bed }) => {
   const navigate = useNavigate();
 
   const configBedById = () => {
+    console.log("Navigating to bed config with bed_id:", bed.bed_id); // Log ค่าก่อน navigate
     navigate(`/bed-config/${bed.bed_id}`); // ใช้ backticks และ template literals
   };
   const [showSensorSet, setShowSensorSet] = useState<Sensor[]>([]);

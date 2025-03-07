@@ -8,6 +8,15 @@ interface Props {
   patient_config: Patient | undefined;
 }
 
+const formatDate = (dateString: string | undefined) => {
+  if (!dateString) return ""; // ถ้าไม่มีค่าวันที่ ให้ return ค่าว่าง
+  return new Date(dateString).toLocaleDateString("th-TH", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+};
+
 const PatientWindow: React.FC<Props> = ({ patient_config }) => {
   if (!patient_config) {
     return (
@@ -22,6 +31,7 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
       </div>
     );
   }
+  console.log("🩺 Patient Config Data:", patient_config);
 
   return (
     <>
@@ -34,7 +44,7 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
             <div className="flex items-center p-3">
               <label
                 htmlFor="patient_id"
-                className="text-right pl-6 mr-2 font-medium"
+                className="text-right pl-6 mr-8 font-medium"
               >
                 รหัสผู้ป่วย:
               </label>
@@ -42,7 +52,9 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
                 id="patient_id"
                 type="text"
                 className="border border-gray-300 rounded-xl max-w-[250px] pl-3"
+                value={patient_config?.patient_id || ""}
                 placeholder="กรอกรหัสผู้ป่วย"
+                readOnly
               />
             </div>
 
@@ -66,7 +78,7 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
 
             {/* อายุ */}
             <div className="flex items-center p-3">
-              <label htmlFor="patient_age" className="pl-6 mr-12 font-medium">
+              <label htmlFor="patient_age" className="pl-6 mr-18 font-medium">
                 อายุ:
               </label>
               <input
@@ -89,8 +101,9 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
               </label>
               <input
                 id="patient_birthdate"
-                type="date"
                 className="border border-gray-300 rounded-xl max-w-[250px] pl-3"
+                value={formatDate(patient_config?.patient_dob)}
+                readOnly
               />
             </div>
 
@@ -98,19 +111,21 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
             <div className="flex items-center p-3">
               <label
                 htmlFor="patient_gender"
-                className="pl-6 mr-12 font-medium"
+                className="pl-6 mr-18 font-medium"
               >
                 เพศ:
               </label>
-              <select
+              <input
                 id="patient_gender"
                 className="border border-gray-300 rounded-xl max-w-[250px] pl-3"
+                value={patient_config?.patient_gender || ""}
+                readOnly
               >
-                <option value="">เลือกเพศ</option>
+                {/* <option value="">เลือกเพศ</option>
                 <option value="male">ชาย</option>
                 <option value="female">หญิง</option>
-                <option value="other">อื่น ๆ</option>
-              </select>
+                <option value="other">อื่น ๆ</option> */}
+              </input>
             </div>
 
             {/* หมู่เลือด */}
@@ -118,16 +133,18 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
               <label htmlFor="patient_blood" className="pl-6 mr-8 font-medium">
                 หมู่เลือด:
               </label>
-              <select
+              <input
                 id="patient_blood"
                 className="border border-gray-300 rounded-xl max-w-[250px] pl-3"
+                value={patient_config?.patient_bloodtype || ""}
+                readOnly
               >
-                <option value="">เลือกหมู่เลือด</option>
+                {/* <option value="">เลือกหมู่เลือด</option>
                 <option value="A">A</option>
                 <option value="B">B</option>
                 <option value="AB">AB</option>
-                <option value="O">O</option>
-              </select>
+                <option value="O">O</option> */}
+              </input>
             </div>
 
             {/* การรักษา */}
@@ -136,13 +153,14 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
                 htmlFor="patient_treatment"
                 className="pl-6 mr-3 font-medium"
               >
-                การรักษา:
+                โรคประจำตัว:
               </label>
               <input
                 id="patient_treatment"
                 type="text"
                 className="border border-gray-300 rounded-xl max-w-[250px] pl-3"
-                placeholder="กรอกรายละเอียดการรักษา"
+                value={patient_config?.patient_disease || ""}
+                readOnly
               />
             </div>
 
