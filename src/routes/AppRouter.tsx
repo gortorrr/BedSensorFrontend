@@ -5,10 +5,12 @@ import BedConfig from "../pages/BedConfig.tsx";
 
 const AppRouter: React.FC = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/bed-config/:bed_id" element={<BedConfig />} />
-    </Routes>
+    <div className="overflow-auto">
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/bed-config/:bed_id" element={<BedConfig />} />
+      </Routes>
+    </div>
   );
 };
 

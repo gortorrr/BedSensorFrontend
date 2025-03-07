@@ -21,7 +21,10 @@ const App: React.FC = () => {
       <div className="flex-1">
         {/* ส่ง user และ isOnline ไปที่ Header */}
         <Header user={user} isOnline={isOnline} />
-        <AppRouter />
+
+        <div className="app-router-container">
+          <AppRouter />
+        </div>
       </div>
     </div>
   );

@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { HiMenu } from "react-icons/hi";
 import { GoHome } from "react-icons/go";
-import { FaHospital, FaChevronUp, FaChevronDown, FaUserInjured, FaUserCog } from "react-icons/fa";
+import {
+  FaHospital,
+  FaChevronUp,
+  FaChevronDown,
+  FaUserInjured,
+  FaUserCog,
+} from "react-icons/fa";
 import { GrSettingsOption } from "react-icons/gr";
 import { MdOutlineSensors } from "react-icons/md";
 import { RiHospitalFill } from "react-icons/ri";
@@ -64,7 +70,11 @@ const Navbar: React.FC<NavbarProps> = ({ setUser, setIsOnline, user }) => {
   };
 
   return (
-    <div className={`flex flex-col bg-[#2E5361] min-h-screen ${open ? "w-72" : "w-16"} duration-500 text-white px-4`}>
+    <div
+      className={`flex flex-col bg-[#2E5361] min-h-screen ${
+        open ? "w-72" : "w-16"
+      } duration-500 text-white px-4 sticky top-0 z-10 h-16`}
+    >
       <div className="py-4 px-1 flex justify-between items-center">
         {/* User Profile */}
         <div className="flex items-center gap-2 relative">
@@ -116,19 +126,29 @@ const Navbar: React.FC<NavbarProps> = ({ setUser, setIsOnline, user }) => {
                 className="flex items-center text-lg gap-3.5 font-medium p-2 hover:bg-[#879EA4] rounded-md transition-all duration-300 hover:scale-105 active:scale-95"
                 onClick={() => setExpanded(!expanded)}
               >
-                <div className="transition-transform hover:scale-110">{React.createElement(menu?.icon, { size: "25" })}</div>
+                <div className="transition-transform hover:scale-110">
+                  {React.createElement(menu?.icon, { size: "25" })}
+                </div>
                 <h2
                   style={{ transitionDelay: `${index + 3}00ms` }}
-                  className={`whitespace-pre duration-500 ${!open ? "opacity-0 translate-x-28 overflow-hidden" : ""}`}
+                  className={`whitespace-pre duration-500 ${
+                    !open ? "opacity-0 translate-x-28 overflow-hidden" : ""
+                  }`}
                 >
                   {menu?.name}
                 </h2>
                 <div className="ml-auto">
-                  {expanded ? <FaChevronUp size={20} /> : <FaChevronDown size={20} />}
+                  {expanded ? (
+                    <FaChevronUp size={20} />
+                  ) : (
+                    <FaChevronDown size={20} />
+                  )}
                 </div>
               </div>
               <div
-                className={`transition-all ${expanded ? "max-h-full opacity-100" : "max-h-0 opacity-0"} overflow-hidden duration-300 ml-6 font-medium p-2`}
+                className={`transition-all ${
+                  expanded ? "max-h-full opacity-100" : "max-h-0 opacity-0"
+                } overflow-hidden duration-300 ml-6 font-medium p-2`}
               >
                 {menu.submenus.map((sub, i) => (
                   <Link
@@ -136,10 +156,15 @@ const Navbar: React.FC<NavbarProps> = ({ setUser, setIsOnline, user }) => {
                     to={sub.link!}
                     className="flex items-center gap-3.5 px-3 text-lg p-2 hover:bg-[#879EA4] rounded-md transition-all duration-300 hover:scale-105 active:scale-95"
                   >
-                    <sub.icon size={25} className="transition-transform hover:scale-110" />
+                    <sub.icon
+                      size={25}
+                      className="transition-transform hover:scale-110"
+                    />
                     <h2
                       style={{ transitionDelay: `${index + 3}00ms` }}
-                      className={`whitespace-pre duration-500 ${!open ? "opacity-0 translate-x-28 overflow-hidden" : ""}`}
+                      className={`whitespace-pre duration-500 ${
+                        !open ? "opacity-0 translate-x-28 overflow-hidden" : ""
+                      }`}
                     >
                       {sub?.name}
                     </h2>
@@ -153,10 +178,14 @@ const Navbar: React.FC<NavbarProps> = ({ setUser, setIsOnline, user }) => {
               to={menu.link!}
               className="flex items-center text-lg gap-3.5 font-medium p-2 hover:bg-[#879EA4] rounded-md transition-all duration-300 hover:scale-105 active:scale-95"
             >
-              <div className="transition-transform hover:scale-110">{React.createElement(menu?.icon, { size: "25" })}</div>
+              <div className="transition-transform hover:scale-110">
+                {React.createElement(menu?.icon, { size: "25" })}
+              </div>
               <h2
                 style={{ transitionDelay: `${index + 3}00ms` }}
-                className={`whitespace-pre duration-500 ${!open ? "opacity-0 translate-x-28 overflow-hidden" : ""}`}
+                className={`whitespace-pre duration-500 ${
+                  !open ? "opacity-0 translate-x-28 overflow-hidden" : ""
+                }`}
               >
                 {menu?.name}
               </h2>
@@ -172,8 +201,14 @@ const Navbar: React.FC<NavbarProps> = ({ setUser, setIsOnline, user }) => {
           className="flex items-center w-full text-lg gap-3.5 font-medium hover:bg-[#879EA4] rounded-md p-2 
             transition-all duration-300 hover:scale-105 active:scale-95"
         >
-          <div className="transition-transform hover:scale-110">{React.createElement(IoLogOut, { size: "35" })}</div>
-          <h2 className={`whitespace-pre duration-500 ${!open ? "opacity-0 translate-x-28 overflow-hidden" : ""}`}>
+          <div className="transition-transform hover:scale-110">
+            {React.createElement(IoLogOut, { size: "35" })}
+          </div>
+          <h2
+            className={`whitespace-pre duration-500 ${
+              !open ? "opacity-0 translate-x-28 overflow-hidden" : ""
+            }`}
+          >
             ออกจากระบบ
           </h2>
         </button>
