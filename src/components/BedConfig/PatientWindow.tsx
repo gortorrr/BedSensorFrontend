@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import type { Patient } from "../../types/patient";
 import Icon from "@mdi/react";
 import { mdiNoteEditOutline, mdiDelete } from "@mdi/js";
 import { PlusCircle } from "lucide-react";
+import AddPatientDialog from "./AddPatientDialog";
 
 interface Props {
   patient_config: Patient | undefined;
@@ -18,15 +19,22 @@ const formatDate = (dateString: string | undefined) => {
 };
 
 const PatientWindow: React.FC<Props> = ({ patient_config }) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const openDialog = () => setIsDialogOpen(true);
+  const closeDialog = () => setIsDialogOpen(false);
+
   if (!patient_config) {
     return (
       <div className="border-2 border-gray-300 rounded-md w-full bg-gray-100 p-3 mt-3 h-full shadow-md">
         <div className="p-3 text-xl font-semibold">รายละเอียดผู้ป่วย</div>
         <div className="flex justify-center items-center p-5">
-          <button className="flex items-center gap-2 px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-all">
+          <button className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892]"
+          onClick={openDialog}>
             <PlusCircle size={24} />
             <span className="text-lg">เพิ่มผู้ป่วย</span>
           </button>
+          <AddPatientDialog isOpen={isDialogOpen} onClose={closeDialog} />
         </div>
       </div>
     );
