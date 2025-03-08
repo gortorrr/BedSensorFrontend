@@ -57,7 +57,7 @@ const BedCard: React.FC<Props> = ({ bed }) => {
 
   return (
     <div className="grid grid-cols-6 rounded-lg m-1 p-2 bg-gray-200">
-      <div className="col-span-4 border border-black rounded-lg p-4  w-72 h-[300px] flex flex-col items-center bg-white overflow-hidden">
+      <div className="col-span-4 border border-black rounded-lg p-4  w-72 h-[300px] flex flex-col items-center bg-white overflow-hidden shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
         {/* แถวที่ 1: ห้อง + เตียง + ไอคอน */}
         <div className="flex justify-between w-full items-center">
           <p className="text-lg px-2 bg-[#B7D6DE] rounded-full drop-shadow-md">
