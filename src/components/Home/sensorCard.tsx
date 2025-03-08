@@ -4,12 +4,14 @@ import SensorListDialog from "./sensorListDialog";
 import { IoCloseCircle } from "react-icons/io5";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Patient } from "../../types/patient";
+import { useBedStore } from "../../store/bedStore";
 
 interface Props {
   sensor?: Sensor;
   sensorList: Sensor[];
   updateSensorSet: (sensor: Sensor) => void;
   patient?: Patient;
+  bed_id: number;
 }
 
 const SensorCard: React.FC<Props> = ({
@@ -17,7 +19,11 @@ const SensorCard: React.FC<Props> = ({
   sensorList,
   updateSensorSet,
   patient,
+  bed_id,
 }) => {
+  //store
+  const bedStore = useBedStore();
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedSensor, setSelectedSensor] = useState<Sensor | undefined>(
     sensor
@@ -47,6 +53,7 @@ const SensorCard: React.FC<Props> = ({
     updateSensorSet(selectedSensor);
     setSelectedSensor(undefined);
     setIsHovered(false);
+    bedStore.saveRemoveShowSensorId(bed_id, selectedSensor.sensor_id);
   };
 
   return (
@@ -95,6 +102,7 @@ const SensorCard: React.FC<Props> = ({
           onClose={() => setIsDialogOpen(false)}
           sensorList={sensorList}
           onSelect={handleSensorSelect}
+          bed_id={bed_id}
         />
       )}
     </div>

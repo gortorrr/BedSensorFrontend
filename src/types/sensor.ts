@@ -1,7 +1,7 @@
 import { History_Value_Sensor } from "./history_value_sensor";
 
 export interface Sensor {
-  sensor_id?: number;
+  sensor_id: number;
   sensor_type: string;
   sensor_status: boolean;
   sensor_mac_i?: string;

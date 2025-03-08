@@ -47,13 +47,12 @@ const BedCard: React.FC<Props> = ({ bed }) => {
   };
 
   useEffect(() => {
-    // if (bed.selectedShowSensorId && bed.selectedShowSensorId.length > 0) {
-    //   const filteredSensors = bed.sensors.filter((sensor) =>
-    //     bed.selectedShowSensorId?.includes(sensor.sensor_id ?? 0)
-    //   );
-    //   setShowSensorSet(filteredSensors);
-    //   console.log(filteredSensors);
-    // }
+    if (bed.selectedShowSensorId && bed.selectedShowSensorId.length > 0) {
+      const filteredSensors = bed.sensors.filter((sensor) =>
+        bed.selectedShowSensorId?.includes(sensor.sensor_id ?? 0)
+      );
+      setShowSensorSet(filteredSensors);
+    }
   }, [bed.selectedShowSensorId, bed.sensors]);
 
   return (
@@ -108,12 +107,14 @@ const BedCard: React.FC<Props> = ({ bed }) => {
             sensorList={getFilteredSensorList()} // ใช้แค่ค่าใน showSensorSet
             updateSensorSet={updateShowSensorSet}
             patient={bed.patient}
+            bed_id={bed.bed_id}
           />
         ) : (
           <SensorCard
             sensorList={getFilteredSensorList()}
             updateSensorSet={updateShowSensorSet}
             patient={bed.patient}
+            bed_id={bed.bed_id}
           />
         )}
         {showSensorSet.length > 1 ? (
@@ -122,12 +123,14 @@ const BedCard: React.FC<Props> = ({ bed }) => {
             sensorList={getFilteredSensorList()} // ใช้แค่ค่าใน showSensorSet
             updateSensorSet={updateShowSensorSet}
             patient={bed.patient}
+            bed_id={bed.bed_id}
           />
         ) : (
           <SensorCard
             sensorList={getFilteredSensorList()}
             updateSensorSet={updateShowSensorSet}
             patient={bed.patient}
+            bed_id={bed.bed_id}
           />
         )}
         {showSensorSet.length > 2 ? (
@@ -136,12 +139,14 @@ const BedCard: React.FC<Props> = ({ bed }) => {
             sensorList={getFilteredSensorList()} // ใช้แค่ค่าใน showSensorSet
             updateSensorSet={updateShowSensorSet}
             patient={bed.patient}
+            bed_id={bed.bed_id}
           />
         ) : (
           <SensorCard
             sensorList={getFilteredSensorList()}
             updateSensorSet={updateShowSensorSet}
             patient={bed.patient}
+            bed_id={bed.bed_id}
           />
         )}
       </div>
