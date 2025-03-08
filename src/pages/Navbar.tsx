@@ -138,11 +138,12 @@ const Navbar: React.FC<NavbarProps> = ({ setUser, setIsOnline, user }) => {
                   {menu?.name}
                 </h2>
                 <div className="ml-auto">
-                  {expanded ? (
-                    <FaChevronUp size={20} />
-                  ) : (
-                    <FaChevronDown size={20} />
-                  )}
+                  {open &&
+                    (expanded ? (
+                      <FaChevronUp size={20} />
+                    ) : (
+                      <FaChevronDown size={20} />
+                    ))}
                 </div>
               </div>
               <div
