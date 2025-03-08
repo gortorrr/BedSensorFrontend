@@ -9,6 +9,7 @@ import { Bed } from "../types/bed";
 const Home: React.FC = () => {
   const { beds, loadBeds } = useBedStore();
   const [search, setSearch] = useState("");
+  const [isClicked, setIsClicked] = useState(false); // State สำหรับจัดการการคลิกปุ่ม
 
   useEffect(() => {
     loadBeds();
@@ -20,8 +21,17 @@ const Home: React.FC = () => {
       (!search ||
         (bed.patient?.patient_name?.toLowerCase() || "").includes(
           search.toLowerCase()
-        ))
+        ))  
   );
+
+  const handleAddPatientClick = () => {
+    setIsClicked(true); // เมื่อคลิกให้ตั้งค่า isClicked เป็น true
+    // รีเซ็ตการคลิกหลังจากอนิเมชันเสร็จ
+    setTimeout(() => {
+      setIsClicked(false); // รีเซ็ต state หลังจาก 1 วินาที
+    }, 300);
+  };
+  
   return (
     <div style={{ padding: "20px" , backgroundColor: "#e7f0f3" }}>
       <h2 className="text-[#2E5361] text-5xl font-bold mb-4 pl-4 py-2">
@@ -44,7 +54,12 @@ const Home: React.FC = () => {
           />
         </div>
 
-        <button className="flex items-center gap-2 px-4 py-2 bg-[#5E8892] text-white rounded-xl hover:bg-[#95BAC3]">
+        <button
+          className={`flex items-center gap-2 px-4 py-2 bg-[#5E8892] text-white rounded-xl hover:bg-[#95BAC3] ${
+            isClicked ? "animate-jump" : ""
+          }`}
+          onClick={handleAddPatientClick} // เรียกใช้ handleAddPatientClick เมื่อคลิก
+        >
           <Icon path={mdiPlus} size={1} />
           <span>เพิ่มผู้ป่วย</span>
         </button>
