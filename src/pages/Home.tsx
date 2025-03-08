@@ -29,23 +29,23 @@ const Home: React.FC = () => {
     // รีเซ็ตการคลิกหลังจากอนิเมชันเสร็จ
     setTimeout(() => {
       setIsClicked(false); // รีเซ็ต state หลังจาก 1 วินาที
-    }, 300);
+    }, 150);
   };
   
   return (
     <div style={{ padding: "20px" , backgroundColor: "#e7f0f3" }}>
-      <h2 className="text-[#2E5361] text-5xl font-bold mb-4 pl-4 py-2">
+      <h2 className="text-[#2E5361] text-4xl font-bold mb-4 pl-4 py-2">
         รายการเตียงผู้ป่วย
       </h2>
       <div className="flex space-x-4 justify-between mb-4">
         {/* ช่องค้นหา + ไอคอนค้นหา */}
-        <div className="relative flex-auto pl-4">
+        <div className="relative flex-auto pl-4 ">
           <input
             type="text"
             placeholder="ค้นหาชื่อผู้ป่วย"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="input input-bordered border-2 border-solid border-gray-400 rounded-lg p-2 pr-10 bg-white w-full drop-shadow-md"
+            className="input input-bordered border-2 border-solid border-gray-400 rounded-lg p-2 pr-10 bg-white w-full drop-shadow-sm"
           />
           <Icon
             path={mdiMagnify}
@@ -55,7 +55,7 @@ const Home: React.FC = () => {
         </div>
 
         <button
-          className={`flex items-center gap-2 px-4 py-2 bg-[#5E8892] text-white rounded-xl hover:bg-[#95BAC3] cursor-pointer ${
+          className={`flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] cursor-pointer ${
             isClicked ? "animate-jump" : ""
           }`}
           onClick={handleAddPatientClick} // เรียกใช้ handleAddPatientClick เมื่อคลิก
