@@ -5,6 +5,12 @@ import { IoCloseCircle } from "react-icons/io5";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Patient } from "../../types/patient";
 import { useBedStore } from "../../store/bedStore";
+import heart from "../../assets/sensorType/heart.png";
+import spo2 from "../../assets/sensorType/spo2.png";
+import respiration from "../../assets/sensorType/respiration.png";
+import rate1 from "../../assets/sensorType/rate1.png";
+import rate2 from "../../assets/sensorType/rate2.png";
+import rate3 from "../../assets/sensorType/rate3.png";
 
 interface Props {
   sensor?: Sensor;
@@ -56,9 +62,27 @@ const SensorCard: React.FC<Props> = ({
     bedStore.saveRemoveShowSensorId(bed_id, selectedSensor.sensor_id);
   };
 
+   // กำหนดไอคอนและภาพคลื่นตามประเภทเซ็นเซอร์
+   const sensorIcons: { [key: string]: string } = {
+    "Heart Rate": heart,
+    "SpO2 Sensor": spo2,
+    "Respiration": respiration,
+  };
+
+  const sensorWaves: { [key: string]: string } = {
+    "Heart Rate": rate1,
+    "SpO2 Sensor": rate2,
+    "Respiration": rate3,
+  };
+
+  const sensorType = selectedSensor?.sensor_name || "Default";
+  const iconPath = sensorIcons[sensorType] ;
+  const wavePath = sensorWaves[sensorType] ;
+
+
   return (
     <div
-      className="relative border border-black rounded-lg w-full h-1/3 bg-[#B7D6DE] p-1 transition-all overflow-hidden duration-250"
+      className="relative border border-black rounded-lg w-full h-1/3 bg-[#B7D6DE] p-1 transition-all overflow-hidden duration-250 shadow-[0_3px_10px_rgb(0,0,0,0.2)]"
       onClick={toggleDialog}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -75,20 +99,34 @@ const SensorCard: React.FC<Props> = ({
       {selectedSensor ? (
         <>
           <p className="font-normal">{selectedSensor.sensor_name}</p>
-          <div className="flex items-center justify-between pl-1 pr-4">
-            <img src="/src/assets/heart.png" alt="" className="w-7 h-7" />
-            <div className="relative w-full h-1/3 p-1">
-              <h5 className="text-2xl font-bold text-center m-0">
-                {selectedSensor.history_value_sensor?.slice(-1)[0]
-                  ?.history_value_sensor_value || "-"}
-              </h5>
+          <div className="flex items-center justify-between pl-1">
+          <img src={iconPath} alt={sensorType} className="w-7 h-7" />
+            <div className="relative w-full h-1/3">
+            <h5 className="text-2xl font-bold text-center m-0 ">
+    {selectedSensor ? (
+      // ตรวจสอบชนิดของเซ็นเซอร์และจัดการตำแหน่ง
+      selectedSensor.sensor_name === "Heart Rate" ? (
+        <div className="px-4">{selectedSensor.history_value_sensor?.slice(-1)[0]?.history_value_sensor_value || "-"}</div>
+      ) : selectedSensor.sensor_name === "SpO2 Sensor" ? (
+        <div className="pr-4">{selectedSensor.history_value_sensor?.slice(-1)[0]?.history_value_sensor_value || "-"}</div>
+      ) : selectedSensor.sensor_name === "Respiration" ? (
+        <div className="px-4">{selectedSensor.history_value_sensor?.slice(-1)[0]?.history_value_sensor_value || "-"}</div>
+      ) : (
+        // หากเป็นเซ็นเซอร์อื่นๆ
+        <div className="px-4">{selectedSensor.history_value_sensor?.slice(-1)[0]?.history_value_sensor_value || "-"}</div>
+      )
+    ) : (
+      // กรณีไม่มี selectedSensor
+      <div className="px-4">-</div>
+    )}
+  </h5>
             </div>
             <p className="font-normal text-right">
               {selectedSensor.sensor_unit}
             </p>
           </div>
           <div className="flex justify-center -mt-2">
-            <img src="/src/assets/rate2.png" alt="" className="w-16 h-9" />
+            <img src={wavePath} alt={`${sensorType} Wave`} className="w-16 h-9" />
           </div>
         </>
       ) : (
