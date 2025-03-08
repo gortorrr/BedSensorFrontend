@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { Patient } from "../../types/patient";
 import Icon from "@mdi/react";
 import { mdiNoteEditOutline, mdiDelete } from "@mdi/js";
@@ -20,30 +20,51 @@ const formatDate = (dateString: string | undefined) => {
 
 const PatientWindow: React.FC<Props> = ({ patient_config }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedPatient, setSelectedPatient] = useState<Patient | undefined>(
+    patient_config
+  );
+
+  useEffect(() => {
+    // อัปเดต selectedPatient เมื่อ patient_config เปลี่ยนแปลง
+    if (patient_config) {
+      setSelectedPatient(patient_config);
+    }
+  }, [patient_config]);
 
   const openDialog = () => setIsDialogOpen(true);
   const closeDialog = () => setIsDialogOpen(false);
 
-  if (!patient_config) {
+  const handleSelectPatient = (patient: Patient) => {
+    setSelectedPatient(patient);
+    closeDialog();
+  };
+  console.log("🩺 Patient Config Data:", selectedPatient);
+
+  if (!selectedPatient) {
     return (
       <div className="border-2 border-gray-300 rounded-md w-full bg-gray-100 p-3 mt-3 h-full shadow-md">
         <div className="p-3 text-xl font-semibold">รายละเอียดผู้ป่วย</div>
         <div className="flex justify-center items-center p-5">
-          <button className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892]"
-          onClick={openDialog}>
+          <button
+            className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892]"
+            onClick={openDialog}
+          >
             <PlusCircle size={24} />
             <span className="text-lg">เพิ่มผู้ป่วย</span>
           </button>
-          <AddPatientDialog isOpen={isDialogOpen} onClose={closeDialog} />
+          <AddPatientDialog
+            isOpen={isDialogOpen}
+            onClose={closeDialog}
+            onSelectPatient={handleSelectPatient}
+          />
         </div>
       </div>
     );
   }
-  console.log("🩺 Patient Config Data:", patient_config);
 
   return (
     <>
-      {patient_config !== undefined && (
+      {selectedPatient !== undefined && (
         <div className="border-2 border-gray-300 rounded-md w-full bg-gradient-to-br from-[#2E5361] to-[#D1DFE5] p-3 mt-3 h-full">
           <div className="p-3 text-xl font-semibold">รายละเอียดผู้ป่วย</div>
 
@@ -60,7 +81,7 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
                 id="patient_id"
                 type="text"
                 className="border border-gray-300 rounded-xl max-w-[250px] pl-3"
-                value={patient_config?.patient_id || ""}
+                value={selectedPatient?.patient_id || ""}
                 placeholder="กรอกรหัสผู้ป่วย"
                 readOnly
               />
@@ -78,7 +99,7 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
                 id="patient_name"
                 type="text"
                 className="border border-gray-300 rounded-xl max-w-[250px] pl-3"
-                value={patient_config?.patient_name || ""}
+                value={selectedPatient?.patient_name || ""}
                 placeholder="Enter patient name"
                 readOnly
               />
@@ -93,7 +114,7 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
                 id="patient_age"
                 type="text"
                 className="border border-gray-300 rounded-xl max-w-[250px] pl-3"
-                value={patient_config?.patient_age || ""}
+                value={selectedPatient?.patient_age || ""}
                 placeholder="Enter patient age"
                 readOnly
               />
@@ -110,7 +131,7 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
               <input
                 id="patient_birthdate"
                 className="border border-gray-300 rounded-xl max-w-[250px] pl-3"
-                value={formatDate(patient_config?.patient_dob)}
+                value={formatDate(selectedPatient?.patient_dob)}
                 readOnly
               />
             </div>
@@ -126,7 +147,7 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
               <input
                 id="patient_gender"
                 className="border border-gray-300 rounded-xl max-w-[250px] pl-3"
-                value={patient_config?.patient_gender || ""}
+                value={selectedPatient?.patient_gender || ""}
                 readOnly
               >
                 {/* <option value="">เลือกเพศ</option>
@@ -144,7 +165,7 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
               <input
                 id="patient_blood"
                 className="border border-gray-300 rounded-xl max-w-[250px] pl-3"
-                value={patient_config?.patient_bloodtype || ""}
+                value={selectedPatient?.patient_bloodtype || ""}
                 readOnly
               >
                 {/* <option value="">เลือกหมู่เลือด</option>
@@ -167,7 +188,7 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
                 id="patient_treatment"
                 type="text"
                 className="border border-gray-300 rounded-xl max-w-[250px] pl-3"
-                value={patient_config?.patient_disease || ""}
+                value={selectedPatient?.patient_disease || ""}
                 readOnly
               />
             </div>
