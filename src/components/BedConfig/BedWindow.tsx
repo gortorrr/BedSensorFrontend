@@ -1,5 +1,6 @@
 import React from "react";
 import { Bed } from "../../types/bed";
+import { FaBed } from "react-icons/fa"; // นำเข้าไอคอนเตียง
 
 interface Props {
   bed_config: Bed | undefined;
@@ -9,8 +10,11 @@ const BedWindow: React.FC<Props> = ({ bed_config }) => {
   return (
     <>
       {bed_config && (
-        <div className="border-2 border-gray-300 rounded-md w-full h-1/2 bg-gradient-to-br from-[#2E5361] to-[#D1DFE5] p-3 h-full">
-          <div className="p-3 text-xl font-semibold">รายละเอียดเตียง</div>
+        <div className="border-2 border-gray-300 rounded-md w-full h-1/2 bg-gradient-to-br from-[#3A6170] to-[#D1DFE5] p-3 h-full">
+        <div className="flex items-center p-3 text-xl font-semibold">
+        <FaBed className="mr-2 text-3xl" />
+        รายละเอียดเตียง
+        </div>
 
           {/* อาคาร */}
           <div className="flex items-center p-3">

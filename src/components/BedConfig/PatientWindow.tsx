@@ -4,6 +4,7 @@ import Icon from "@mdi/react";
 import { mdiNoteEditOutline, mdiDelete } from "@mdi/js";
 import { PlusCircle } from "lucide-react";
 import AddPatientDialog from "./AddPatientDialog";
+import { FaUser } from "react-icons/fa";
 
 interface Props {
   patient_config: Patient | undefined;
@@ -42,11 +43,13 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
 
   if (!selectedPatient) {
     return (
-      <div className="border-2 border-gray-300 rounded-md w-full bg-gray-100 p-3 mt-3 h-full shadow-md">
-        <div className="p-3 text-xl font-semibold">รายละเอียดผู้ป่วย</div>
-        <div className="flex justify-center items-center p-5">
+      <div className="border-2 border-gray-300 rounded-md w-full bg-gray-100 p-3 mt-3 h-73 shadow-md">
+    <div className="flex items-center p-3 text-xl font-semibold">
+      <FaUser className="mr-2 text-2xl" /> {/* เพิ่มไอคอนผู้ป่วย */}
+      รายละเอียดผู้ป่วย
+    </div>        <div className="flex justify-center items-center p-5">
           <button
-            className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892]"
+            className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] mt-8"
             onClick={openDialog}
           >
             <PlusCircle size={24} />
@@ -65,9 +68,11 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
   return (
     <>
       {selectedPatient !== undefined && (
-        <div className="border-2 border-gray-300 rounded-md w-full bg-gradient-to-br from-[#2E5361] to-[#D1DFE5] p-3 mt-3 h-full">
-          <div className="p-3 text-xl font-semibold">รายละเอียดผู้ป่วย</div>
-
+    <div className="border-2 border-gray-300 rounded-md w-full bg-gradient-to-br from-[#2E5361] to-[#D1DFE5] p-3 mt-3 h-full">
+    <div className="flex items-center p-3 text-xl font-semibold">
+    <FaUser className="mr-2 text-2xl" /> {/* เพิ่มไอคอนผู้ป่วย */}
+    รายละเอียดผู้ป่วย
+    </div>
           <div className="grid grid-cols-2">
             {/* รหัสผู้ป่วย */}
             <div className="flex items-center p-3">
