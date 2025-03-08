@@ -51,14 +51,14 @@ const SensorCard: React.FC<Props> = ({
 
   return (
     <div
-      className="relative border-2 border-gray-300 rounded-lg w-full h-1/3 bg-[#B7D6DE] p-1 transition-all overflow-hidden duration-250"
+      className="relative border border-black rounded-lg w-full h-1/3 bg-[#B7D6DE] p-1 transition-all overflow-hidden duration-250"
       onClick={toggleDialog}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {isHovered && selectedSensor && patient && (
         <button
-          className="absolute top-1 right-1 text-white w-6 h-6 flex items-center justify-center rounded-full shadow-md hover:bg-red-700 transition-all duration-150"
+          className="absolute top-1 right-1 text-white w-6 h-6 flex items-center justify-center rounded-full shadow-md hover:bg-red-700 transition-all duration-150 cursor-pointer"
           onClick={handleRemoveSensor}
           aria-label="Remove Sensor"
         >
@@ -85,8 +85,8 @@ const SensorCard: React.FC<Props> = ({
           </div>
         </>
       ) : (
-        <div className="flex items-center justify-center cursor-pointer pt-6">
-          <i className="bi bi-patch-plus-fill text-4xl text-[#2E5361]"></i>
+        <div className="flex items-center justify-center cursor-pointer pt-6 ">
+          <i className="bi bi-patch-plus-fill text-4xl text-[#2E5361] "></i>
         </div>
       )}
       {isDialogOpen && patient && (

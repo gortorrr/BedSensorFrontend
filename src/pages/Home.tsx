@@ -45,7 +45,7 @@ const Home: React.FC = () => {
             placeholder="ค้นหาชื่อผู้ป่วย"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="input input-bordered border-2 border-solid border-gray-400 rounded-lg p-2 pr-10 bg-white w-full"
+            className="input input-bordered border-2 border-solid border-gray-400 rounded-lg p-2 pr-10 bg-white w-full drop-shadow-md"
           />
           <Icon
             path={mdiMagnify}
@@ -55,7 +55,7 @@ const Home: React.FC = () => {
         </div>
 
         <button
-          className={`flex items-center gap-2 px-4 py-2 bg-[#5E8892] text-white rounded-xl hover:bg-[#95BAC3] ${
+          className={`flex items-center gap-2 px-4 py-2 bg-[#5E8892] text-white rounded-xl hover:bg-[#95BAC3] cursor-pointer ${
             isClicked ? "animate-jump" : ""
           }`}
           onClick={handleAddPatientClick} // เรียกใช้ handleAddPatientClick เมื่อคลิก

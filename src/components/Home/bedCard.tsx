@@ -58,10 +58,10 @@ const BedCard: React.FC<Props> = ({ bed }) => {
 
   return (
     <div className="grid grid-cols-6 rounded-lg m-1 p-2 bg-gray-200">
-      <div className="col-span-4 border border-gray-300 rounded-lg p-4 m-2 w-72 flex flex-col items-center bg-white">
+      <div className="col-span-4 border border-black rounded-lg p-4  w-72 h-[300px] flex flex-col items-center bg-white overflow-hidden">
         {/* แถวที่ 1: ห้อง + เตียง + ไอคอน */}
         <div className="flex justify-between w-full items-center">
-          <p>
+          <p className="text-lg px-2 bg-[#B7D6DE] rounded-full drop-shadow-md">
             <strong></strong> {bed.room.room_name} {bed.bed_name}
           </p>
           <div className="flex gap-2 cursor-pointer">
@@ -73,7 +73,7 @@ const BedCard: React.FC<Props> = ({ bed }) => {
         </div>
         {/* แสดงค่าจากเซ็นเซอร์เตียง */}
         {!bed.patient ? (
-          <div className=" my-6 mt-0 text-red-500">ไม่มีผู้ป่วย</div>
+          <div className=" my-3 text-red-500">ไม่มีผู้ป่วย</div>
         ) : (
           <>
             {bed.sensors
