@@ -41,6 +41,10 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
   };
   console.log("🩺 Patient Config Data:", selectedPatient);
 
+  const handleDeletePatient = () => {
+    setSelectedPatient(undefined);
+  };
+
   if (!selectedPatient) {
     return (
       <div className="border-2 border-gray-300 rounded-md w-full bg-[#F0F0F0] p-3 mt-3 h-73 shadow-md">
@@ -201,14 +205,14 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
             {/* ปุ่มแก้ไขและลบ */}
             <div className="flex justify-end mr-2 gap-3">
               {/* ปุ่มแก้ไข */}
-              <button
+              {/*<button
                 type="button"
                 title="Edit patient details"
                 aria-label="Edit patient details"
                 className="p-3 bg-blue-500 text-white rounded-md hover:bg-blue-600"
               >
                 <Icon path={mdiNoteEditOutline} size={1} />
-              </button>
+              </button>*/}
 
               {/* ปุ่มลบ */}
               <button
@@ -216,6 +220,7 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
                 title="Delete patient record"
                 aria-label="Delete patient record"
                 className="p-3 bg-red-500 text-white rounded-md hover:bg-red-600"
+                onClick={handleDeletePatient}
               >
                 <Icon path={mdiDelete} size={1} />
               </button>
