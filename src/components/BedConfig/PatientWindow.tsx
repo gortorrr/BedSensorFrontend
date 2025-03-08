@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import type { Patient } from "../../types/patient";
 import Icon from "@mdi/react";
-import { mdiNoteEditOutline, mdiDelete } from "@mdi/js";
+import { mdiDelete } from "@mdi/js";
 import { PlusCircle } from "lucide-react";
 import AddPatientDialog from "./AddPatientDialog";
 import { FaUser } from "react-icons/fa";
@@ -204,15 +204,6 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
 
             {/* ปุ่มแก้ไขและลบ */}
             <div className="flex justify-end mr-2 gap-3">
-              {/* ปุ่มแก้ไข */}
-              {/*<button
-                type="button"
-                title="Edit patient details"
-                aria-label="Edit patient details"
-                className="p-3 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-              >
-                <Icon path={mdiNoteEditOutline} size={1} />
-              </button>*/}
 
               {/* ปุ่มลบ */}
               <button

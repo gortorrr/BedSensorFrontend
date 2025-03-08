@@ -9,6 +9,7 @@ import { Sensor } from "../types/sensor";
 import { Bed } from "../types/bed";
 import Icon from "@mdi/react";
 import { mdiPlus } from "@mdi/js";
+import AddSensorDialog from "../components/BedConfig/AddSensorDialog.tsx";
 
 const BedConfig: React.FC = () => {
   const { bed_id } = useParams<{ bed_id?: string }>();
@@ -17,6 +18,7 @@ const BedConfig: React.FC = () => {
   const [bed, setBed] = useState<Bed | undefined>();
   const [patient, setPatient] = useState<Patient | undefined>();
   const [sensor, setSensor] = useState<Sensor[] | undefined>();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const navigate = useNavigate();
   const handleCancel = () => {
@@ -46,6 +48,20 @@ const BedConfig: React.FC = () => {
     }
   }, [bed_id, bedStore]);
 
+  const handleOpenDialog = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
+
+  const handleSelectSensor = (selectedSensor: Sensor) => {
+    console.log("✅ Sensor Selected:", selectedSensor);
+    setSensor((prevSensors) => [...(prevSensors || []), selectedSensor]);
+    setIsDialogOpen(false);
+  };
+
   return (
     <div className="flex flex-col p-4 bg-[#e7f0f3] min-h-[874px]">
       {/* Header */}
@@ -53,7 +69,8 @@ const BedConfig: React.FC = () => {
         <h2 className="text-[#2E5361] text-4xl font-bold">
           โรงพยาบาลมหาวิทยาลัยบูรพา
         </h2>
-        <button className="flex items-center gap-2 px-4 py-2 bg-[#5E8892] text-white rounded-xl hover:bg-[#95BAC3]">
+        <button className="flex items-center gap-2 px-4 py-2 bg-[#5E8892] text-white rounded-xl hover:bg-[#95BAC3]"
+        onClick={handleOpenDialog}>
           <Icon path={mdiPlus} size={1} />
           <span>เพิ่มเซ็นเซอร์ใหม่</span>
         </button>
@@ -85,6 +102,14 @@ const BedConfig: React.FC = () => {
           ยกเลิก
         </button>
       </div>
+      {/* ✅ AddSensorDialog */}
+      {isDialogOpen && (
+        <AddSensorDialog
+          isOpen={isDialogOpen}
+          onClose={handleCloseDialog}
+          onSelectSensor={handleSelectSensor}
+        />
+      )}
     </div>
   );
 };

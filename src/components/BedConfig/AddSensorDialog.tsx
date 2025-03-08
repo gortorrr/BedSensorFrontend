@@ -1,0 +1,112 @@
+import React, { useState } from "react";
+import type { Sensor } from "../../types/sensor";
+
+interface AddSensorDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSelectSensor: (sensor: Sensor) => void;
+}
+
+const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
+  isOpen,
+  onClose,
+  onSelectSensor,
+}) => {
+  const [searchI, setSearchI] = useState("");
+  const [searchII, setSearchII] = useState("");
+
+  if (!isOpen) return null;
+
+  const sensors: Sensor[] = [
+    {
+      sensor_id: 1,
+      sensor_type: "Respiration Sensor",
+      sensor_status: true,
+      sensor_mac_i: "C4:4F:33:0C:AC:49",
+      sensor_mac_ii: "C4:4F:33:0C:AC:45",
+      history_value_sensor: [],
+    },
+    {
+      sensor_id: 2,
+      sensor_type: "Heart Rate Sensor",
+      sensor_status: false,
+      sensor_mac_i: "C4:4F:33:0C:AC:50",
+      sensor_mac_ii: "C4:4F:33:0C:AC:51",
+      history_value_sensor: [],
+    },
+  ];
+
+  const filteredSensors = sensors.filter(
+    (sensor) =>
+      (sensor.sensor_mac_i?.toLowerCase() || "").includes(searchI.toLowerCase()) &&
+      (sensor.sensor_mac_ii?.toLowerCase() || "").includes(searchII.toLowerCase())
+  );
+
+  return (
+    <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-40 backdrop-blur-sm">
+      <div className="bg-[#E5E9EC] p-6 rounded-lg shadow-lg w-[800px] max-h-[80vh] overflow-auto">
+        <h2 className="text-2xl font-semibold mb-4">เพิ่มเซ็นเซอร์</h2>
+
+        <div className="flex gap-4 mb-4">
+          <input
+            type="text"
+            placeholder="ค้นหาเซ็นเซอร์ I"
+            className="flex-1 p-2 border border-gray-300 rounded-md"
+            value={searchI}
+            onChange={(e) => setSearchI(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="ค้นหาเซ็นเซอร์ II"
+            className="flex-1 p-2 border border-gray-300 rounded-md"
+            value={searchII}
+            onChange={(e) => setSearchII(e.target.value)}
+          />
+        </div>
+
+        <div className="overflow-auto max-h-[50vh]">
+          <table className="w-full border-collapse border border-gray-300 text-lg">
+            <thead>
+              <tr className="bg-gray-300 text-left">
+                <th className="border p-3">ลำดับ</th>
+                <th className="border p-3">Mac Sensor I</th>
+                <th className="border p-3">Mac Sensor II</th>
+                <th className="border p-3">ประเภทเซ็นเซอร์</th>
+                <th className="border p-3">ดำเนินการ</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredSensors.map((sensor, index) => (
+                <tr key={sensor.sensor_id} className="odd:bg-white even:bg-gray-100">
+                  <td className="border p-3 text-center">{index + 1}</td>
+                  <td className="border p-3 text-center">{sensor.sensor_mac_i}</td>
+                  <td className="border p-3 text-center">{sensor.sensor_mac_ii}</td>
+                  <td className="border p-3">{sensor.sensor_type}</td>
+                  <td className="border p-3 text-center">
+                    <button
+                      className="px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892]"
+                      onClick={() => onSelectSensor(sensor)}
+                    >
+                      เลือก
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="flex justify-end mt-4">
+          <button
+            className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400"
+            onClick={onClose}
+          >
+            ยกเลิก
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AddSensorDialog;
