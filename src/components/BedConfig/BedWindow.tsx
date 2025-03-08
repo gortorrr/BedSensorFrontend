@@ -11,7 +11,7 @@ const BedWindow: React.FC<Props> = ({ bed_config }) => {
   return (
     <>
       {bed_config && (
-        <div className="relative border-2 border-gray-300 rounded-md w-full h-1/2 bg-[#F0F0F0] p-3 h-full">
+        <div className="relative border-2 border-gray-300 rounded-md w-full h-1/2 bg-[#F0F0F0] p-3 h-full z-0">
           {/* ส่วนของข้อมูลเตียง */}
           <div className="relative z-10">
             <div className="flex items-center p-3 text-xl font-semibold">
