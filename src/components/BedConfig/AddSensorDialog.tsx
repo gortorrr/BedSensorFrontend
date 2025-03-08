@@ -25,6 +25,7 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
       sensor_mac_i: "C4:4F:33:0C:AC:49",
       sensor_mac_ii: "C4:4F:33:0C:AC:45",
       history_value_sensor: [],
+      sensor_notification_config : [],
     },
     {
       sensor_id: 2,
@@ -33,6 +34,7 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
       sensor_mac_i: "C4:4F:33:0C:AC:50",
       sensor_mac_ii: "C4:4F:33:0C:AC:51",
       history_value_sensor: [],
+      sensor_notification_config : [],
     },
   ];
 

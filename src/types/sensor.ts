@@ -1,4 +1,5 @@
 import { History_Value_Sensor } from "./history_value_sensor";
+import { Sensor_Notification_Config } from "./sensor_Notifications_config";
 
 export interface Sensor {
   sensor_id: number;
@@ -9,4 +10,5 @@ export interface Sensor {
   history_value_sensor: History_Value_Sensor[];
   sensor_unit?: string;
   sensor_name?: string;
+  sensor_notification_config : Sensor_Notification_Config[];
 }
