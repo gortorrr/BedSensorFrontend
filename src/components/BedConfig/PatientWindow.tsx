@@ -45,7 +45,7 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
     return (
       <div className="border-2 border-gray-300 rounded-md w-full bg-gray-100 p-3 mt-3 h-73 shadow-md">
     <div className="flex items-center p-3 text-xl font-semibold">
-      <FaUser className="mr-2 text-2xl" /> {/* เพิ่มไอคอนผู้ป่วย */}
+      <FaUser className="mr-2 text-2xl text-[#2E5361]" /> {/* เพิ่มไอคอนผู้ป่วย */}
       รายละเอียดผู้ป่วย
     </div>        <div className="flex justify-center items-center p-5">
           <button
@@ -68,9 +68,9 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
   return (
     <>
       {selectedPatient !== undefined && (
-    <div className="border-2 border-gray-300 rounded-md w-full bg-gradient-to-br from-[#2E5361] to-[#D1DFE5] p-3 mt-3 h-full">
+    <div className="border-2 border-gray-300 rounded-md w-full bg-[#F0F0F0] p-3 mt-3 h-full">
     <div className="flex items-center p-3 text-xl font-semibold">
-    <FaUser className="mr-2 text-2xl" /> {/* เพิ่มไอคอนผู้ป่วย */}
+    <FaUser className="mr-2 text-2xl text-[#2E5361]" /> {/* เพิ่มไอคอนผู้ป่วย */}
     รายละเอียดผู้ป่วย
     </div>
           <div className="grid grid-cols-2">

@@ -2,6 +2,7 @@ import React from "react";
 import Icon from "@mdi/react";
 import { mdiCog, mdiDelete } from "@mdi/js";
 import { Sensor } from "../../types/sensor";
+import { MdSensors } from "react-icons/md";
 
 interface Props {
   sensors: Sensor[] | undefined;
@@ -12,7 +13,10 @@ const SensorTableWindow: React.FC<Props> = ({ sensors }) => {
     <>
       {sensors !== undefined && (
         <div className="flex flex-col border-2 border-gray-300 p-4 bg-[#F0F0F0] rounded-md min-h-[620px]">
-          <h2 className="text-xl font-semibold mb-4">รายการเซ็นเซอร์</h2>
+          <h2 className="flex text-xl font-semibold mb-4 items-center">
+          <MdSensors className="mr-2 text-3xl text-[#2E5361]" />
+            รายการเซ็นเซอร์
+            </h2>
           <div className="overflow-x-auto ">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-[#95BAC3]  ">

@@ -53,7 +53,7 @@ const BedConfig: React.FC = () => {
         <h2 className="text-[#2E5361] text-4xl font-bold">
           โรงพยาบาลมหาวิทยาลัยบูรพา
         </h2>
-        <button className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892]">
+        <button className="flex items-center gap-2 px-4 py-2 bg-[#5E8892] text-white rounded-xl hover:bg-[#95BAC3]">
           <Icon path={mdiPlus} size={1} />
           <span>เพิ่มเซ็นเซอร์ใหม่</span>
         </button>

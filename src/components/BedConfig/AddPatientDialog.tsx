@@ -46,7 +46,7 @@ const AddPatientDialog: React.FC<AddPatientDialogProps> = ({
   );
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 flex justify-center items-center bg-transparent backdrop-blur-sm bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-[900px] max-h-[80vh] overflow-auto">
         <h2 className="text-2xl font-bold mb-4">เลือกผู้ป่วย</h2>
 
