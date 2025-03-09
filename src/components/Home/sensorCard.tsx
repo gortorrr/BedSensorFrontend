@@ -11,6 +11,7 @@ import respiration from "../../assets/sensorType/respiration.png";
 import rate1 from "../../assets/sensorType/rate1.png";
 import rate2 from "../../assets/sensorType/rate2.png";
 import rate3 from "../../assets/sensorType/rate3.png";
+import { useSensorStore } from "../../store/sensorStore";
 
 interface Props {
   sensor?: Sensor;
@@ -29,6 +30,7 @@ const SensorCard: React.FC<Props> = ({
 }) => {
   //store
   const bedStore = useBedStore();
+  const sensorStore = useSensorStore();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedSensor, setSelectedSensor] = useState<Sensor | undefined>(
@@ -39,7 +41,24 @@ const SensorCard: React.FC<Props> = ({
   useEffect(() => {
     setSelectedSensor(sensor);
     setIsHovered(false);
-  }, [sensor]);
+
+    const fetchSensorData = async () => {
+      if (!sensor?.sensor_id) return;
+      try {
+        const updatedSensor = await sensorStore.loadValueSensor(
+          sensor.sensor_id
+        );
+        setSelectedSensor(updatedSensor);
+      } catch (error) {
+        console.error("Error fetching sensor data:", error);
+      }
+    };
+
+    //get every 5 second data
+    fetchSensorData(); // โหลดข้อมูลครั้งแรก
+    const interval = setInterval(fetchSensorData, 5000);
+    return () => clearInterval(interval);
+  }, [sensor, sensorStore]); // ✅ เพิ่ม sensorStore เข้าไปใน dependency array
 
   const toggleDialog = () => {
     if (!patient || selectedSensor) return;
@@ -62,23 +81,22 @@ const SensorCard: React.FC<Props> = ({
     bedStore.saveRemoveShowSensorId(bed_id, selectedSensor.sensor_id);
   };
 
-   // กำหนดไอคอนและภาพคลื่นตามประเภทเซ็นเซอร์
-   const sensorIcons: { [key: string]: string } = {
+  // กำหนดไอคอนและภาพคลื่นตามประเภทเซ็นเซอร์
+  const sensorIcons: { [key: string]: string } = {
     "Heart Rate": heart,
     "SpO2 Sensor": spo2,
-    "Respiration": respiration,
+    Respiration: respiration,
   };
 
   const sensorWaves: { [key: string]: string } = {
     "Heart Rate": rate1,
     "SpO2 Sensor": rate2,
-    "Respiration": rate3,
+    Respiration: rate3,
   };
 
   const sensorType = selectedSensor?.sensor_name || "Default";
-  const iconPath = sensorIcons[sensorType] ;
-  const wavePath = sensorWaves[sensorType] ;
-
+  const iconPath = sensorIcons[sensorType];
+  const wavePath = sensorWaves[sensorType];
 
   return (
     <div
@@ -100,33 +118,49 @@ const SensorCard: React.FC<Props> = ({
         <>
           <p className="font-normal">{selectedSensor.sensor_name}</p>
           <div className="flex items-center justify-between pl-1">
-          <img src={iconPath} alt={sensorType} className="w-7 h-7" />
+            <img src={iconPath} alt={sensorType} className="w-7 h-7" />
             <div className="relative w-full h-1/3">
-            <h5 className="text-2xl font-bold text-center m-0 ">
-    {selectedSensor ? (
-      // ตรวจสอบชนิดของเซ็นเซอร์และจัดการตำแหน่ง
-      selectedSensor.sensor_name === "Heart Rate" ? (
-        <div className="px-4">{selectedSensor.history_value_sensor?.slice(-1)[0]?.history_value_sensor_value || "-"}</div>
-      ) : selectedSensor.sensor_name === "SpO2 Sensor" ? (
-        <div className="pr-4">{selectedSensor.history_value_sensor?.slice(-1)[0]?.history_value_sensor_value || "-"}</div>
-      ) : selectedSensor.sensor_name === "Respiration" ? (
-        <div className="px-4">{selectedSensor.history_value_sensor?.slice(-1)[0]?.history_value_sensor_value || "-"}</div>
-      ) : (
-        // หากเป็นเซ็นเซอร์อื่นๆ
-        <div className="px-4">{selectedSensor.history_value_sensor?.slice(-1)[0]?.history_value_sensor_value || "-"}</div>
-      )
-    ) : (
-      // กรณีไม่มี selectedSensor
-      <div className="px-4">-</div>
-    )}
-  </h5>
+              <h5 className="text-2xl font-bold text-center m-0 ">
+                {selectedSensor ? (
+                  // ตรวจสอบชนิดของเซ็นเซอร์และจัดการตำแหน่ง
+                  selectedSensor.sensor_name === "Heart Rate" ? (
+                    <div className="px-4">
+                      {selectedSensor.history_value_sensor?.slice(-1)[0]
+                        ?.history_value_sensor_value || "-"}
+                    </div>
+                  ) : selectedSensor.sensor_name === "SpO2 Sensor" ? (
+                    <div className="pr-4">
+                      {selectedSensor.history_value_sensor?.slice(-1)[0]
+                        ?.history_value_sensor_value || "-"}
+                    </div>
+                  ) : selectedSensor.sensor_name === "Respiration" ? (
+                    <div className="px-4">
+                      {selectedSensor.history_value_sensor?.slice(-1)[0]
+                        ?.history_value_sensor_value || "-"}
+                    </div>
+                  ) : (
+                    // หากเป็นเซ็นเซอร์อื่นๆ
+                    <div className="px-4">
+                      {selectedSensor.history_value_sensor?.slice(-1)[0]
+                        ?.history_value_sensor_value || "-"}
+                    </div>
+                  )
+                ) : (
+                  // กรณีไม่มี selectedSensor
+                  <div className="px-4">-</div>
+                )}
+              </h5>
             </div>
             <p className="font-normal text-right">
               {selectedSensor.sensor_unit}
             </p>
           </div>
           <div className="flex justify-center -mt-2">
-            <img src={wavePath} alt={`${sensorType} Wave`} className="w-16 h-9" />
+            <img
+              src={wavePath}
+              alt={`${sensorType} Wave`}
+              className="w-16 h-9"
+            />
           </div>
         </>
       ) : (
