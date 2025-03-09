@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import type { Patient } from "../../types/patient";
-
+import { motion, AnimatePresence } from "framer-motion";
 interface AddPatientDialogProps {
   isOpen: boolean;
   onClose: () => void;
@@ -68,7 +68,43 @@ const AddPatientDialog: React.FC<AddPatientDialogProps> = ({
   );
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-transparent backdrop-blur-sm bg-opacity-50">
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Fully transparent overlay with blur */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-40 bg-transparent backdrop-blur-sm"
+            onClick={onClose}
+            aria-hidden="true"
+          />
+
+          {/* Dialog */}
+          <motion.div
+            initial={{
+              opacity: 0,
+              scale: 0.9,
+              y: 50,
+            }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              y: 0,
+            }}
+            exit={{
+              opacity: 0,
+              scale: 0.9,
+              y: 50,
+            }}
+            transition={{
+              type: "spring",
+              stiffness: 500,
+              damping: 25,
+            }}
+            className="fixed inset-0 z-50 flex justify-center items-center"
+            >
       <div className="bg-white p-6 rounded-lg shadow-lg w-[1000px] max-h-[80vh] overflow-auto">
         <h2 className="text-2xl font-bold mb-4">เลือกผู้ป่วย</h2>
 
@@ -135,7 +171,10 @@ const AddPatientDialog: React.FC<AddPatientDialogProps> = ({
           </button>
         </div>
       </div>
-    </div>
+      </motion.div>
+        </>
+      )}
+    </AnimatePresence>
   );
 };
 
