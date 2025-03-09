@@ -118,8 +118,8 @@ const AddPatientDialog: React.FC<AddPatientDialogProps> = ({
 
         <div className="overflow-auto max-h-[50vh]">
           <table className="w-full border-collapse border border-gray-300 text-lg">
-            <thead>
-              <tr className="bg-gray-200 text-left">
+            <thead className="bg-[#95BAC3]">
+              <tr className="text-center">
                 <th className="border p-3">รหัสผู้ป่วย</th>
                 <th className="border p-3">ชื่อ-นามสกุล</th>
                 <th className="border p-3">อายุ</th>
@@ -132,7 +132,7 @@ const AddPatientDialog: React.FC<AddPatientDialogProps> = ({
             </thead>
             <tbody>
               {filteredPatients.map((patient) => (
-                <tr key={patient.patient_id} className="hover:bg-gray-100">
+                <tr key={patient.patient_id} className=" hover:bg-gray-200">  
                   <td className="border p-3">{patient.patient_id}</td>
                   <td className="border p-3">{patient.patient_name}</td>
                   <td className="border p-3 text-center">
@@ -150,7 +150,7 @@ const AddPatientDialog: React.FC<AddPatientDialogProps> = ({
                   <td className="border p-3">{patient.patient_disease}</td>
                   <td className="border p-3 text-center">
                     <button
-                      className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892]"
+                      className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md"
                       onClick={() => onSelectPatient(patient)}
                     >
                       เลือก
