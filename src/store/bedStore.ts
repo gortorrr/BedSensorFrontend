@@ -12,6 +12,7 @@ interface BedStore {
     sensor_id: number
   ) => Promise<void>;
   saveRemoveShowSensorId: (bed_id: number, sensor_id: number) => Promise<void>;
+  saveBedConfig: (bed_id: number, bed: Bed) => Promise<void>;
 }
 
 export const useBedStore = create<BedStore>((set) => ({
