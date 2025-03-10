@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { Sensor } from "../../types/sensor";
+import { useSensorStore } from "../../store/sensorStore";
 
 interface AddSensorDialogProps {
   isOpen: boolean;
@@ -12,37 +13,51 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
   onClose,
   onSelectSensor,
 }) => {
+  const { loadAllSensorFree } = useSensorStore(); // ดึงฟังก์ชันโหลดเซ็นเซอร์
   const [searchI, setSearchI] = useState("");
   const [searchII, setSearchII] = useState("");
+  const [sensors, setSensors] = useState<Sensor[]>([]);
+
+  useEffect(() => {
+    if (isOpen) {
+      loadAllSensorFree().then((data: Sensor[]) => {
+        setSensors(data); // เซ็ตค่าข้อมูลเซ็นเซอร์จาก store
+      });
+    }
+  }, [isOpen, loadAllSensorFree]);
 
   if (!isOpen) return null;
 
-  const sensors: Sensor[] = [
-    {
-      sensor_id: 1,
-      sensor_type: "Respiration Sensor",
-      sensor_status: true,
-      sensor_mac_i: "C4:4F:33:0C:AC:49",
-      sensor_mac_ii: "C4:4F:33:0C:AC:45",
-      history_value_sensor: [],
-      sensor_notification_config : [],
-    },
-    {
-      sensor_id: 2,
-      sensor_type: "Heart Rate Sensor",
-      sensor_status: false,
-      sensor_mac_i: "C4:4F:33:0C:AC:50",
-      sensor_mac_ii: "C4:4F:33:0C:AC:51",
-      history_value_sensor: [],
-      sensor_notification_config : [],
-    },
-  ];
-
   const filteredSensors = sensors.filter(
     (sensor) =>
-      (sensor.sensor_mac_i?.toLowerCase() || "").includes(searchI.toLowerCase()) &&
-      (sensor.sensor_mac_ii?.toLowerCase() || "").includes(searchII.toLowerCase())
+      (sensor.sensor_mac_i?.toLowerCase() || "").includes(
+        searchI.toLowerCase()
+      ) &&
+      (sensor.sensor_mac_ii?.toLowerCase() || "").includes(
+        searchII.toLowerCase()
+      )
   );
+
+  // const sensors: Sensor[] = [
+  //   {
+  //     sensor_id: 1,
+  //     sensor_type: "Respiration Sensor",
+  //     sensor_status: true,
+  //     sensor_mac_i: "C4:4F:33:0C:AC:49",
+  //     sensor_mac_ii: "C4:4F:33:0C:AC:45",
+  //     history_value_sensor: [],
+  //     sensor_notification_config : [],
+  //   },
+  //   {
+  //     sensor_id: 2,
+  //     sensor_type: "Heart Rate Sensor",
+  //     sensor_status: false,
+  //     sensor_mac_i: "C4:4F:33:0C:AC:50",
+  //     sensor_mac_ii: "C4:4F:33:0C:AC:51",
+  //     history_value_sensor: [],
+  //     sensor_notification_config : [],
+  //   },
+  // ];
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-40 backdrop-blur-sm">
