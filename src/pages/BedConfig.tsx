@@ -56,6 +56,20 @@ const BedConfig: React.FC = () => {
     setIsDialogOpen(false);
   };
 
+  const handleConfirm = async () => {
+    if (bed && sensor) {
+      const updatedBed = { ...bed, sensors: sensor ,patient: patient }; // อัปเดตค่าเซ็นเซอร์ในเตียง
+       console.log("ตรงนี้ ครับ พรี่ SAVE ตรงนี้")
+      console.log("🚀 Updating bed with new sensors:", updatedBed);
+      await bedStore.saveBedConfig(bed.bed_id, updatedBed); // เรียกใช้ฟังก์ชันบันทึก
+      bedStore.loadBeds(); // โหลดข้อมูลใหม่เพื่อให้ UI อัปเดต
+      navigate("/"); // กลับไปหน้าแรก
+    } else {
+      console.warn("⚠️ Bed or sensors are undefined!");
+    }
+  };
+  
+
   const handleSelectSensor = (selectedSensor: Sensor) => {
     console.log("✅ Sensor Selected:", selectedSensor);
     setSensor((prevSensors) => [...(prevSensors || []), selectedSensor]);
@@ -92,7 +106,7 @@ const BedConfig: React.FC = () => {
       </div>
       {/* Footer */}
       <div className="flex justify-end p-6 gap-4 ">
-        <button className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892]">
+        <button className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892]" onClick={handleConfirm}>
           ยืนยัน
         </button>
         <button
