@@ -41,7 +41,11 @@ export const useBedStore = create<BedStore>((set) => ({
   saveRemoveShowSensorId: async (bed_id: number, sensor_id: number) => {
     bedService.saveRemoveShowSensorId(bed_id, sensor_id);
   },
-}));
+
+  saveBedConfig: async (bed_id: number, bed: Bed) => {
+    bedService.saveBedConfig(bed_id, bed);
+  },
+})); 
 // ฟังก์ชั่นเก่าอยู่ตรงนี้
 // loadBeds: async () => {
 //   const beds = await bedService.fetchBeds(); // ดึงข้อมูลจาก bedService
