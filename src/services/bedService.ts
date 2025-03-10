@@ -46,4 +46,14 @@ export const bedService = {
       throw error; // หากเกิดข้อผิดพลาดให้โยนข้อผิดพลาดออกไป
     }
   },
+
+  async saveBedConfig(bed_id: number, bed: Bed): Promise<Bed> {
+    try {
+      const response = await http.patch(`beds/${bed_id}/bedConfig`, bed);
+      return response.data; // นำข้อมูลที่ได้จาก response มาใช้
+    } catch (error) {
+      console.error("Error save bed config:", error);
+      throw error; // หากเกิดข้อผิดพลาดให้โยนข้อผิดพลาดออกไป
+    }
+  },
 };
