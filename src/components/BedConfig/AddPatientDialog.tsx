@@ -17,6 +17,10 @@ const AddPatientDialog: React.FC<AddPatientDialogProps> = ({
   const [search, setSearch] = useState("");
   const patientStore = usePatientStore();
 
+  const handleSelectPatient = (patient: Patient) => {
+    onSelectPatient(patient); // ส่งค่ากลับไป B แล้วไป C
+  };
+
   useEffect(() => {
     if (isOpen) {
       patientStore.loadPatientsWait();
@@ -100,7 +104,7 @@ const AddPatientDialog: React.FC<AddPatientDialogProps> = ({
                         <td className="border p-3 text-center">
                           <button
                             className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md"
-                            onClick={() => onSelectPatient(patient)}
+                            onClick={() => handleSelectPatient(patient)}
                           >
                             เลือก
                           </button>

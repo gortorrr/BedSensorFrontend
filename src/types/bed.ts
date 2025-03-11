@@ -8,6 +8,7 @@ export interface Bed {
   bed_activated: boolean;
   room: Room;
   patient?: Patient;
+  patient_id?: number;
   sensors: Sensor[];
   selectedShowSensorId?: number[];
 }

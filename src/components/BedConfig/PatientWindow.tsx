@@ -8,6 +8,7 @@ import { FaUser } from "react-icons/fa";
 
 interface Props {
   patient_config: Patient | undefined;
+  onPatientSelect: (patient: Patient) => void; // เพิ่มฟังก์ชันรับค่าผู้ป่วย
 }
 
 const formatDate = (dateString: string | undefined) => {
@@ -19,7 +20,10 @@ const formatDate = (dateString: string | undefined) => {
   });
 };
 
-const PatientWindow: React.FC<Props> = ({ patient_config }) => {
+const PatientWindow: React.FC<Props> = ({
+  patient_config,
+  onPatientSelect,
+}) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState<Patient | undefined>(
     patient_config
@@ -37,9 +41,10 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
 
   const handleSelectPatient = (patient: Patient) => {
     setSelectedPatient(patient);
+    onPatientSelect(patient); // ส่งค่ากลับไป C
     closeDialog();
   };
-  console.log("🩺 Patient Config Data:", selectedPatient);
+  // console.log("🩺 Patient Config Data:", selectedPatient);
 
   const handleDeletePatient = () => {
     setSelectedPatient(undefined);
@@ -48,10 +53,12 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
   if (!selectedPatient) {
     return (
       <div className="border-2 border-gray-300 rounded-md w-full bg-[#F0F0F0] p-3 mt-3 h-73 shadow-md">
-<div className="flex items-center p-3 text-xl font-semibold">
-      <FaUser className="mr-2 text-2xl text-[#2E5361]" /> {/* เพิ่มไอคอนผู้ป่วย */}
-      รายละเอียดผู้ป่วย
-    </div>        <div className="flex justify-center items-center p-5">
+        <div className="flex items-center p-3 text-xl font-semibold">
+          <FaUser className="mr-2 text-2xl text-[#2E5361]" />{" "}
+          {/* เพิ่มไอคอนผู้ป่วย */}
+          รายละเอียดผู้ป่วย
+        </div>{" "}
+        <div className="flex justify-center items-center p-5">
           <button
             className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] mt-8"
             onClick={openDialog}
@@ -73,10 +80,11 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
     <>
       {selectedPatient !== undefined && (
         <div className="border-2 border-gray-300 rounded-md w-full bg-[#F0F0F0] p-3 mt-3 h-73 shadow-md">
-        <div className="flex items-center p-3 text-xl font-semibold">
-    <FaUser className="mr-2 text-2xl text-[#2E5361]" /> {/* เพิ่มไอคอนผู้ป่วย */}
-    รายละเอียดผู้ป่วย
-    </div>
+          <div className="flex items-center p-3 text-xl font-semibold">
+            <FaUser className="mr-2 text-2xl text-[#2E5361]" />{" "}
+            {/* เพิ่มไอคอนผู้ป่วย */}
+            รายละเอียดผู้ป่วย
+          </div>
           <div className="grid grid-cols-2">
             {/* รหัสผู้ป่วย */}
             <div className="flex items-center p-3">
@@ -204,7 +212,6 @@ const PatientWindow: React.FC<Props> = ({ patient_config }) => {
 
             {/* ปุ่มแก้ไขและลบ */}
             <div className="flex justify-end mr-2 gap-3">
-
               {/* ปุ่มลบ */}
               <button
                 type="button"
