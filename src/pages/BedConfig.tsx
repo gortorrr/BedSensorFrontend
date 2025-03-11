@@ -91,7 +91,7 @@ const BedConfig: React.FC = () => {
           onClick={handleOpenDialog}
         >
           <Icon path={mdiPlus} size={1} />
-          <span>เพิ่มเซ็นเซอร์ใหม่</span>
+          <span className="cursor-pointer">เพิ่มเซ็นเซอร์ใหม่</span>
         </button>
       </div>
       {/* Content */}
@@ -115,13 +115,13 @@ const BedConfig: React.FC = () => {
       {/* Footer */}
       <div className="flex justify-end p-6 gap-4 ">
         <button
-          className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892]"
+          className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] cursor-pointer"
           onClick={handleConfirm}
         >
           ยืนยัน
         </button>
         <button
-          className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400"
+          className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400 cursor-pointer"
           onClick={handleCancel}
         >
           ยกเลิก

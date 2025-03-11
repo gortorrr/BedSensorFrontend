@@ -88,7 +88,7 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
                 {!noti.notification_successed && (
                   <button
                     onClick={() => updateStatus(noti.notification_id, "กำลังดำเนินการ")}
-                    className="text-blue-600 hover:underline focus:outline-none"
+                    className="text-blue-600 hover:underline focus:outline-none cursor-pointer"
                   >
                     รับทราบ
                   </button>
@@ -98,7 +98,7 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
                 {!noti.notification_successed && (
                   <button
                     onClick={() => updateStatus(noti.notification_id, undefined, true)}
-                    className="text-green-600 hover:underline focus:outline-none"
+                    className="text-green-600 hover:underline focus:outline-none cursor-pointer"
                   >
                     เสร็จสิ้น
                   </button>

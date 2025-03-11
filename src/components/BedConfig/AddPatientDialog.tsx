@@ -103,7 +103,7 @@ const AddPatientDialog: React.FC<AddPatientDialogProps> = ({
                         </td>
                         <td className="border p-3 text-center">
                           <button
-                            className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md"
+                            className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer"
                             onClick={() => handleSelectPatient(patient)}
                           >
                             เลือก
@@ -117,7 +117,7 @@ const AddPatientDialog: React.FC<AddPatientDialogProps> = ({
 
               <div className="flex justify-end mt-4">
                 <button
-                  className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400"
+                  className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400 cursor-pointer"
                   onClick={onClose}
                 >
                   ยกเลิก

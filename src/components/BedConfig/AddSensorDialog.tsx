@@ -62,7 +62,7 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-40 backdrop-blur-sm">
       <div className="bg-[#E5E9EC] p-6 rounded-lg shadow-lg w-[800px] max-h-[80vh] overflow-auto">
-        <h2 className="text-2xl font-semibold mb-4">เพิ่มเซ็นเซอร์</h2>
+        <h2 className="text-2xl font-semibold mb-4 ">เพิ่มเซ็นเซอร์</h2>
 
         <div className="flex gap-4 mb-4">
           <input
@@ -115,7 +115,7 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
 
         <div className="flex justify-end mt-4">
           <button
-            className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400"
+            className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400 cursor-pointer"
             onClick={onClose}
           >
             ยกเลิก

@@ -64,7 +64,7 @@ const PatientWindow: React.FC<Props> = ({
             onClick={openDialog}
           >
             <PlusCircle size={24} />
-            <span className="text-lg">เพิ่มผู้ป่วย</span>
+            <span className="text-lg cursor-pointer">เพิ่มผู้ป่วย</span>
           </button>
           <AddPatientDialog
             isOpen={isDialogOpen}
