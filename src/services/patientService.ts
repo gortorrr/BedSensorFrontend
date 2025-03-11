@@ -4,7 +4,7 @@ import http from "./http";
 export const patientService = {
   async loadAllPatientWait(): Promise<Patient[]> {
     try {
-      const response = await http.get("/patientWait/all");
+      const response = await http.get("patients/patientWait/all");
       return response.data;
     } catch (error) {
       console.error("Error loading patient wait:", error);
