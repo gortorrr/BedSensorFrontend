@@ -70,7 +70,7 @@ const SettingNoti: React.FC = () => {
       <div className="flex gap-2 mb-4">
         {/* Dropdown สำหรับเลือกเซ็นเซอร์ */}
         <select
-          className="px-4 py-2 bg-white border rounded-lg"
+          className="px-4 py-2  bg-white border rounded-lg inset-shadow cursor-pointer"
           value={selectedSensor?.sensor_id}
           onChange={(e) => handleSensorChange(parseInt(e.target.value))}
         >
@@ -80,17 +80,17 @@ const SettingNoti: React.FC = () => {
             </option>
           ))}
         </select>
-        <button className="px-4 py-2 bg-white border rounded-lg">{bed?.room?.floor?.building?.building_name}</button>
-        <button className="px-4 py-2 bg-white border rounded-lg">{bed?.room?.floor?.floor_name}</button>
-        <button className="px-4 py-2 bg-white border rounded-lg">{bed?.room.room_name}</button>
-        <button className="px-4 py-2 bg-white border rounded-lg">{bed?.bed_name}</button>
+        <button className="px-4 py-2 bg-white border rounded-lg inset-shadow">{bed?.room?.floor?.building?.building_name}</button>
+        <button className="px-4 py-2 bg-white border rounded-lg inset-shadow">{bed?.room?.floor?.floor_name}</button>
+        <button className="px-4 py-2 bg-white border rounded-lg inset-shadow">{bed?.room.room_name}</button>
+        <button className="px-4 py-2 bg-white border rounded-lg inset-shadow">{bed?.bed_name}</button>
       </div>
 
       {/* Tabs */}
       <div className="flex gap-4 border-b pb-2">
-        <button className="px-4 py-2 bg-[#5E8892] text-white rounded-t-lg">ตั้งค่าการแจ้งเตือน</button>
-        <button className="px-4 py-2 bg-gray-200 text-gray-600 rounded-t-lg">ไทม์ไลน์</button>
-        <button className="px-4 py-2 bg-gray-200 text-gray-600 rounded-t-lg">ประวัติการแจ้งเตือน</button>
+        <button className="px-4 py-2 bg-[#5E8892] text-white rounded-t-lg cursor-pointer drop-shadow-md">ตั้งค่าการแจ้งเตือน</button>
+        <button className="px-4 py-2 bg-gray-200 text-gray-600 rounded-t-lg cursor-pointer">ไทม์ไลน์</button>
+        <button className="px-4 py-2 bg-gray-200 text-gray-600 rounded-t-lg cursor-pointer">ประวัติการแจ้งเตือน</button>
       </div>
 
       {/* Table */}

@@ -59,7 +59,7 @@ const AddPatientDialog: React.FC<AddPatientDialogProps> = ({
               <input
                 type="text"
                 placeholder="ค้นหาชื่อผู้ป่วย"
-                className="w-full p-3 border border-gray-300 rounded-md mb-4 text-lg"
+                className="w-full p-3 border border-gray-300 rounded-md mb-4 text-lg inset-shadow"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
