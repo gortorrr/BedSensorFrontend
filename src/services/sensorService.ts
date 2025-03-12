@@ -16,4 +16,14 @@ export const sensorService = {
       throw error; // หากเกิดข้อผิดพลาดให้โยนข้อผิดพลาดออกไป
     }
   },
+  async saveSensorConfig(sensor_id: number,sensor:Sensor): Promise<Sensor[]> {
+    try {
+      const response = await http.patch(`sensors/update_sensor/${sensor_id}`,sensor);
+      return response.data; // นำข้อมูลที่ได้จาก response มาใช้
+    } catch (error) {
+      console.error("Error loading all sensors:", error);
+      throw error; // หากเกิดข้อผิดพลาดให้โยนข้อผิดพลาดออกไป
+    }
+  },
+  
 };

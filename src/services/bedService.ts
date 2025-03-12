@@ -9,7 +9,8 @@ export const bedService = {
   // },
   async loadBedActivatedAll(): Promise<Bed[]> {
     try {
-      const response = await http.get("beds/activated/all");
+      // const response = await http.get("beds/activated/all");
+      const response = await http.get("beds");
       return response.data; // นำข้อมูลที่ได้จาก response มาใช้
     } catch (error) {
       console.error("Error loading activated beds:", error);
