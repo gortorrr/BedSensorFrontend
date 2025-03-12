@@ -6,9 +6,11 @@ import { MdSensors } from "react-icons/md";
 
 interface Props {
   sensors: Sensor[] | undefined;
+  onDeleteSensor: (sensor:Sensor) => void; 
 }
 
-const SensorTableWindow: React.FC<Props> = ({ sensors }) => {
+const SensorTableWindow: React.FC<Props> = ({ sensors ,onDeleteSensor}) => {
+
   return (
     <>
       {sensors !== undefined && (
@@ -48,11 +50,13 @@ const SensorTableWindow: React.FC<Props> = ({ sensors }) => {
                           size={1}
                           className="text-gray-600 hover:text-gray-900 cursor-pointer"
                         />
+                        <div  onClick={() => onDeleteSensor(sensor)}>
                         <Icon
                           path={mdiDelete}
                           size={1}
                           className="text-red-600 hover:text-red-800 cursor-pointer"
                         />
+                        </div>
                       </div>
                     </td>
                   </tr>

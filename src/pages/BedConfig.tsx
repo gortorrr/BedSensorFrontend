@@ -21,8 +21,8 @@ const BedConfig: React.FC = () => {
   const [patient, setPatient] = useState<Patient | undefined>();
   const [sensor, setSensor] = useState<Sensor[] | undefined>();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [sensorNew, setSensorNew] = useState<Sensor[] | undefined>();
-
+  const [sensorNew, setSensorNew] = useState<Sensor[] | undefined | null>();
+  const [sensorDelete, setSensorDelete] = useState<Sensor[] | undefined>();
   const handlePatientSelect = (selectedPatient: Patient) => {
     setPatient(selectedPatient);
   };
@@ -63,24 +63,46 @@ const BedConfig: React.FC = () => {
     setIsDialogOpen(false);
   };
 
+  const handleRemoveDuplicateSensors = () => {
+    if (sensorNew && sensorDelete) {
+      const updatedSensors: Sensor[] = sensorNew.filter((sensorNewItem) =>
+      !sensorDelete.some((sensorDeleteItem) => sensorDeleteItem.sensor_id === sensorNewItem.sensor_id)
+      );
+      setSensorNew(updatedSensors); // อัปเดต sensorNew หลังจากลบเซ็นเซอร์ที่ตรงกัน
+      console.log("ได้โปรดเอาออกที",updatedSensors)
+      console.log("ทำไมมึงยังอยู่",sensorNew)
+    }
+  };
   const handleConfirm = async () => {
-    if (bed && sensor && sensorNew) {
-      const updatedBed = { ...bed, patient: patient, sensor: sensor }; // อัปเดตค่าPatientในเตียง
+    if (bed && patient && sensorNew) {
+      handleRemoveDuplicateSensors()
+      const updatedBed = { ...bed, patient: patient }; // อัปเดตค่าPatientในเตียง
       updatedBed.patient_id = patient?.patient_id;
       await bedStore.saveBedConfig(bed.bed_id, updatedBed); // เรียกใช้ฟังก์ชันบันทึก
       for (let i = 0; i < sensorNew.length; i++) {
         sensorNew[i].bed_id = bed.bed_id;
         sensorNew[i].sensor_status = true;
-        console.log(`Sensor ${i + 1}:`, sensorNew[i]); //อัปเดตค่าเซ็นเซอร์ในเตียง
+        console.log(`Sensor Update ${i + 1}:`, sensorNew[i]); //อัปเดตค่าเซ็นเซอร์ในเตียง
         await sensorStore.saveSensorConfig(
           sensorNew[i].sensor_id,
           sensorNew[i]
         );
-        bedStore.loadBeds();
       }
       // โหลดข้อมูลใหม่เพื่อให้ UI อัปเดต
+      bedStore.loadBeds();
       navigate("/"); // กลับไปหน้าแรก
-    } else {
+    } else if (sensorDelete) {
+      for (let i = 0; i < sensorDelete.length; i++) {
+        sensorDelete[i].bed_id = null;
+        console.log(`Sensor Delete${i + 1}:`, sensorDelete[i]); //อัปเดตค่าการลบเซ็นเซอร์ในเตียง
+        await sensorStore.saveSensorConfig(
+          sensorDelete[i].sensor_id,
+          sensorDelete[i]
+        );
+      bedStore.loadBeds();
+      navigate("/");
+      }
+      }else {
       console.warn("⚠️ Bed or sensors are undefined!");
       navigate("/");
     }
@@ -91,6 +113,13 @@ const BedConfig: React.FC = () => {
     setSensor((prevSensors) => [...(prevSensors || []), selectedSensor]);
     setSensorNew((prevSensors) => [...(prevSensors || []), selectedSensor]);
     setIsDialogOpen(false);
+  };
+  const handleDeleteSensor = (deleteSensor: Sensor) => {
+    setSensor((prevSensors) =>
+      prevSensors ? prevSensors.filter((sensor) => sensor.sensor_id !== deleteSensor.sensor_id) : []
+    );
+    console.log("✅ Sensor Selected Delete:", deleteSensor);
+    setSensorDelete((prevSensors) => [...(prevSensors || []), deleteSensor]);
   };
 
   return (
@@ -123,7 +152,7 @@ const BedConfig: React.FC = () => {
         </div>
         {/* Right Column: Sensors */}
         <div className="p-2">
-          <SensorTableWindow sensors={sensor ?? undefined} />
+          <SensorTableWindow sensors={sensor ?? undefined} onDeleteSensor={handleDeleteSensor} />
         </div>
       </div>
       {/* Footer */}
