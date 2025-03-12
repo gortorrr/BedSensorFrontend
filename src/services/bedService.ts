@@ -56,4 +56,16 @@ export const bedService = {
       throw error; // หากเกิดข้อผิดพลาดให้โยนข้อผิดพลาดออกไป
     }
   },
+
+  async loadBedSensorConfig(bed_id: number): Promise<Bed> {
+    try {
+      const response = await http.get(
+        `/sensor_notifications_configs/sensor-notifications-config/${bed_id}`
+      );
+      return response.data; // นำข้อมูลที่ได้จาก response มาใช้
+    } catch (error) {
+      console.error("Error save bed config:", error);
+      throw error; // หากเกิดข้อผิดพลาดให้โยนข้อผิดพลาดออกไป
+    }
+  },
 };

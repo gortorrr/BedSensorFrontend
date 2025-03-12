@@ -10,7 +10,7 @@ import { Bed } from "../types/bed";
 import Icon from "@mdi/react";
 import { mdiPlus } from "@mdi/js";
 import AddSensorDialog from "../components/BedConfig/AddSensorDialog.tsx";
-import { bedService } from "../services/bedService.ts";
+// import { bedService } from "../services/bedService.ts";
 
 const BedConfig: React.FC = () => {
   const { bed_id } = useParams<{ bed_id?: string }>();
