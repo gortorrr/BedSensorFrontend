@@ -5,6 +5,7 @@ import { sensorService } from "../services/sensorService";
 interface SensorStore {
   loadValueSensor: (sensor_id: number) => Promise<Sensor>;
   loadAllSensorFree: () => Promise<Sensor[]>;
+  saveSensorConfig: (sensor_id: number,sensor:Sensor) => Promise<void>;
 }
 
 export const useSensorStore = create<SensorStore>(() => ({
@@ -16,4 +17,7 @@ export const useSensorStore = create<SensorStore>(() => ({
     const res = await sensorService.loadAllSensorFree();
     return res as Sensor[];
   },
+  saveSensorConfig: async (sensor_id: number, sensor: Sensor) => {
+      sensorService.saveSensorConfig(sensor_id, sensor);
+    },
 }));

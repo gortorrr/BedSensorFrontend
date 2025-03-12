@@ -10,16 +10,19 @@ import { Bed } from "../types/bed";
 import Icon from "@mdi/react";
 import { mdiPlus } from "@mdi/js";
 import AddSensorDialog from "../components/BedConfig/AddSensorDialog.tsx";
-import { bedService } from "../services/bedService.ts";
+import { useSensorStore } from "../store/sensorStore.ts";
+
 
 const BedConfig: React.FC = () => {
   const { bed_id } = useParams<{ bed_id?: string }>();
   const bedStore = useBedStore();
+  const sensorStore = useSensorStore();
 
   const [bed, setBed] = useState<Bed | undefined>();
   const [patient, setPatient] = useState<Patient | undefined>();
   const [sensor, setSensor] = useState<Sensor[] | undefined>();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [sensorNew, setSensorNew] = useState<Sensor[] | undefined>();
 
   const handlePatientSelect = (selectedPatient: Patient) => {
     setPatient(selectedPatient);
@@ -62,20 +65,29 @@ const BedConfig: React.FC = () => {
   };
 
   const handleConfirm = async () => {
-    if (bed && sensor) {
-      const updatedBed = { ...bed, sensors: sensor, patient: patient }; // อัปเดตค่าเซ็นเซอร์ในเตียง
+    if (bed && sensor && sensorNew) {
+      const updatedBed = { ...bed, patient: patient ,sensor:sensor }; // อัปเดตค่าPatientในเตียง
       updatedBed.patient_id = patient?.patient_id;
       await bedStore.saveBedConfig(bed.bed_id, updatedBed); // เรียกใช้ฟังก์ชันบันทึก
-      bedStore.loadBeds(); // โหลดข้อมูลใหม่เพื่อให้ UI อัปเดต
+      for (let i = 0; i < sensorNew.length; i++) {
+        sensorNew[i].bed_id = bed.bed_id
+        sensorNew[i].sensor_status = true
+        console.log(`Sensor ${i + 1}:`, sensorNew[i]);//อัปเดตค่าเซ็นเซอร์ในเตียง
+        await  sensorStore.saveSensorConfig(sensorNew[i].sensor_id, sensorNew[i]);
+        bedStore.loadBeds();
+      }
+      // โหลดข้อมูลใหม่เพื่อให้ UI อัปเดต
       navigate("/"); // กลับไปหน้าแรก
     } else {
       console.warn("⚠️ Bed or sensors are undefined!");
+      navigate("/");
     }
   };
 
   const handleSelectSensor = (selectedSensor: Sensor) => {
     console.log("✅ Sensor Selected:", selectedSensor);
     setSensor((prevSensors) => [...(prevSensors || []), selectedSensor]);
+    setSensorNew((prevSensors) => [...(prevSensors || []), selectedSensor]);
     setIsDialogOpen(false);
   };
 
