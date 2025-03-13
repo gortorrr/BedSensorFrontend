@@ -11,10 +11,12 @@ interface sensorNotificationsConfigStore {
 export const useSensorNotificationsConfigStore = create<sensorNotificationsConfigStore>((set) => ({
   sensorNotiConfigs: [],
   loadSensorNotificationConfig: async (bed_id: number) => {
+    set({ sensorNotiConfigs: [] }); 
     const res = await sensorNotificationsConfigService.loadSensorNotificationConfig(bed_id);
     console.log("res data ตรงนี้ ที่ store", res);  // ✅ ป้องกัน error 
-    set({ sensorNotiConfigs: Array.isArray(res) ? res : [res] }); // ✅ ป้องกัน error
-
+    if(res){
+      set({ sensorNotiConfigs: Array.isArray(res) ? res : [res] }); // ✅ ป้องกัน error
+    }
   },
   saveSensorNotificationConfig: async (bed_id: number, sensorNotificationConfig: Sensor_Notification_Config) => {
     await sensorNotificationsConfigService.saveSensorNotificationConfig(bed_id, sensorNotificationConfig);
