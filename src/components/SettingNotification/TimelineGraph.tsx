@@ -1,38 +1,83 @@
 import React, { useState } from "react";
-import Plot from "react-plotly.js";
+import { Chart } from "react-google-charts";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { addDays, subDays } from "date-fns";
+import { parseISO, startOfDay, addHours, addDays, subDays } from "date-fns";
 import { th } from "date-fns/locale";
 
 interface TimelineGraphProps {
   data: { time: string; status: string }[];
 }
 
+const statusColors: { [key: string]: string } = {
+  เปลี่ยนแปลงบ่อย: "#80002a",
+  นอนตะแคงซ้าย: "#ffcc66",
+  นอนตะแคงขวา: "#99cc99",
+  ไม่อยู่ที่เตียง: "#e63946",
+  นอนตรง: "#d4e157",
+  กำลังออกจากเตียง: "#ff7043",
+  นั่ง: "#ffb74d",
+  อื่นๆ: "#66cdaa",
+};
+
+const convertToChartData = (
+  data: { time: string; status: string }[],
+  selectedDate: Date
+) => {
+  const startOfSelectedDay = startOfDay(selectedDate);
+  const chartData = [
+    [
+      { type: "string", id: "Time" },
+      { type: "string", id: "Status" },
+      { type: "date", id: "Start" },
+      { type: "date", id: "End" },
+      { role: "style", type: "string" },
+    ],
+  ];
+
+  // จัดกลุ่มข้อมูลตามชั่วโมง
+  for (let i = 0; i < 24; i++) {
+    const hourStart = new Date(addHours(startOfSelectedDay, i)); // ใช้ new Date()
+    const hourEnd = new Date(addHours(hourStart, 1)); // ใช้ new Date()
+
+    // ดึงข้อมูลที่อยู่ในชั่วโมงนี้
+    const statusesInHour = data
+      .map((d) => ({
+        time: new Date(parseISO(d.time)), // แปลง string เป็น Date
+        status: d.status,
+      }))
+      .filter((d) => d.time >= hourStart && d.time < hourEnd);
+
+    // เลือกสถานะที่พบบ่อยที่สุด
+    let mostCommonStatus = "ไม่มีข้อมูล";
+    if (statusesInHour.length > 0) {
+      const statusCounts = statusesInHour.reduce((acc, entry) => {
+        acc[entry.status] = (acc[entry.status] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>);
+
+      mostCommonStatus = Object.keys(statusCounts).reduce((a, b) =>
+        statusCounts[a] > statusCounts[b] ? a : b
+      );
+    }
+
+    // ดึงสีของสถานะ
+    const color = statusColors[mostCommonStatus] || "#ddd";
+
+    // เพิ่มข้อมูลเข้าไป
+    chartData.push(["Timeline", mostCommonStatus, hourStart, hourEnd, color]);
+  }
+
+  return chartData;
+};
+
+const options = {
+  timeline: { showRowLabels: false },
+};
+
 const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
-
-  const statusMapping: { [key: string]: number } = {
-    เปลี่ยนแปลงบ่อย: 1,
-    นอนตะแคงซ้าย: 2,
-    นอนตะแคงขวา: 3,
-    ไม่อยู่ที่เตียง: 4,
-    นอนตรง: 5,
-    กำลังออกจากเตียง: 6,
-    นั่ง: 7,
-    อื่นๆ: 8,
-  };
-
-  const statusColors: { [key: string]: string } = {
-    เปลี่ยนแปลงบ่อย: "#80002a",
-    นอนตะแคงซ้าย: "#ffcc66",
-    นอนตะแคงขวา: "#99cc99",
-    ไม่อยู่ที่เตียง: "#e63946",
-    นอนตรง: "#d4e157",
-    กำลังออกจากเตียง: "#ff7043",
-    นั่ง: "#ffb74d",
-    อื่นๆ: "#66cdaa",
-  };
+  const [selectedDate, setSelectedDate] = useState(new Date(2025, 2, 12));
+  const chartData = convertToChartData(data, selectedDate);
 
   const handleNextDay = () => {
     setSelectedDate((prev) => addDays(prev, 1));
@@ -42,29 +87,23 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
     setSelectedDate((prev) => subDays(prev, 1));
   };
 
-  //   const formattedDate = format(selectedDate, "dd/MM/yyyy", { locale: th });
-
-  const trace = {
-    x: data.map((d) => d.time),
-    y: data.map((d) => statusMapping[d.status]),
-    text: data.map((d) => d.status),
-    type: "scatter",
-    mode: "markers+lines",
-    marker: {
-      color: data.map((d) => statusColors[d.status]),
-      size: 10,
-    },
-    line: { shape: "hv" },
-  };
-
   return (
-    <div>
+    <div
+      style={{
+        backgroundColor: "#e7f0f3",
+        padding: "15px",
+        borderRadius: "10px",
+      }}
+    >
       <div style={{ display: "flex", alignItems: "center", marginBottom: 10 }}>
-        <span style={{ marginRight: 10 }}>วัน / เดือน / ปี</span>
+        <span style={{ marginRight: 10, fontWeight: "bold" }}>
+          วัน / เดือน / ปี
+        </span>
         <DatePicker
           selected={selectedDate}
           onChange={(date) => setSelectedDate(date!)}
           dateFormat="dd/MM/yyyy"
+          locale={th}
           className="custom-date-picker"
         />
         <button
@@ -80,22 +119,21 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
           »
         </button>
       </div>
-      <Plot
-        data={[trace]}
-        layout={{
-          title: "⏳ Timeline ของกิจกรรม",
-          xaxis: { title: "เวลา", type: "category" },
-          yaxis: {
-            title: "สถานะ",
-            tickvals: Object.values(statusMapping),
-            ticktext: Object.keys(statusMapping),
-          },
-          height: 350,
-        }}
-        useResizeHandler
-        style={{ width: "100%" }}
+      <Chart
+        chartType="Timeline"
+        data={chartData}
+        width="100%"
+        height="400px"
+        options={options}
       />
-      <div style={{ display: "flex", flexWrap: "wrap", marginTop: 10 }}>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          marginTop: 10,
+          justifyContent: "center",
+        }}
+      >
         {Object.entries(statusColors).map(([status, color]) => (
           <div
             key={status}
@@ -108,13 +146,16 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
           >
             <div
               style={{
-                width: 12,
-                height: 12,
+                width: 15,
+                height: 15,
                 backgroundColor: color,
+                borderRadius: "50%",
                 marginRight: 5,
               }}
             ></div>
-            <span style={{ fontSize: "14px" }}>{status}</span>
+            <span style={{ fontSize: "14px", fontWeight: "bold" }}>
+              {status}
+            </span>
           </div>
         ))}
       </div>

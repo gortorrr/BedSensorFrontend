@@ -8,14 +8,12 @@ import SensorAndBedInfo from "../components/SettingNotification/SensorAndBedInfo
 import NotificationTabs from "../components/SettingNotification/NotificationTabs";
 import NotificationTable from "../components/SettingNotification/NotificationTable";
 import TimelineGraph from "../components/SettingNotification/TimelineGraph";
-import { useSensorNotificationsConfigStore } from "../store/sensorNotificationsConfigStore";
 
 const SettingNoti: React.FC = () => {
   const { bed_id } = useParams<{ bed_id?: string }>();
-  const bed_id_num: number = Number(bed_id);
   const bedStore = useBedStore();
   const navigate = useNavigate();
-  const useSenNotiCon = useSensorNotificationsConfigStore()
+
   const [activeTab, setActiveTab] = useState("settings");
   const [bed, setBed] = useState<Bed | undefined>();
   const [sensorList, setSensorList] = useState<Sensor[] | undefined>();
@@ -23,24 +21,13 @@ const SettingNoti: React.FC = () => {
   const [sensorNotificationConfigs, setSensorNotificationConfigs] = useState<
     Sensor_Notification_Config[]
   >([]);
+
   const timelineData = [
-    { time: "00:00", status: "เปลี่ยนแปลงบ่อย" },
-    { time: "02:00", status: "นอนตะแคงซ้าย" },
-    { time: "04:00", status: "นอนตะแคงขวา" },
-    { time: "06:00", status: "ไม่อยู่ที่เตียง" },
-    { time: "08:00", status: "นอนตรง" },
-    { time: "10:00", status: "กำลังออกจากเตียง" },
-    { time: "12:00", status: "นั่ง" },
-    { time: "14:00", status: "อื่นๆ" },
-    { time: "16:00", status: "ไม่อยู่ที่เตียง" },
-    { time: "18:00", status: "เปลี่ยนแปลงบ่อย" },
-    { time: "20:00", status: "กำลังออกจากเตียง" },
-    { time: "22:00", status: "นอนตะแคงขวา" },
+    { time: "2025-03-12 08:47:48.181523", status: "ไม่อยู่บนเตียง" },
+    { time: "2025-03-12 08:47:48.181523", status: "ไม่อยู่บนเตียง" },
   ];
 
   useEffect(() => {
-    useSenNotiCon.loadSensorNotificationConfig(bed_id_num)
-    console.log(useSenNotiCon.sensorNotiConfigs)
     if (bed_id) {
       const bedIdNumber = parseInt(bed_id);
       const foundBed = bedStore.beds.find(
@@ -71,6 +58,8 @@ const SettingNoti: React.FC = () => {
     setSelectedSensor(newSensor);
     setSensorNotificationConfigs(newSensor?.sensor_notification_config || []);
   };
+  console.log("asdsd " + JSON.stringify(selectedSensor?.sensor_name, null, 2));
+  // console.log("asdsd " + JSON.stringify(sensorList, null, 2));
 
   const handleCancel = () => {
     navigate("/");
@@ -94,17 +83,72 @@ const SettingNoti: React.FC = () => {
       <NotificationTabs onTabChange={setActiveTab} />
 
       {/* Table */}
-      {activeTab === "settings" && (
-        <NotificationTable
-          sensorNotificationConfigs={useSenNotiCon.sensorNotiConfigs}
-        />
+      {activeTab === "settings" && selectedSensor && (
+        <>
+          {selectedSensor.sensor_name === "Bed Sensor" && (
+            <NotificationTable
+              sensorNotificationConfigs={sensorNotificationConfigs}
+            />
+          )}
+
+          {selectedSensor.sensor_name === "Heart Rate" && (
+            <p className="text-red-500 font-semibold">แสดงข้อมูล Heart Rate</p>
+          )}
+
+          {selectedSensor.sensor_name === "SpO2 Sensor" && (
+            <p className="text-green-500 font-semibold">
+              แสดงข้อมูล SpO2 Sensor
+            </p>
+          )}
+
+          {selectedSensor.sensor_name === "Respiration" && (
+            <p className="text-blue-500 font-semibold">
+              แสดงข้อมูล Respiration
+            </p>
+          )}
+        </>
       )}
 
-      {activeTab === "timeline" && <TimelineGraph data={timelineData} />}
+      {activeTab === "timeline" && selectedSensor && (
+        <>
+          {selectedSensor.sensor_name === "Bed Sensor" && (
+            <TimelineGraph data={timelineData} />
+          )}
+          {selectedSensor.sensor_name === "Heart Rate" && (
+            <p className="text-red-500 font-semibold">ไทม์ไลน์ Heart Rate</p>
+          )}
+          {selectedSensor.sensor_name === "SpO2 Sensor" && (
+            <p className="text-green-500 font-semibold">ไทม์ไลน์ SpO2 Sensor</p>
+          )}
+          {selectedSensor.sensor_name === "Respiration" && (
+            <p className="text-blue-500 font-semibold">ไทม์ไลน์ Respiration</p>
+          )}
+        </>
+      )}
 
-      {activeTab === "history" && (
-        // มาทำหน้าได้เลย
-        <div className="bg-white rounded-lg p-4 shadow-md"></div>
+      {activeTab === "history" && selectedSensor && (
+        <>
+          {selectedSensor.sensor_name === "Bed Sensor" && (
+            <div className="bg-white rounded-lg p-4 shadow-md">
+              ประวัติของ Bed Sensor
+            </div>
+          )}
+          {selectedSensor.sensor_name === "Heart Rate" && (
+            <div className="bg-white rounded-lg p-4 shadow-md text-red-500">
+              ประวัติ Heart Rate
+            </div>
+          )}
+          {selectedSensor.sensor_name === "SpO2 Sensor" && (
+            <div className="bg-white rounded-lg p-4 shadow-md text-green-500">
+              ประวัติ SpO2 Sensor
+            </div>
+          )}
+          {selectedSensor.sensor_name === "Respiration" && (
+            <div className="bg-white rounded-lg p-4 shadow-md text-blue-500">
+              ประวัติ Respiration
+            </div>
+          )}
+        </>
       )}
 
       {/* Footer */}
