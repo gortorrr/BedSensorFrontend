@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Bell, FileClock } from "lucide-react";
-import EmergencyAlert from "../components/Home/emergencyAlert";
+import { useNotificationStore } from "../store/notificationStore";
 
 interface User {
   name: string;
@@ -14,7 +14,7 @@ interface HeaderProps {
 
 export default function Header({ isOnline }: HeaderProps) {
   const [time, setTime] = useState(new Date());
-  const [showNotifications, setShowNotifications] = useState(false);
+  const notificationStore = useNotificationStore(); // ใช้ store
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
@@ -64,9 +64,11 @@ export default function Header({ isOnline }: HeaderProps) {
 
           {/* ไอคอนแจ้งเตือน */}
           <button
-            onClick={() => setShowNotifications(!showNotifications)}
             className="cursor-pointer hover:scale-125 transition-transform transform hover:shadow-lg hover:bg-[#5E8892] hover:text-white p-2 rounded-full"
             title="Notifications"
+            onClick={() =>
+              notificationStore.setShowAlert(!notificationStore.showAlert)
+            } // เพิ่มการใช้ฟังก์ชันใน onClick
           >
             <Bell className="w-6 h-6 text-yellow-500 fill-yellow-500 transition-all" />
           </button>
@@ -79,15 +81,6 @@ export default function Header({ isOnline }: HeaderProps) {
           </button>
         </div>
       </header>
-
-      {/* Emergency Alert Sidebar */}
-      <div
-        className={`fixed top-0 right-0 h-screen w-[400px] bg-white shadow-lg border-l border-gray-200 z-50 transition-transform ${
-          showNotifications ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <EmergencyAlert onClose={() => setShowNotifications(false)} />
-      </div>
     </>
   );
 }

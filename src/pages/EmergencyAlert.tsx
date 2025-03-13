@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { Notification } from "../../types/notification";
+import { Notification } from "../types/notification";
 
 interface EmergencyAlertProps {
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
@@ -48,11 +48,14 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
   };
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col z-20">
       {/* Header ของ Sidebar */}
-      <div className="flex justify-between items-center bg-[#2E5361] text-white p-4 shadow-md">
+      <div className="flex justify-between items-center h-20 bg-[#2E5361] text-white p-4 shadow-md">
         <h3 className="text-lg font-semibold">แจ้งเตือนฉุกเฉิน 🚨</h3>
-        <button onClick={onClose} className="text-white text-xl hover:text-gray-300">
+        <button
+          onClick={onClose}
+          className="text-white text-xl hover:text-gray-300"
+        >
           ✖
         </button>
       </div>
@@ -63,9 +66,16 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
       ) : (
         <div className="p-4 space-y-4 overflow-auto flex-1">
           {notifications.map((noti) => (
-            <div key={noti.notification_id} className="p-4 bg-gray-100 rounded-lg shadow">
-              <p className="font-semibold text-[#2E5361]">{noti.notification_name}</p>
-              <p className="text-sm text-gray-600">ประเภท: {noti.notification_category}</p>
+            <div
+              key={noti.notification_id}
+              className="p-4 bg-gray-100 rounded-lg shadow"
+            >
+              <p className="font-semibold text-[#2E5361]">
+                {noti.notification_name}
+              </p>
+              <p className="text-sm text-gray-600">
+                ประเภท: {noti.notification_category}
+              </p>
 
               {/* แสดงสถานะ */}
               <p
@@ -79,7 +89,10 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
                     : "text-gray-400"
                 }`}
               >
-                สถานะ: {noti.notification_successed ? "เสร็จสิ้น" : noti.notification_accepted}
+                สถานะ:{" "}
+                {noti.notification_successed
+                  ? "เสร็จสิ้น"
+                  : noti.notification_accepted}
               </p>
 
               {/* ปุ่มแสดงเป็นข้อความแทน */}
@@ -87,7 +100,9 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
                 {/* แสดงปุ่ม "รับทราบ" ตลอดเวลา */}
                 {!noti.notification_successed && (
                   <button
-                    onClick={() => updateStatus(noti.notification_id, "กำลังดำเนินการ")}
+                    onClick={() =>
+                      updateStatus(noti.notification_id, "กำลังดำเนินการ")
+                    }
                     className="text-blue-600 hover:underline focus:outline-none cursor-pointer"
                   >
                     รับทราบ
@@ -97,7 +112,9 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
                 {/* แสดงปุ่ม "เสร็จสิ้น" ตลอดเวลา */}
                 {!noti.notification_successed && (
                   <button
-                    onClick={() => updateStatus(noti.notification_id, undefined, true)}
+                    onClick={() =>
+                      updateStatus(noti.notification_id, undefined, true)
+                    }
                     className="text-green-600 hover:underline focus:outline-none cursor-pointer"
                   >
                     เสร็จสิ้น
