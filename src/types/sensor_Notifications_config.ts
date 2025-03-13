@@ -8,7 +8,7 @@ export interface Sensor_Notification_Config {
     sensor_notification_config_repeatnoti: number;
     sensor_notification_config_rangetime: number;
     sensor_notification_config_signal: string;
-    notification: Notification[];
+    notification?: Notification[];
     sensor_id:number;
-    sensor:Sensor[];
+    sensor:Sensor;
 }
