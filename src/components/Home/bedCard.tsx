@@ -13,12 +13,12 @@ const BedCard: React.FC<Props> = ({ bed }) => {
   const navigate = useNavigate();
 
   const goToSettingNoti = () => {
-    console.log("Navigating to SettingNoti with bed_id:", bed.bed_id);
+    // console.log("Navigating to SettingNoti with bed_id:", bed.bed_id);
     navigate(`/setting-noti/${bed.bed_id}`);
   };
 
   const configBedById = () => {
-    console.log("Navigating to bed config with bed_id:", bed.bed_id); // Log ค่าก่อน navigate
+    // console.log("Navigating to bed config with bed_id:", bed.bed_id); // Log ค่าก่อน navigate
     navigate(`/bed-config/${bed.bed_id}`); // ใช้ backticks และ template literals
   };
   const [showSensorSet, setShowSensorSet] = useState<Sensor[]>([]);
@@ -69,7 +69,9 @@ const BedCard: React.FC<Props> = ({ bed }) => {
             <strong></strong> {bed.room.room_name} {bed.bed_name}
           </p>
           <div className="flex gap-2 cursor-pointer">
-            <span title="settingNoti" onClick={goToSettingNoti}>⋮</span>
+            <span title="settingNoti" onClick={goToSettingNoti}>
+              ⋮
+            </span>
             <span title="config" onClick={configBedById}>
               ⚙️
             </span>

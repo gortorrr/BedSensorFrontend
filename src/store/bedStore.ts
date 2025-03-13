@@ -13,6 +13,7 @@ interface BedStore {
   ) => Promise<void>;
   saveRemoveShowSensorId: (bed_id: number, sensor_id: number) => Promise<void>;
   saveBedConfig: (bed_id: number, bed: Bed) => Promise<void>;
+  removePatientFromBed: (bed_id: number, patient_id: number) => Promise<void>;
 }
 
 export const useBedStore = create<BedStore>((set) => ({
@@ -24,8 +25,8 @@ export const useBedStore = create<BedStore>((set) => ({
     set({ loading: true, error: null }); // เริ่มต้นให้สถานะ loading เป็น true และ error เป็น null
     try {
       const response = await bedService.loadBedActivatedAll(); // เรียกใช้บริการเพื่อดึงข้อมูลเตียงทั้งหมด
-      console.log("get ได้แล้ว");
-      console.log("res data ตรงนี้ ที่ store", response); // ตรวจสอบข้อมูลที่ได้รับ
+      // console.log("get ได้แล้ว");
+      // console.log("res data ตรงนี้ ที่ store", response); // ตรวจสอบข้อมูลที่ได้รับ
 
       // เก็บข้อมูลเตียงทั้งหมดโดยไม่กรอง
       set({ beds: response, loading: false }); // อัพเดตข้อมูลเตียงทั้งหมดและตั้ง loading เป็น false
@@ -46,7 +47,11 @@ export const useBedStore = create<BedStore>((set) => ({
   saveBedConfig: async (bed_id: number, bed: Bed) => {
     bedService.saveBedConfig(bed_id, bed);
   },
-})); 
+
+  removePatientFromBed: async (bed_id: number, patient_id: number) => {
+    bedService.removePatientFromBed(bed_id, patient_id);
+  },
+}));
 // ฟังก์ชั่นเก่าอยู่ตรงนี้
 // loadBeds: async () => {
 //   const beds = await bedService.fetchBeds(); // ดึงข้อมูลจาก bedService

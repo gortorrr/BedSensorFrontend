@@ -69,4 +69,16 @@ export const bedService = {
       throw error; // หากเกิดข้อผิดพลาดให้โยนข้อผิดพลาดออกไป
     }
   },
+
+  async removePatientFromBed(bed_id: number, patient_id: number): Promise<Bed> {
+    try {
+      const response = await http.put(
+        `/beds/${bed_id}/remove-patient/${patient_id}`
+      );
+      return response.data; // นำข้อมูลที่ได้จาก response มาใช้
+    } catch (error) {
+      console.error("Error save bed config:", error);
+      throw error; // หากเกิดข้อผิดพลาดให้โยนข้อผิดพลาดออกไป
+    }
+  },
 };
