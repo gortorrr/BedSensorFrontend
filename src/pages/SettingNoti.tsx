@@ -8,12 +8,14 @@ import SensorAndBedInfo from "../components/SettingNotification/SensorAndBedInfo
 import NotificationTabs from "../components/SettingNotification/NotificationTabs";
 import NotificationTable from "../components/SettingNotification/NotificationTable";
 import TimelineGraph from "../components/SettingNotification/TimelineGraph";
+import { useSensorNotificationsConfigStore } from "../store/sensorNotificationsConfigStore";
 
 const SettingNoti: React.FC = () => {
   const { bed_id } = useParams<{ bed_id?: string }>();
+  const bed_id_num: number = Number(bed_id);
   const bedStore = useBedStore();
   const navigate = useNavigate();
-
+  const useSenNotiCon = useSensorNotificationsConfigStore()
   const [activeTab, setActiveTab] = useState("settings");
   const [bed, setBed] = useState<Bed | undefined>();
   const [sensorList, setSensorList] = useState<Sensor[] | undefined>();
@@ -37,6 +39,8 @@ const SettingNoti: React.FC = () => {
   ];
 
   useEffect(() => {
+    useSenNotiCon.loadSensorNotificationConfig(bed_id_num)
+    console.log(useSenNotiCon.sensorNotiConfigs)
     if (bed_id) {
       const bedIdNumber = parseInt(bed_id);
       const foundBed = bedStore.beds.find(
