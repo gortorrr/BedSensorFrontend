@@ -68,7 +68,7 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
           {notifications.map((noti) => (
             <div
               key={noti.notification_id}
-              className="p-4 bg-gray-100 rounded-lg shadow"
+              className="p-4 bg-slate-100 rounded-lg shadow"
             >
               <p className="font-semibold text-[#2E5361]">
                 {noti.notification_name}

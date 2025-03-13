@@ -73,7 +73,7 @@ const Navbar: React.FC<NavbarProps> = ({ setUser, setIsOnline, user }) => {
     <div
       className={`flex flex-col bg-[#2E5361] min-h-screen ${
         open ? "w-72" : "w-16"
-      } duration-500 text-white px-4 sticky top-0 z-10 h-16`}
+      } duration-500 text-white px-4 sticky top-0 z-20 h-16`}
     >
       <div className="py-4 px-1 flex justify-between items-center">
         {/* User Profile */}
