@@ -96,7 +96,7 @@ const SettingNoti: React.FC = () => {
       {/* Table */}
       {activeTab === "settings" && (
         <NotificationTable
-          sensorNotificationConfigs={sensorNotificationConfigs}
+          sensorNotificationConfigs={useSenNotiCon.sensorNotiConfigs}
         />
       )}
 
