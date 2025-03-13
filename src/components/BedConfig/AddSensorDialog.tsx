@@ -84,7 +84,7 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
         <div className="overflow-auto max-h-[50vh]">
           <table className="w-full border-collapse border border-gray-300 text-lg">
             <thead>
-              <tr className="bg-[#95BAC3] text-left">
+              <tr className="bg-[#95BAC3] text-center">
                 <th className="border p-3">ลำดับ</th>
                 <th className="border p-3">Mac Sensor I</th>
                 <th className="border p-3">Mac Sensor II</th>
@@ -101,7 +101,7 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
                   <td className="border p-3">{sensor.sensor_type}</td>
                   <td className="border p-3 text-center">
                     <button
-                      className="px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892]"
+                      className="px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] cursor-pointer transition-transform duration-300 hover:scale-110"
                       onClick={() => onSelectSensor(sensor)}
                     >
                       เลือก

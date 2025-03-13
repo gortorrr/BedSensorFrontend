@@ -60,7 +60,7 @@ const PatientWindow: React.FC<Props> = ({
         </div>{" "}
         <div className="flex justify-center items-center p-5">
           <button
-            className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] mt-8"
+            className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] mt-8 transition-transform duration-300 hover:scale-110"
             onClick={openDialog}
           >
             <PlusCircle size={24} />
