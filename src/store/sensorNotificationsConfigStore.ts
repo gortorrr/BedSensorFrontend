@@ -7,7 +7,7 @@ interface sensorNotificationsConfigStore {
   saveSensorNotificationConfig: (bed_id: number,sensorNotificationConfig:Sensor_Notification_Config) => Promise<void>;
 }
 
-export const useSensorStore = create<sensorNotificationsConfigStore>(() => ({
+export const useSensorNotificationsConfigStore = create<sensorNotificationsConfigStore>(() => ({
   loadSensorNotificationConfig: async (bed_id: number) => {
     const res = await sensorNotificationsConfigService.loadSensorNotificationConfig(bed_id);
     return res as Sensor_Notification_Config;
