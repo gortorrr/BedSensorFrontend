@@ -11,5 +11,5 @@ export interface Sensor {
   history_value_sensor: History_Value_Sensor[];
   sensor_unit?: string;
   sensor_name?: string;
-  sensor_notification_config? : Sensor_Notification_Config[];
+  sensor_notification_config? : Sensor_Notification_Config[] | null | undefined;
 }
