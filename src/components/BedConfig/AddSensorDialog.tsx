@@ -60,9 +60,9 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
   // ];
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-40 backdrop-blur-sm">
-      <div className="bg-[#E5E9EC] p-6 rounded-lg shadow-lg w-[800px] max-h-[80vh] overflow-auto">
-        <h2 className="text-2xl font-semibold mb-4 ">เพิ่มเซ็นเซอร์</h2>
+    <div className="fixed inset-0 flex justify-center items-center backdrop-blur-sm bg-transparent z-40">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-[800px] max-h-[80vh] overflow-auto ">
+        <h2 className="text-2xl font-semibold mb-4">เพิ่มเซ็นเซอร์</h2>
 
         <div className="flex gap-4 mb-4">
           <input
@@ -84,7 +84,7 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
         <div className="overflow-auto max-h-[50vh]">
           <table className="w-full border-collapse border border-gray-300 text-lg">
             <thead>
-              <tr className="bg-gray-300 text-left">
+              <tr className="bg-[#95BAC3] text-left">
                 <th className="border p-3">ลำดับ</th>
                 <th className="border p-3">Mac Sensor I</th>
                 <th className="border p-3">Mac Sensor II</th>

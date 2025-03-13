@@ -130,7 +130,7 @@ const BedConfig: React.FC = () => {
           โรงพยาบาลมหาวิทยาลัยบูรพา
         </h2>
         <button
-          className="flex items-center gap-2 px-4 py-2 bg-[#5E8892] text-white rounded-xl hover:bg-[#95BAC3]"
+          className="flex items-center gap-2 px-4 py-2 bg-[#5E8892] text-white rounded-xl hover:bg-[#95BAC3] transition-transform duration-300 hover:scale-110"
           onClick={handleOpenDialog}
         >
           <Icon path={mdiPlus} size={1} />
