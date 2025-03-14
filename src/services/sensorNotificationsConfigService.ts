@@ -32,6 +32,7 @@ export const sensorNotificationsConfigService = {
       throw error; // ❗ โยน error ออกไปให้ caller handle ต่อ
     }
   },
+
   async saveSensorNotificationConfig(
     sensor_id: number,
     sensorNotificationConfig: Sensor_Notification_Config
