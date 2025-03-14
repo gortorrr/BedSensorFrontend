@@ -7,7 +7,7 @@ interface EmergencyAlertProps {
 
 export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
-
+  
   useEffect(() => {
     setNotifications([
       {
@@ -48,13 +48,14 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
   };
 
   return (
-    <div className="h-full flex flex-col z-20">
+    <div className="h-full flex flex-col z-20 border-2 border-[#2E5361] rounded-3xl">
       {/* Header ของ Sidebar */}
-      <div className="flex justify-between items-center h-20 bg-[#2E5361] text-white p-4 shadow-md">
-        <h3 className="text-lg font-semibold">แจ้งเตือนฉุกเฉิน 🚨</h3>
+      <div className="flex justify-between items-center h-25 text-[#2E5361] p-4  rounded-3xl">
+        <h3 className="text-3xl font-semibold flex-grow text-center" style={{ textShadow: "2px 2px 5px rgba(0,0,0,0.3)" }}>แจ้งเตือนฉุกเฉิน</h3>
+        <img src="src\assets\alarm.png" alt="alarm" className="mr-5 w-8 h-8" />
         <button
           onClick={onClose}
-          className="text-white text-xl hover:text-gray-300"
+          className="text-[#2E5361] text-xl hover:text-gray-300 absolute top-3 right-3"
         >
           ✖
         </button>
@@ -68,18 +69,22 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
           {notifications.map((noti) => (
             <div
               key={noti.notification_id}
-              className="p-4 bg-slate-100 rounded-lg shadow"
+              className="flex items-center p-4 bg-slate-100 rounded-lg shadow"
             >
+              {/* แถบสีแนวตั้ง */}
+              <div className="h-25 w-2 bg-[#FF0000] mr-4"></div>
+
+              <div className="flex-1 justify-end">
               <p className="font-semibold text-[#2E5361]">
                 {noti.notification_name}
               </p>
-              <p className="text-sm text-gray-600">
+              <p className=" text-gray-600">
                 ประเภท: {noti.notification_category}
               </p>
 
               {/* แสดงสถานะ */}
               <p
-                className={`text-sm font-semibold ${
+                className={`font-semibold ${
                   noti.notification_successed
                     ? "text-gray-400"
                     : noti.notification_accepted === "รอการตอบรับ"
@@ -103,7 +108,7 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
                     onClick={() =>
                       updateStatus(noti.notification_id, "กำลังดำเนินการ")
                     }
-                    className="text-blue-600 hover:underline focus:outline-none cursor-pointer"
+                    className="text-[#007FCF] font-semibold hover:text-[#7cb1d0] cursor-pointer "
                   >
                     รับทราบ
                   </button>
@@ -115,11 +120,12 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
                     onClick={() =>
                       updateStatus(noti.notification_id, undefined, true)
                     }
-                    className="text-green-600 hover:underline focus:outline-none cursor-pointer"
+                    className="text-[#22c265] font-semibold hover:text-[#7bdebf] animate-jump1 cursor-pointer"
                   >
                     เสร็จสิ้น
                   </button>
                 )}
+              </div>
               </div>
             </div>
           ))}
