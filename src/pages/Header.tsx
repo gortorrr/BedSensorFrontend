@@ -33,7 +33,7 @@ export default function Header({ isOnline }: HeaderProps) {
   return (
     <>
       {/* Header */}
-      <header className="sticky top-0 z-20 bg-[#2E5361] text-white flex items-center justify-between px-6 py-5 shadow-md">
+      <header className="sticky top-0 z-20 bg-[#2E5361] text-white flex items-center justify-between px-6 py-5 shadow-md ">
         <div className="flex items-center space-x-3">
           {/* เปลี่ยนสถานะ Online / Offline */}
           <div

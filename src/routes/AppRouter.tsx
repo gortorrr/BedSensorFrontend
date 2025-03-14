@@ -1,26 +1,34 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "../pages/Home.tsx";
 import BedConfig from "../pages/BedConfig.tsx";
 import SettingNoti from "../pages/SettingNoti.tsx";
 
-import EmergencyAlert from "../pages/emergencyAlert.tsx";
+import EmergencyAlert from "../pages/EmergencyAlert.tsx";
 import { useNotificationStore } from "../store/notificationStore.ts"; // Import ตัวแจ้งเตือนฉุกเฉิน
 
 const AppRouter: React.FC = () => {
   const { showAlert, setShowAlert } = useNotificationStore();
+  const location = useLocation();
+  const isHome = location.pathname === "/";
 
   return (
-    <div className="overflow-auto flex bg-white">
+    <div className={`bg-white ${isHome ? "overflow-auto flex" : ""}`}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/bed-config/:bed_id" element={<BedConfig />} />
         <Route path="/setting-noti/:bed_id" element={<SettingNoti />} />
       </Routes>
 
-      {/* Emergency Alert - แสดงเฉพาะเมื่อ showAlert เป็น true */}
+      {/* Emergency Alert - ปรับการแสดงผลตาม path */}
       {showAlert && (
-        <div className="sticky right-0 w-[88%] h-full bg-white z-20">
+        <div
+          className={`bg-white z-20 ${
+            isHome
+              ? "sticky right-0 w-[88%] h-full"
+              : "absolute right-0 w-90 h-full  top-20 z-20"
+          }`}
+        >
           <EmergencyAlert onClose={() => setShowAlert(false)} />
         </div>
       )}
