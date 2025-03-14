@@ -1,140 +1,119 @@
 import React, { useState } from "react";
-import { Chart } from "react-google-charts";
+import Plot from "react-plotly.js";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { parseISO, startOfDay, addHours, addDays, subDays } from "date-fns";
-import { th } from "date-fns/locale";
+import { format, addDays, subDays } from "date-fns";
 
 interface TimelineGraphProps {
-  data: { time: string; status: string }[];
+  data: { time: string; position: string }[];
 }
-
-const statusColors: { [key: string]: string } = {
-  เปลี่ยนแปลงบ่อย: "#80002a",
-  นอนตะแคงซ้าย: "#ffcc66",
-  นอนตะแคงขวา: "#99cc99",
-  ไม่อยู่ที่เตียง: "#e63946",
-  นอนตรง: "#d4e157",
-  กำลังออกจากเตียง: "#ff7043",
-  นั่ง: "#ffb74d",
-  อื่นๆ: "#66cdaa",
-};
-
-const convertToChartData = (
-  data: { time: string; status: string }[],
-  selectedDate: Date
-) => {
-  const startOfSelectedDay = startOfDay(selectedDate);
-  const chartData = [
-    [
-      { type: "string", id: "Time" },
-      { type: "string", id: "Status" },
-      { type: "date", id: "Start" },
-      { type: "date", id: "End" },
-      { role: "style", type: "string" },
-    ],
-  ];
-
-  // จัดกลุ่มข้อมูลตามชั่วโมง
-  for (let i = 0; i < 24; i++) {
-    const hourStart = new Date(addHours(startOfSelectedDay, i)); // ใช้ new Date()
-    const hourEnd = new Date(addHours(hourStart, 1)); // ใช้ new Date()
-
-    // ดึงข้อมูลที่อยู่ในชั่วโมงนี้
-    const statusesInHour = data
-      .map((d) => ({
-        time: new Date(parseISO(d.time)), // แปลง string เป็น Date
-        status: d.status,
-      }))
-      .filter((d) => d.time >= hourStart && d.time < hourEnd);
-
-    // เลือกสถานะที่พบบ่อยที่สุด
-    let mostCommonStatus = "ไม่มีข้อมูล";
-    if (statusesInHour.length > 0) {
-      const statusCounts = statusesInHour.reduce((acc, entry) => {
-        acc[entry.status] = (acc[entry.status] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>);
-
-      mostCommonStatus = Object.keys(statusCounts).reduce((a, b) =>
-        statusCounts[a] > statusCounts[b] ? a : b
-      );
-    }
-
-    // ดึงสีของสถานะ
-    const color = statusColors[mostCommonStatus] || "#ddd";
-
-    // เพิ่มข้อมูลเข้าไป
-    chartData.push(["Timeline", mostCommonStatus, hourStart, hourEnd, color]);
-  }
-
-  return chartData;
-};
-
-const options = {
-  timeline: { showRowLabels: false },
-};
 
 const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
   const [selectedDate, setSelectedDate] = useState(new Date(2025, 2, 12));
-  const chartData = convertToChartData(data, selectedDate);
 
-  const handleNextDay = () => {
-    setSelectedDate((prev) => addDays(prev, 1));
+  const statusMapping: { [key: string]: number } = {
+    ไม่อยู่ที่เตียง: 1,
+    นั่ง: 2,
+    นอนตะแคงซ้าย: 3,
+    นอนตะแคงขวา: 4,
+    นอนตรง: 5,
   };
 
-  const handlePreviousDay = () => {
-    setSelectedDate((prev) => subDays(prev, 1));
+  const statusColors: { [key: string]: string } = {
+    ไม่อยู่ที่เตียง: "#80002a",
+    นั่ง: "#ffcc00",
+    นอนตะแคงซ้าย: "#99cc99",
+    นอนตะแคงขวา: "#e63946",
+    นอนตรง: "#d4e157",
   };
+
+  // แปลงวันที่ที่เลือกให้เป็น format "yyyy-MM-dd"
+  const formattedSelectedDate = format(selectedDate, "yyyy-MM-dd");
+
+  // กรองข้อมูลเฉพาะวันที่เลือก
+  const filteredData = data
+    .filter((d) => d.time.startsWith(formattedSelectedDate))
+    .sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
+
+  // ✅ แยกข้อมูลเป็น trace ตามแต่ละสถานะ และปรับโครงสร้างให้ถูกต้อง
+  const traces: Plotly.Data[] = Object.keys(statusMapping).map((status) => {
+    const statusData = filteredData.filter((d) => d.position === status);
+
+    return {
+      x: statusData.map((d) => d.time),
+      y: statusData.map((d) => statusMapping[d.position]),
+      text: statusData.map(
+        (d) =>
+          `🟢 สถานะ: ${d.position}<br>🕒 เวลา: ${format(
+            new Date(d.time),
+            "HH:mm"
+          )}`
+      ),
+      type: "scatter" as const, // ✅ แก้ไขให้ถูกต้อง
+      mode: "lines+markers",
+      name: status,
+      marker: {
+        color: statusColors[status],
+        size: 8,
+      },
+      line: { shape: "hv" },
+      hoverinfo: "x+y+text", // ✅ แก้ให้โชว์ข้อมูลให้ครบ
+    };
+  });
 
   return (
-    <div
-      style={{
-        backgroundColor: "#e7f0f3",
-        padding: "15px",
-        borderRadius: "10px",
-      }}
-    >
+    <div>
+      {/* Date Picker */}
       <div style={{ display: "flex", alignItems: "center", marginBottom: 10 }}>
-        <span style={{ marginRight: 10, fontWeight: "bold" }}>
-          วัน / เดือน / ปี
-        </span>
+        <span style={{ marginRight: 10 }}>วัน / เดือน / ปี</span>
         <DatePicker
           selected={selectedDate}
           onChange={(date) => setSelectedDate(date!)}
           dateFormat="dd/MM/yyyy"
-          locale={th}
           className="custom-date-picker"
         />
         <button
-          onClick={handlePreviousDay}
+          onClick={() => setSelectedDate(subDays(selectedDate, 1))}
           style={{ marginLeft: 10, cursor: "pointer" }}
         >
           «
         </button>
         <button
-          onClick={handleNextDay}
+          onClick={() => setSelectedDate(addDays(selectedDate, 1))}
           style={{ marginLeft: 5, cursor: "pointer" }}
         >
           »
         </button>
       </div>
-      <Chart
-        chartType="Timeline"
-        data={chartData}
-        width="100%"
-        height="400px"
-        options={options}
-      />
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          marginTop: 10,
-          justifyContent: "center",
+
+      {/* กราฟ */}
+      <Plot
+        data={traces}
+        layout={{
+          title: "⏳ Timeline ของกิจกรรม",
+          xaxis: {
+            title: "เวลา",
+            type: "date",
+            range: [
+              `${formattedSelectedDate}T00:00:00`,
+              `${formattedSelectedDate}T23:59:59`,
+            ], // ✅ แสดงตั้งแต่ 00:00 - 24:00
+          },
+          yaxis: {
+            title: "สถานะ",
+            tickvals: Object.values(statusMapping),
+            ticktext: Object.keys(statusMapping),
+          },
+          legend: { title: { text: "สถานะ" } }, // ✅ Legend แยกแต่ละสถานะ
+          height: 350,
         }}
-      >
-        {Object.entries(statusColors).map(([status, color]) => (
+        useResizeHandler
+        style={{ width: "100%" }}
+      />
+
+      {/* คำอธิบายสี */}
+      <div style={{ display: "flex", flexWrap: "wrap", marginTop: 10 }}>
+        {Object.entries(statusColors).map(([status]) => (
           <div
             key={status}
             style={{
@@ -143,20 +122,7 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
               marginRight: 15,
               marginBottom: 5,
             }}
-          >
-            <div
-              style={{
-                width: 15,
-                height: 15,
-                backgroundColor: color,
-                borderRadius: "50%",
-                marginRight: 5,
-              }}
-            ></div>
-            <span style={{ fontSize: "14px", fontWeight: "bold" }}>
-              {status}
-            </span>
-          </div>
+          ></div>
         ))}
       </div>
     </div>
