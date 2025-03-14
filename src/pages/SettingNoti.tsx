@@ -7,7 +7,8 @@ import { Sensor_Notification_Config } from "../types/sensor_Notifications_config
 import SensorAndBedInfo from "../components/SettingNotification/SensorAndBedInfo";
 import NotificationTabs from "../components/SettingNotification/NotificationTabs";
 import NotificationTable from "../components/SettingNotification/NotificationTable";
-import TimelineGraph from "../components/SettingNotification/TimelineGraph";
+import TimelineGraph from "../components/SettingNotification/BedSensorGraph.tsx";
+import SensorGraph from "../components/SettingNotification/SensorGraph.tsx";
 import { useSensorNotificationsConfigStore } from "../store/sensorNotificationsConfigStore";
 import HistoryNotificationTable from "../components/SettingNotification/HistoryNotificationTable.tsx";
 import { sensorNotificationsConfigService } from "../services/sensorNotificationsConfigService.ts";
@@ -35,8 +36,58 @@ const SettingNoti: React.FC = () => {
   };
 
   const timelineData = [
-    { time: "2025-03-12 08:47:48.181523", status: "ไม่อยู่บนเตียง" },
-    { time: "2025-03-12 08:47:48.181523", status: "ไม่อยู่บนเตียง" },
+    { time: "2025-03-12 00:53:41.923954", position: "ไม่อยู่ที่เตียง" },
+    { time: "2025-03-12 10:53:46.923954", position: "ไม่อยู่ที่เตียง" },
+    { time: "2025-03-12 10:53:51.923954", position: "นั่ง" },
+    { time: "2025-03-12 13:53:56.923954", position: "นั่ง" },
+    { time: "2025-03-12 13:54:01.923954", position: "นอนตรง" },
+    { time: "2025-03-12 14:54:06.923954", position: "นอนตรง" },
+    { time: "2025-03-12 15:53:46.923954", position: "นอนตะแคงซ้าย" },
+    { time: "2025-03-12 18:53:46.923954", position: "นอนตะแคงซ้าย" },
+    { time: "2025-03-12 18:54:41.923954", position: "นอนตะแคงขวา" },
+    { time: "2025-03-12 20:54:46.923954", position: "นอนตะแคงขวา" },
+  ];
+
+  const mockHeartRateData = [
+    { time: "2025-03-12 00:00:00", value: 70 },
+    { time: "2025-03-12 01:00:00", value: 75 },
+    { time: "2025-03-12 01:30:05", value: 60 },
+    { time: "2025-03-12 01:30:10", value: 60 },
+    { time: "2025-03-12 01:30:15", value: 60 },
+    { time: "2025-03-12 02:00:00", value: 80 },
+    { time: "2025-03-12 03:00:00", value: 65 },
+    { time: "2025-03-12 04:00:00", value: 72 },
+    { time: "2025-03-12 05:00:00", value: 78 },
+    { time: "2025-03-12 06:00:00", value: 68 },
+    { time: "2025-03-12 07:00:00", value: 82 },
+    { time: "2025-03-12 08:00:00", value: 76 },
+    { time: "2025-03-12 09:00:00", value: 79 },
+  ];
+
+  const mockSpO2Data = [
+    { time: "2025-03-12 00:00:00", value: 96 },
+    { time: "2025-03-12 01:00:00", value: 95 },
+    { time: "2025-03-12 02:00:00", value: 94 },
+    { time: "2025-03-12 03:00:00", value: 97 },
+    { time: "2025-03-12 04:00:00", value: 96 },
+    { time: "2025-03-12 05:00:00", value: 95 },
+    { time: "2025-03-12 06:00:00", value: 96 },
+    { time: "2025-03-12 07:00:00", value: 94 },
+    { time: "2025-03-12 08:00:00", value: 97 },
+    { time: "2025-03-12 09:00:00", value: 98 },
+  ];
+
+  const mockRespirationData = [
+    { time: "2025-03-12 00:00:00", value: 20 },
+    { time: "2025-03-12 01:00:00", value: 22 },
+    { time: "2025-03-12 02:00:00", value: 19 },
+    { time: "2025-03-12 03:00:00", value: 21 },
+    { time: "2025-03-12 04:00:00", value: 20 },
+    { time: "2025-03-12 05:00:00", value: 23 },
+    { time: "2025-03-12 06:00:00", value: 21 },
+    { time: "2025-03-12 07:00:00", value: 22 },
+    { time: "2025-03-12 08:00:00", value: 24 },
+    { time: "2025-03-12 09:00:00", value: 20 },
   ];
 
   useEffect(() => {
@@ -132,13 +183,34 @@ const SettingNoti: React.FC = () => {
             <TimelineGraph data={timelineData} />
           )}
           {selectedSensor.sensor_name === "Heart Rate" && (
-            <p className="text-red-500 font-semibold">ไทม์ไลน์ Heart Rate</p>
+            <SensorGraph
+              title="Heart Rate"
+              unit="BPM"
+              color="red"
+              data={mockHeartRateData}
+              minValue={50}
+              maxValue={130}
+            />
           )}
           {selectedSensor.sensor_name === "SpO2 Sensor" && (
-            <p className="text-green-500 font-semibold">ไทม์ไลน์ SpO2 Sensor</p>
+            <SensorGraph
+              title="SpO2"
+              unit="%"
+              color="blue"
+              data={mockSpO2Data}
+              minValue={85}
+              maxValue={100}
+            />
           )}
           {selectedSensor.sensor_name === "Respiration" && (
-            <p className="text-blue-500 font-semibold">ไทม์ไลน์ Respiration</p>
+            <SensorGraph
+              title="Respiration"
+              unit="ครั้ง/นาที"
+              color="orange"
+              data={mockRespirationData}
+              minValue={15}
+              maxValue={35}
+            />
           )}
         </>
       )}
