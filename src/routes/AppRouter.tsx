@@ -4,11 +4,11 @@ import Home from "../pages/Home.tsx";
 import BedConfig from "../pages/BedConfig.tsx";
 import SettingNoti from "../pages/SettingNoti.tsx";
 
-import EmergencyAlert from "../pages/EmergencyAlert.tsx";
-import { useNotificationStore } from "../store/notificationStore.ts"; // Import ตัวแจ้งเตือนฉุกเฉิน
+// import EmergencyAlert from "../pages/EmergencyAlert.tsx";
+// import { useNotificationStore } from "../store/notificationStore.ts"; // Import ตัวแจ้งเตือนฉุกเฉิน
 
 const AppRouter: React.FC = () => {
-  const { showAlert, setShowAlert } = useNotificationStore();
+  // const { showAlert, setShowAlert } = useNotificationStore();
   const location = useLocation();
   const isHome = location.pathname === "/";
 
@@ -21,7 +21,7 @@ const AppRouter: React.FC = () => {
       </Routes>
 
       {/* Emergency Alert - ปรับการแสดงผลตาม path */}
-      {showAlert && (
+      {/* {showAlert && (
         <div
           className={`bg-white z-20 ${
             isHome
@@ -31,7 +31,7 @@ const AppRouter: React.FC = () => {
         >
           <EmergencyAlert onClose={() => setShowAlert(false)} />
         </div>
-      )}
+      )} */}
     </div>
   );
 };
