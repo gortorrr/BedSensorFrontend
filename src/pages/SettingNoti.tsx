@@ -11,13 +11,15 @@ import TimelineGraph from "../components/SettingNotification/BedSensorGraph.tsx"
 import SensorGraph from "../components/SettingNotification/SensorGraph.tsx";
 import { useSensorNotificationsConfigStore } from "../store/sensorNotificationsConfigStore";
 import HistoryNotificationTable from "../components/SettingNotification/HistoryNotificationTable.tsx";
-import { sensorNotificationsConfigService } from "../services/sensorNotificationsConfigService.ts";
+// import { sensorNotificationsConfigService } from "../services/sensorNotificationsConfigService.ts";
 import { Notification } from "../types/notification.ts";
+import { useNotificationStore } from "../store/notificationStore.ts";
 
 const SettingNoti: React.FC = () => {
   const { bed_id } = useParams<{ bed_id?: string }>();
   const bedStore = useBedStore();
   const navigate = useNavigate();
+  const NotificationStore = useNotificationStore();
   const useSenNotiCon = useSensorNotificationsConfigStore();
   const [activeTab, setActiveTab] = useState("settings");
   const [bed, setBed] = useState<Bed | undefined>();
@@ -30,9 +32,12 @@ const SettingNoti: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
   // const updateNotifications = (newNotifications: Notification[]) => {
-  const updateNotifications = async () => {
-    const res = await sensorNotificationsConfigService.fetchNotification();
-    setNotifications(res as Notification[]);
+  const updateNotifications = async (p:number,s:number) => {
+    const res: Notification[] | null = await NotificationStore.loadAllNotificationByPatient(p, s);
+    console.log("ทำไมวะ",res)
+    if(res){
+    setNotifications(res);
+    }
   };
 
   const timelineData = [
@@ -91,6 +96,7 @@ const SettingNoti: React.FC = () => {
   ];
 
   useEffect(() => {
+    updateNotifications(1,4);
     const bedIdNumber: number = Number(bed_id);
     useSenNotiCon.loadSensorNotificationConfig(bedIdNumber);
     console.log(useSenNotiCon.sensorNotiConfigs);
@@ -108,7 +114,7 @@ const SettingNoti: React.FC = () => {
           foundBed.sensors[0];
 
         setSelectedSensor(defaultSensor);
-
+        
         if (defaultSensor) {
           setSensorNotificationConfigs(
             defaultSensor.sensor_notification_config || []
@@ -117,14 +123,14 @@ const SettingNoti: React.FC = () => {
         }
       }
     }
-    updateNotifications();
+    
   }, [bed_id, bedStore]);
 
   const handleSensorChange = (sensorId: number) => {
     const newSensor = sensorList?.find((s) => s.sensor_id === sensorId);
     setSelectedSensor(newSensor);
     setSensorNotificationConfigs(newSensor?.sensor_notification_config || []);
-    updateNotifications();
+    updateNotifications(1,4);
   };
   console.log("asdsd " + JSON.stringify(selectedSensor?.sensor_name, null, 2));
   // console.log("asdsd " + JSON.stringify(sensorList, null, 2));
