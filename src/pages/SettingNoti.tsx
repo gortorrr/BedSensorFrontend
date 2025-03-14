@@ -9,12 +9,15 @@ import NotificationTabs from "../components/SettingNotification/NotificationTabs
 import NotificationTable from "../components/SettingNotification/NotificationTable";
 import TimelineGraph from "../components/SettingNotification/TimelineGraph";
 import { useSensorNotificationsConfigStore } from "../store/sensorNotificationsConfigStore";
+import HistoryNotificationTable from "../components/SettingNotification/HistoryNotificationTable.tsx";
+import { sensorNotificationsConfigService } from "../services/sensorNotificationsConfigService.ts";
+import { Notification } from "../types/notification.ts";
 
 const SettingNoti: React.FC = () => {
   const { bed_id } = useParams<{ bed_id?: string }>();
   const bedStore = useBedStore();
   const navigate = useNavigate();
-  const useSenNotiCon = useSensorNotificationsConfigStore()
+  const useSenNotiCon = useSensorNotificationsConfigStore();
   const [activeTab, setActiveTab] = useState("settings");
   const [bed, setBed] = useState<Bed | undefined>();
   const [sensorList, setSensorList] = useState<Sensor[] | undefined>();
@@ -23,15 +26,23 @@ const SettingNoti: React.FC = () => {
     Sensor_Notification_Config[]
   >([]);
 
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+
+  // const updateNotifications = (newNotifications: Notification[]) => {
+  const updateNotifications = async () => {
+    const res = await sensorNotificationsConfigService.fetchNotification();
+    setNotifications(res as Notification[]);
+  };
+
   const timelineData = [
     { time: "2025-03-12 08:47:48.181523", status: "ไม่อยู่บนเตียง" },
     { time: "2025-03-12 08:47:48.181523", status: "ไม่อยู่บนเตียง" },
   ];
 
   useEffect(() => {
-    const bedIdNumber: number = Number(bed_id)
-    useSenNotiCon.loadSensorNotificationConfig(bedIdNumber)
-    console.log(useSenNotiCon.sensorNotiConfigs)
+    const bedIdNumber: number = Number(bed_id);
+    useSenNotiCon.loadSensorNotificationConfig(bedIdNumber);
+    console.log(useSenNotiCon.sensorNotiConfigs);
     if (bed_id) {
       const foundBed = bedStore.beds.find(
         (item) => item.bed_id === bedIdNumber
@@ -51,16 +62,18 @@ const SettingNoti: React.FC = () => {
           setSensorNotificationConfigs(
             defaultSensor.sensor_notification_config || []
           );
-          console.log(sensorNotificationConfigs)
+          console.log(sensorNotificationConfigs);
         }
       }
     }
+    updateNotifications();
   }, [bed_id, bedStore]);
 
   const handleSensorChange = (sensorId: number) => {
     const newSensor = sensorList?.find((s) => s.sensor_id === sensorId);
     setSelectedSensor(newSensor);
     setSensorNotificationConfigs(newSensor?.sensor_notification_config || []);
+    updateNotifications();
   };
   console.log("asdsd " + JSON.stringify(selectedSensor?.sensor_name, null, 2));
   // console.log("asdsd " + JSON.stringify(sensorList, null, 2));
@@ -133,9 +146,10 @@ const SettingNoti: React.FC = () => {
       {activeTab === "history" && selectedSensor && (
         <>
           {selectedSensor.sensor_name === "Bed Sensor" && (
-            <div className="bg-white rounded-lg p-4 shadow-md">
-              ประวัติของ Bed Sensor
-            </div>
+            <HistoryNotificationTable
+              bed={bed}
+              notifications={notifications}
+            ></HistoryNotificationTable>
           )}
           {selectedSensor.sensor_name === "Heart Rate" && (
             <div className="bg-white rounded-lg p-4 shadow-md text-red-500">
@@ -152,6 +166,9 @@ const SettingNoti: React.FC = () => {
               ประวัติ Respiration
             </div>
           )}
+          <div>yellow = Emergency</div>
+          <div>red = SOS</div>
+          <div>I think we should re design this page later</div>
         </>
       )}
 

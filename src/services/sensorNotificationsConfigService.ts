@@ -1,6 +1,7 @@
 import { Sensor_Notification_Config } from "../types/sensor_Notifications_config";
 import http from "./http";
 import { AxiosError } from "axios"; // ✅ นำเข้า AxiosError (ถ้าใช้ axios)
+import { Notification } from "../types/notification";
 export const sensorNotificationsConfigService = {
   async loadSensorNotificationConfig(
     bed_id: number
@@ -46,4 +47,108 @@ export const sensorNotificationsConfigService = {
       throw error;
     }
   },
+
+  async fetchNotification(): Promise<Notification[]> {
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(notificationFetchExamData), 500);
+    });
+  },
 };
+
+const notificationFetchExamData: Notification[] = [
+  {
+    sensor_notifications_config_id: 4,
+    notification_successed: true,
+    notification_category: "Emergency",
+    notification_accepted: true,
+    notification_createdate: "2025-03-08T07:08:24",
+    notification_updatedate: "2025-03-08T07:08:24",
+    notification_id: 1,
+    sensor_notifications_config: {
+      sensor_id: 4,
+      sensor_notifications_config_event: "นอนตะแคงขวา",
+      sensor_notifications_config_usage: true,
+      sensor_notifications_config_repeatnoti: 4,
+      sensor_notifications_config_rangetime: 25,
+      sensor_notifications_config_signal: "เฝ้าระวัง",
+      sensor_notifications_config_id: 4,
+      sensor: undefined,
+    },
+  },
+  {
+    sensor_notifications_config_id: 14,
+    notification_successed: true,
+    notification_category: "SOS",
+    notification_accepted: true,
+    notification_createdate: "2025-03-08T07:08:24",
+    notification_updatedate: "2025-03-08T07:08:24",
+    notification_id: 2,
+    sensor_notifications_config: {
+      sensor_id: 4,
+      sensor_notifications_config_event: "นอนตะแคงซ้าย",
+      sensor_notifications_config_usage: true,
+      sensor_notifications_config_repeatnoti: 3,
+      sensor_notifications_config_rangetime: 5,
+      sensor_notifications_config_signal: "เฝ้าระวัง",
+      sensor_notifications_config_id: 14,
+      sensor: undefined,
+    },
+  },
+  {
+    sensor_notifications_config_id: 4,
+    notification_successed: true,
+    notification_category: "SOS",
+    notification_accepted: true,
+    notification_createdate: "2025-03-08T07:08:24",
+    notification_updatedate: "2025-03-08T07:08:24",
+    notification_id: 3,
+    sensor_notifications_config: {
+      sensor_id: 4,
+      sensor_notifications_config_event: "นอนตะแคงขวา",
+      sensor_notifications_config_usage: true,
+      sensor_notifications_config_repeatnoti: 4,
+      sensor_notifications_config_rangetime: 25,
+      sensor_notifications_config_signal: "เฝ้าระวัง",
+      sensor_notifications_config_id: 4,
+      sensor: undefined,
+    },
+  },
+  {
+    sensor_notifications_config_id: 14,
+    notification_successed: true,
+    notification_category: "SOS",
+    notification_accepted: true,
+    notification_createdate: "2025-03-08T07:08:24",
+    notification_updatedate: "2025-03-08T07:08:24",
+    notification_id: 4,
+    sensor_notifications_config: {
+      sensor_id: 4,
+      sensor_notifications_config_event: "นอนตะแคงซ้าย",
+      sensor_notifications_config_usage: true,
+      sensor_notifications_config_repeatnoti: 3,
+      sensor_notifications_config_rangetime: 5,
+      sensor_notifications_config_signal: "เฝ้าระวัง",
+      sensor_notifications_config_id: 14,
+      sensor: undefined,
+    },
+  },
+  {
+    sensor_notifications_config_id: 4,
+    notification_successed: true,
+    notification_category: "Emergency",
+    notification_accepted: true,
+    notification_createdate: "2025-03-08T07:08:24",
+    notification_updatedate: "2025-03-08T07:08:24",
+    notification_id: 5,
+    sensor_notifications_config: {
+      sensor_id: 4,
+      sensor_notifications_config_event: "นอนตะแคงขวา",
+      sensor_notifications_config_usage: true,
+      sensor_notifications_config_repeatnoti: 4,
+      sensor_notifications_config_rangetime: 25,
+      sensor_notifications_config_signal: "เฝ้าระวัง",
+      sensor_notifications_config_id: 4,
+      sensor: undefined,
+    },
+  },
+];

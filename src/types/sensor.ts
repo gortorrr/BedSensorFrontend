@@ -1,8 +1,9 @@
+import { Bed } from "./bed";
 import { History_Value_Sensor } from "./history_value_sensor";
 import { Sensor_Notification_Config } from "./sensor_Notifications_config";
 
 export interface Sensor {
-  bed_id?:number | null;
+  bed_id?: number | null;
   sensor_id: number;
   sensor_type: string;
   sensor_status: boolean;
@@ -11,5 +12,6 @@ export interface Sensor {
   history_value_sensor: History_Value_Sensor[];
   sensor_unit?: string;
   sensor_name?: string;
-  sensor_notification_config? : Sensor_Notification_Config[] | null | undefined;
+  sensor_notification_config?: Sensor_Notification_Config[] | null | undefined;
+  bed?: Bed;
 }

@@ -27,20 +27,20 @@ const NotificationTable: React.FC<NotificationTableProps> = ({
               <tr key={index} className="text-center border-b">
                 <td className="p-2 border">🛏️</td>
                 <td className="p-2 border">
-                  {config.sensor_notification_config_event}
+                  {config.sensor_notifications_config_event}
                 </td>
                 <td className="p-2 border">
                   <input
                     type="checkbox"
                     className="scale-125"
-                    defaultChecked={config.sensor_notification_config_usage}
+                    defaultChecked={config.sensor_notifications_config_usage}
                     title="การใช้"
                   />
                 </td>
                 <td className="p-2 border">
                   <select
                     className="p-1 border rounded"
-                    defaultValue={config.sensor_notification_config_repeatnoti}
+                    defaultValue={config.sensor_notifications_config_repeatnoti}
                     title="เลือกค่าการแจ้งเตือนซ้ำ"
                   >
                     <option value={3}>3 นาที</option>
@@ -51,7 +51,7 @@ const NotificationTable: React.FC<NotificationTableProps> = ({
                 <td className="p-2 border">
                   <select
                     className="p-1 border rounded"
-                    defaultValue={config.sensor_notification_config_rangetime}
+                    defaultValue={config.sensor_notifications_config_rangetime}
                     title="ระยะเวลาการแจ้งเตือน"
                   >
                     <option value={1}>1 นาที</option>
@@ -62,7 +62,7 @@ const NotificationTable: React.FC<NotificationTableProps> = ({
                 <td className="p-2 border">
                   <select
                     className="p-1 border rounded"
-                    defaultValue={config.sensor_notification_config_signal}
+                    defaultValue={config.sensor_notifications_config_signal}
                     title="สัญญาณ"
                   >
                     <option value="ปกติ">ปกติ</option>
