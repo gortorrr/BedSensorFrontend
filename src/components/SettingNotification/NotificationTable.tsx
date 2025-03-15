@@ -27,15 +27,15 @@ const NotificationTable: React.FC<NotificationTableProps> = ({ sensor }) => {
 
     return (
       <div className="flex justify-center items-center">
-        <img src={icon} alt={eventType} className="w-15 h-15" />
+        <img src={icon} alt={eventType} className="w-13 h-13" />
       </div>
     );
   };
 
   return (
-    <div className="bg-white rounded-lg p-4 shadow-md">
+    <div className="bg-white rounded-lg p-3 shadow-md ">
       <table className="w-full border-collapse">
-        <thead className="bg-[#95BAC3]">
+        <thead className="bg-[#95BAC3] h-16 py-4 text-lg font-bold">
           <tr>
             {sensor.sensor_type === "bed_sensor" && (
               <th className="p-2">ไอคอน</th>
