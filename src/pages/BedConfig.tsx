@@ -93,6 +93,9 @@ const BedConfig: React.FC = () => {
     // console.log(patient);
     if (bed && bed.bed_id) bedStore.saveBedConfig(bed?.bed_id, bed);
     handleCancel();
+
+    // Wait for 1 second before calling bedStore.loadBeds()
+    window.location.reload();
   };
 
   const handleOpenDialog = () => {

@@ -48,8 +48,8 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
         notification_category: "การเคลื่อนไหว",
         notification_accepted: true,
         notification_successed: false,
-        notification_createdate: "2025-03-12 00:53:41.923954",
-        notification_updatedate: "2025-03-12 00:53:41.923954",
+        notification_createdate: "2025-03-15 00:53:41.923954",
+        notification_updatedate: "2025-03-15 00:53:41.923954",
       },
       {
         notification_id: 1,
