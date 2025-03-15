@@ -56,6 +56,10 @@ export default function Header({ isOnline }: HeaderProps) {
           <button
             className="relative animate-pulse cursor-pointer hover:scale-105 transition-transform hover:opacity-110 flex items-center justify-center p-2 rounded-full bg-red-600 shadow-md"
             title="SOS Alert"
+            onClick={() => {
+              notificationStore.setShowAlert(!notificationStore.showAlert);
+              notificationStore.setSelectedAlertType("การแจ้งเตือน SOS"); // ตั้งค่าหัวข้อเป็น "ประวัติการแจ้งเตือน"
+            }}
           >
             <span className="bg-red-700 text-xs text-white px-2 py-1 rounded-full shadow-md transform transition-all">
               SOS
@@ -65,10 +69,13 @@ export default function Header({ isOnline }: HeaderProps) {
           {/* ไอคอนแจ้งเตือน */}
           <button
             className="cursor-pointer hover:scale-125 transition-transform transform hover:shadow-lg hover:bg-[#5E8892] hover:text-white p-2 rounded-full"
-            title="Notifications"
-            onClick={() =>
-              notificationStore.setShowAlert(!notificationStore.showAlert)
-            } // เพิ่มการใช้ฟังก์ชันใน onClick
+            title="Emergency"
+            onClick={() => {
+              notificationStore.setShowAlert(!notificationStore.showAlert);
+              notificationStore.setSelectedAlertType(
+                "ประวัติการแจ้งเตือน Emergency"
+              ); // ตั้งค่าหัวข้อเป็น "ประวัติการแจ้งเตือน"
+            }}
           >
             <Bell className="w-6 h-6 text-yellow-500 fill-yellow-500 transition-all" />
           </button>
@@ -76,6 +83,12 @@ export default function Header({ isOnline }: HeaderProps) {
           <button
             className="cursor-pointer hover:scale-125 transition-transform transform hover:shadow-lg hover:bg-[#5E8892] hover:text-white p-2 rounded-full"
             title="History"
+            onClick={() => {
+              notificationStore.setShowAlert(!notificationStore.showAlert);
+              notificationStore.setSelectedAlertType(
+                "ประวัติการแจ้งเตือน History"
+              ); // ตั้งค่าหัวข้อเป็น "ประวัติการแจ้งเตือน"
+            }}
           >
             <FileClock className="w-6 h-6 text-yellow-500 fill-white transition-all" />
           </button>

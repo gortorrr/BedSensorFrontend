@@ -5,6 +5,8 @@ import { Notification } from "../types/notification";
 interface NotificationStore {
   NotificationByPatientAndSensor: Notification[];
   showAlert: boolean;
+  selectedAlertType: string;
+  setSelectedAlertType: (type: string) => void;
   setShowAlert: (value: boolean) => void;
   loadAllNotificationByPatient: (
     patient_id: number,
@@ -15,6 +17,9 @@ interface NotificationStore {
 export const useNotificationStore = create<NotificationStore>((set) => ({
   NotificationByPatientAndSensor: [],
   showAlert: false,
+  selectedAlertType: "", // ค่าเริ่มต้น
+  setSelectedAlertType: (type) => set({ selectedAlertType: type }),
+
   setShowAlert: (value) => set({ showAlert: value }),
 
   loadAllNotificationByPatient: async (
