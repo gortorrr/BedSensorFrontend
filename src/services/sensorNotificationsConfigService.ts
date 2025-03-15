@@ -56,7 +56,7 @@ export const sensorNotificationsConfigService = {
     });
   },
 
-  async loadBedWithSensorConfig(bed_id: number): Promise<Bed[]> {
+  async loadBedWithSensorConfig(bed_id: number): Promise<Bed> {
     {
       const res = await http.get(`beds/sensor-config/${bed_id}`);
       return res.data;

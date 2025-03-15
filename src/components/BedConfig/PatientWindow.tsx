@@ -5,7 +5,8 @@ import { mdiDelete } from "@mdi/js";
 import { PlusCircle } from "lucide-react";
 import AddPatientDialog from "./AddPatientDialog";
 import { FaUser } from "react-icons/fa";
-import { useBedStore } from "../../store/bedStore";
+// import { useBedStore } from "../../store/bedStore";
+import { usePatientStore } from "../../store/patientStore";
 
 interface Props {
   patient_config: Patient | undefined;
@@ -31,13 +32,19 @@ const PatientWindow: React.FC<Props> = ({
   const [selectedPatient, setSelectedPatient] = useState<Patient | undefined>(
     patient_config
   );
+  const patientStore = usePatientStore();
 
   useEffect(() => {
     // อัปเดต selectedPatient เมื่อ patient_config เปลี่ยนแปลง
     if (patient_config) {
       setSelectedPatient(patient_config);
     }
-  }, [patient_config]);
+  }, [patient_config]); // ทำงานเมื่อ patient_config เปลี่ยนแปลง
+
+  useEffect(() => {
+    // โหลด patients แค่ครั้งเดียวตอนเริ่มต้น
+    patientStore.loadPatientsWait();
+  }, []); // ทำงานแค่ครั้งเดียวตอนเปิดหน้า
 
   const openDialog = () => setIsDialogOpen(true);
   const closeDialog = () => setIsDialogOpen(false);
@@ -49,12 +56,11 @@ const PatientWindow: React.FC<Props> = ({
   };
   // console.log("🩺 Patient Config Data:", selectedPatient);
 
-  const bedStore = useBedStore();
-
   const handleDeletePatient = () => {
+    if (patient_config)
+      patientStore.patients = [patient_config, ...patientStore.patients];
     console.log(patient_config?.patient_id);
     console.log(bed_id);
-    bedStore.removePatientFromBed(bed_id, patient_config?.patient_id ?? 0);
     setSelectedPatient(undefined);
   };
 

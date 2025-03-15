@@ -6,19 +6,18 @@ import { MdSensors } from "react-icons/md";
 
 interface Props {
   sensors: Sensor[] | undefined;
-  onDeleteSensor: (sensor:Sensor) => void; 
+  // onDeleteSensor: (sensor:Sensor) => void;
 }
 
-const SensorTableWindow: React.FC<Props> = ({ sensors ,onDeleteSensor}) => {
-
+const SensorTableWindow: React.FC<Props> = ({ sensors }) => {
   return (
     <>
       {sensors !== undefined && (
         <div className="flex flex-col border-2 border-gray-300 p-4 bg-[#F0F0F0] rounded-md min-h-[620px]">
           <h2 className="flex text-xl font-semibold mb-4 items-center">
-          <MdSensors className="mr-2 text-3xl text-[#2E5361]" />
+            <MdSensors className="mr-2 text-3xl text-[#2E5361]" />
             รายการเซ็นเซอร์
-            </h2>
+          </h2>
           <div className="overflow-x-auto ">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-[#95BAC3]  ">
@@ -50,12 +49,12 @@ const SensorTableWindow: React.FC<Props> = ({ sensors ,onDeleteSensor}) => {
                           size={1}
                           className="text-gray-600 hover:text-gray-900 cursor-pointer"
                         />
-                        <div  onClick={() => onDeleteSensor(sensor)}>
-                        <Icon
-                          path={mdiDelete}
-                          size={1}
-                          className="text-red-600 hover:text-red-800 cursor-pointer"
-                        />
+                        <div>
+                          <Icon
+                            path={mdiDelete}
+                            size={1}
+                            className="text-red-600 hover:text-red-800 cursor-pointer"
+                          />
                         </div>
                       </div>
                     </td>

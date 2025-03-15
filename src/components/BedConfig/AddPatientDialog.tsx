@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import type { Patient } from "../../types/patient";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePatientStore } from "../../store/patientStore";
@@ -19,13 +19,11 @@ const AddPatientDialog: React.FC<AddPatientDialogProps> = ({
 
   const handleSelectPatient = (patient: Patient) => {
     onSelectPatient(patient); // ส่งค่ากลับไป B แล้วไป C
+    patientStore.patients = patientStore.patients.filter(
+      (p) => p.patient_id !== patient.patient_id
+    );
+    console.log(patientStore.patients);
   };
-
-  useEffect(() => {
-    if (isOpen) {
-      patientStore.loadPatientsWait();
-    }
-  }, [isOpen, patientStore]); // เพิ่ม patientStore ใน dependency array
 
   const filteredPatients = patientStore.patients.filter((patient) =>
     (patient.patient_name?.toLowerCase() || "").includes(search.toLowerCase())

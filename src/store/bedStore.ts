@@ -13,7 +13,7 @@ interface BedStore {
   ) => Promise<void>;
   saveRemoveShowSensorId: (bed_id: number, sensor_id: number) => Promise<void>;
   saveBedConfig: (bed_id: number, bed: Bed) => Promise<void>;
-  removePatientFromBed: (bed_id: number, patient_id: number) => Promise<void>;
+  // removePatientFromBed: (bed_id: number, patient_id: number) => Promise<void>;
 }
 
 export const useBedStore = create<BedStore>((set) => ({
@@ -48,9 +48,9 @@ export const useBedStore = create<BedStore>((set) => ({
     bedService.saveBedConfig(bed_id, bed);
   },
 
-  removePatientFromBed: async (bed_id: number, patient_id: number) => {
-    bedService.removePatientFromBed(bed_id, patient_id);
-  },
+  // removePatientFromBed: async (bed_id: number, patient_id: number) => {
+  //   bedService.removePatientFromBed(bed_id, patient_id);
+  // },
 }));
 // ฟังก์ชั่นเก่าอยู่ตรงนี้
 // loadBeds: async () => {
