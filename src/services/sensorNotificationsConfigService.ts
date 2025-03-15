@@ -2,6 +2,7 @@ import { Sensor_Notification_Config } from "../types/sensor_Notifications_config
 import http from "./http";
 import { AxiosError } from "axios"; // ✅ นำเข้า AxiosError (ถ้าใช้ axios)
 import { Notification } from "../types/notification";
+import { Bed } from "../types/bed";
 export const sensorNotificationsConfigService = {
   async loadSensorNotificationConfig(
     bed_id: number
@@ -53,6 +54,13 @@ export const sensorNotificationsConfigService = {
     return new Promise((resolve) => {
       setTimeout(() => resolve(notificationFetchExamData), 500);
     });
+  },
+
+  async loadBedWithSensorConfig(bed_id: number): Promise<Bed[]> {
+    {
+      const res = await http.get(`beds/sensor-config/${bed_id}`);
+      return res.data;
+    }
   },
 };
 

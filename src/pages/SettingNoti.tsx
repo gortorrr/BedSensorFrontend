@@ -1,9 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useBedStore } from "../store/bedStore";
+// import { useBedStore } from "../store/bedStore";
 import { Bed } from "../types/bed";
 import { Sensor } from "../types/sensor";
-import { Sensor_Notification_Config } from "../types/sensor_Notifications_config";
+// import { Sensor_Notification_Config } from "../types/sensor_Notifications_config";
 import SensorAndBedInfo from "../components/SettingNotification/SensorAndBedInfo";
 import NotificationTabs from "../components/SettingNotification/NotificationTabs";
 import NotificationTable from "../components/SettingNotification/NotificationTable";
@@ -12,33 +12,43 @@ import SensorGraph from "../components/SettingNotification/SensorGraph.tsx";
 import { useSensorNotificationsConfigStore } from "../store/sensorNotificationsConfigStore";
 import HistoryNotificationTable from "../components/SettingNotification/HistoryNotificationTable.tsx";
 // import { sensorNotificationsConfigService } from "../services/sensorNotificationsConfigService.ts";
-import { Notification } from "../types/notification.ts";
-import { useNotificationStore } from "../store/notificationStore.ts";
+// import { Notification } from "../types/notification.ts";
+// import { useNotificationStore } from "../store/notificationStore.ts";
 
 const SettingNoti: React.FC = () => {
   const { bed_id } = useParams<{ bed_id?: string }>();
-  const bedStore = useBedStore();
+  // const bedStore = useBedStore();
   const navigate = useNavigate();
-  const NotificationStore = useNotificationStore();
+  // const NotificationStore = useNotificationStore();
   const useSenNotiCon = useSensorNotificationsConfigStore();
   const [activeTab, setActiveTab] = useState("settings");
   const [bed, setBed] = useState<Bed | undefined>();
   const [sensorList, setSensorList] = useState<Sensor[] | undefined>();
   const [selectedSensor, setSelectedSensor] = useState<Sensor | undefined>();
-  const [sensorNotificationConfigs, setSensorNotificationConfigs] = useState<
-    Sensor_Notification_Config[]
-  >([]);
+  // const [sensorNotificationConfigs, setSensorNotificationConfigs] = useState<
+  //   Sensor_Notification_Config[]
+  // >([]);
 
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  // const [notifications, setNotifications] = useState<Notification[]>([]);
 
   // const updateNotifications = (newNotifications: Notification[]) => {
-  const updateNotifications = async (p:number,s:number) => {
-    const res: Notification[] | null = await NotificationStore.loadAllNotificationByPatient(p, s);
-    console.log("ทำไมวะ",res)
-    if(res){
-    setNotifications(res);
+  const updateNotifications = async (p: number, s: number) => {
+    const res: Notification[] | null =
+      await NotificationStore.loadAllNotificationByPatient(p, s);
+    console.log("ทำไมวะ", res);
+    if (res) {
+      setNotifications(res);
     }
   };
+
+  // const selectSensorToConfig = async (sensor_id: number) => {
+  //   const res: Notification[] | null =
+  //     await NotificationStore.loadAllNotificationByPatient(p, s);
+  //   console.log("ทำไมวะ", res);
+  //   if (res) {
+  //     setNotifications(res);
+  //   }
+  // };
 
   const timelineData = [
     { time: "2025-03-12 00:53:41.923954", position: "ไม่อยู่ที่เตียง" },
@@ -96,43 +106,64 @@ const SettingNoti: React.FC = () => {
   ];
 
   useEffect(() => {
-    updateNotifications(1,4);
-    const bedIdNumber: number = Number(bed_id);
-    useSenNotiCon.loadSensorNotificationConfig(bedIdNumber);
-    console.log(useSenNotiCon.sensorNotiConfigs);
-    if (bed_id) {
-      const foundBed = bedStore.beds.find(
-        (item) => item.bed_id === bedIdNumber
-      );
-
-      if (foundBed) {
-        setBed(foundBed);
-        setSensorList(foundBed.sensors);
-
+    const loadData = async () => {
+      const bedIdNumber: number = Number(bed_id);
+      const res = await useSenNotiCon.loadBedWithSensorConfig(bedIdNumber);
+      setBed(res);
+      setSensorList(res?.sensors); // ใช้ res แทน bed
+      if (res) {
         const defaultSensor =
-          foundBed.sensors.find((s) => s.sensor_name === "Bed Sensor") ||
-          foundBed.sensors[0];
-
+          res.sensors.find((s) => s.sensor_type === "bed_sensor") ||
+          res.sensors[0];
         setSelectedSensor(defaultSensor);
-        
-        if (defaultSensor) {
-          setSensorNotificationConfigs(
-            defaultSensor.sensor_notification_config || []
-          );
-          console.log(sensorNotificationConfigs);
-        }
       }
-    }
-    
-  }, [bed_id, bedStore]);
+    };
+
+    loadData();
+    // console.log(bed); // remove this to avoid logging the initial state of bed before it's updated.
+  }, [bed_id, useSenNotiCon]); // Remove `bed` from the dependencies list
+
+  // useEffect(() => {
+  //   updateNotifications(1,4);
+  //   const bedIdNumber: number = Number(bed_id);
+  //   useSenNotiCon.loadSensorNotificationConfig(bedIdNumber);
+  //   console.log(useSenNotiCon.sensorNotiConfigs);
+  //   if (bed_id) {
+  //     const foundBed = bedStore.beds.find(
+  //       (item) => item.bed_id === bedIdNumber
+  //     );
+
+  //     if (foundBed) {
+  //       setBed(foundBed);
+  //       setSensorList(foundBed.sensors);
+
+  //       const defaultSensor =
+  //         foundBed.sensors.find((s) => s.sensor_name === "Bed Sensor") ||
+  //         foundBed.sensors[0];
+
+  //       setSelectedSensor(defaultSensor);
+
+  //       if (defaultSensor) {
+  //         setSensorNotificationConfigs(
+  //           defaultSensor.sensor_notification_config || []
+  //         );
+  //         console.log(sensorNotificationConfigs);
+  //       }
+  //     }
+  //   }
+
+  // }, [bed_id, bedStore]);
+
+  const updateSensorSelectedToConfig = async (sensor_id) => {};
 
   const handleSensorChange = (sensorId: number) => {
     const newSensor = sensorList?.find((s) => s.sensor_id === sensorId);
     setSelectedSensor(newSensor);
-    setSensorNotificationConfigs(newSensor?.sensor_notification_config || []);
-    updateNotifications(1,4);
+
+    // setSensorNotificationConfigs(newSensor?.sensor_notification_config || []);
+    // updateNotifications(1, 4);
   };
-  console.log("asdsd " + JSON.stringify(selectedSensor?.sensor_name, null, 2));
+  // console.log("asdsd " + JSON.stringify(selectedSensor?.sensor_name, null, 2));
   // console.log("asdsd " + JSON.stringify(sensorList, null, 2));
 
   const handleCancel = () => {
@@ -159,27 +190,7 @@ const SettingNoti: React.FC = () => {
       {/* Table */}
       {activeTab === "settings" && selectedSensor && (
         <>
-          {selectedSensor.sensor_name === "Bed Sensor" && (
-            <NotificationTable
-              sensorNotificationConfigs={useSenNotiCon.sensorNotiConfigs}
-            />
-          )}
-
-          {selectedSensor.sensor_name === "Heart Rate" && (
-            <p className="text-red-500 font-semibold">แสดงข้อมูล Heart Rate</p>
-          )}
-
-          {selectedSensor.sensor_name === "SpO2 Sensor" && (
-            <p className="text-green-500 font-semibold">
-              แสดงข้อมูล SpO2 Sensor
-            </p>
-          )}
-
-          {selectedSensor.sensor_name === "Respiration" && (
-            <p className="text-blue-500 font-semibold">
-              แสดงข้อมูล Respiration
-            </p>
-          )}
+          <NotificationTable sensor={selectedSensor} />
         </>
       )}
 

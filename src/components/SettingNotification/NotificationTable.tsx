@@ -1,19 +1,19 @@
 import React from "react";
-import { Sensor_Notification_Config } from "../../types/sensor_Notifications_config";
+import { Sensor } from "../../types/sensor";
 
 interface NotificationTableProps {
-  sensorNotificationConfigs: Sensor_Notification_Config[];
+  sensor: Sensor;
 }
 
-const NotificationTable: React.FC<NotificationTableProps> = ({
-  sensorNotificationConfigs,
-}) => {
+const NotificationTable: React.FC<NotificationTableProps> = ({ sensor }) => {
   return (
     <div className="bg-white rounded-lg p-4 shadow-md">
       <table className="w-full border-collapse">
         <thead className="bg-[#95BAC3]">
           <tr>
-            <th className="p-2 border">ไอคอน</th>
+            {sensor.sensor_type === "bed_sensor" && (
+              <th className="p-2 border">ไอคอน</th>
+            )}
             <th className="p-2 border">เหตุการณ์</th>
             <th className="p-2 border">การใช้</th>
             <th className="p-2 border">การแจ้งเตือนซ้ำ</th>
@@ -21,23 +21,30 @@ const NotificationTable: React.FC<NotificationTableProps> = ({
             <th className="p-2 border">สัญญาณ</th>
           </tr>
         </thead>
+
         <tbody>
-          {sensorNotificationConfigs.length > 0 ? (
-            sensorNotificationConfigs.map((config, index) => (
-              <tr key={index} className="border-b odd:bg-white even:bg-[#A1B5BC]">
-                <td className="p-2 border text-center text-4xl">🛏️</td>
+          {sensor.sensor_notifications_config &&
+          sensor.sensor_notifications_config.length > 0 ? (
+            sensor.sensor_notifications_config.map((config, index) => (
+              <tr
+                key={index}
+                className="border-b odd:bg-white even:bg-[#A1B5BC]"
+              >
+                {sensor.sensor_type === "bed_sensor" && (
+                  <td className="p-2 border text-center text-4xl">🛏️</td>
+                )}
                 <td className="p-2 border text-left">
                   {config.sensor_notifications_config_event}
                 </td>
                 <td className="p-2 pt-4 border text-center">
                   <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="sr-only peer"
-                    defaultChecked={config.sensor_notifications_config_usage}
-                    title="การใช้"
-                  />
-                  <div className="relative w-11 h-6 items-center bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#2E5361] dark:peer-checked:bg-blue-600"></div>
+                    <input
+                      type="checkbox"
+                      className="sr-only peer"
+                      defaultChecked={config.sensor_notifications_config_usage}
+                      title="การใช้"
+                    />
+                    <div className="relative w-11 h-6 items-center bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#2E5361] dark:peer-checked:bg-blue-600"></div>
                   </label>
                 </td>
                 <td className="p-2 border text-center">
@@ -68,9 +75,9 @@ const NotificationTable: React.FC<NotificationTableProps> = ({
                     defaultValue={config.sensor_notifications_config_signal}
                     title="สัญญาณ"
                   >
-                    <option value="ปกติ">ปกติ</option>
-                    <option value="ช่วยเหลือ">ช่วยเหลือ</option>
-                    <option value="อันตราย">อันตราย</option>
+                    <option value="Normal">ปกติ</option>
+                    <option value="SOS">ช่วยเหลือ</option>
+                    <option value="Emergency">อันตราย</option>
                   </select>
                 </td>
               </tr>

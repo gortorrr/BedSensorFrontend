@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { Sensor_Notification_Config } from "../types/sensor_Notifications_config";
 import { sensorNotificationsConfigService } from "../services/sensorNotificationsConfigService";
+import { Bed } from "../types/bed";
 
 interface sensorNotificationsConfigStore {
   sensorNotiConfigs: Sensor_Notification_Config[];
@@ -9,6 +10,7 @@ interface sensorNotificationsConfigStore {
     bed_id: number,
     sensorNotificationConfig: Sensor_Notification_Config
   ) => Promise<void>;
+  loadBedWithSensorConfig: (bed_id: number) => Promise<Bed>;
 }
 
 export const useSensorNotificationsConfigStore =
@@ -33,5 +35,11 @@ export const useSensorNotificationsConfigStore =
         sensor_id,
         sensorNotificationConfig
       );
+    },
+
+    loadBedWithSensorConfig: async (bed_id: number) => {
+      const res =
+        await sensorNotificationsConfigService.loadBedWithSensorConfig(bed_id);
+      return res;
     },
   }));
