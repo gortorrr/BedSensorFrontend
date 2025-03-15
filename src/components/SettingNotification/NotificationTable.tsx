@@ -1,24 +1,50 @@
 import React from "react";
 import { Sensor } from "../../types/sensor";
+// นำเข้ารูปภาพไอคอนต่างๆ
+import LeftSide from "../../assets/LeftSide.png";
+import RightSide from "../../assets/RightSide.png";
+import Straight from "../../assets/Straight.png";
+import Sit from "../../assets/Sit.png";
+import NotHere from "../../assets/NotHere.png";
 
 interface NotificationTableProps {
   sensor: Sensor;
 }
 
 const NotificationTable: React.FC<NotificationTableProps> = ({ sensor }) => {
+  // ฟังก์ชันสำหรับแสดงไอคอนขนาดเล็กตามประเภทของเหตุการณ์
+  const renderSmallBedIcon = (eventType: string) => {
+    // แมปค่าของเหตุการณ์กับไอคอนที่เหมาะสม
+    const iconMap: { [key: string]: string } = {
+      นั่ง: Sit,
+      นอนตะแคงซ้าย: LeftSide,
+      นอนตะแคงขวา: RightSide,
+      นอนตรง: Straight,
+      ไม่อยู่ที่เตียง: NotHere,
+    };
+
+    const icon = iconMap[eventType] || Straight; // ใช้ไอคอนนอนตรงเป็นค่าเริ่มต้น
+
+    return (
+      <div className="flex justify-center items-center">
+        <img src={icon} alt={eventType} className="w-15 h-15" />
+      </div>
+    );
+  };
+
   return (
     <div className="bg-white rounded-lg p-4 shadow-md">
       <table className="w-full border-collapse">
         <thead className="bg-[#95BAC3]">
           <tr>
             {sensor.sensor_type === "bed_sensor" && (
-              <th className="p-2 ">ไอคอน</th>
+              <th className="p-2">ไอคอน</th>
             )}
             <th className="p-2 text-left">เหตุการณ์</th>
-            <th className="p-2 ">การใช้</th>
-            <th className="p-2 ">การแจ้งเตือนซ้ำ</th>
-            <th className="p-2 ">ระยะเวลาการแจ้งเตือน</th>
-            <th className="p-2 ">สัญญาณ</th>
+            <th className="p-2">การใช้</th>
+            <th className="p-2">การแจ้งเตือนซ้ำ</th>
+            <th className="p-2">ระยะเวลาการแจ้งเตือน</th>
+            <th className="p-2">สัญญาณ</th>
           </tr>
         </thead>
 
@@ -26,14 +52,18 @@ const NotificationTable: React.FC<NotificationTableProps> = ({ sensor }) => {
           {sensor.sensor_notifications_config &&
           sensor.sensor_notifications_config.length > 0 ? (
             sensor.sensor_notifications_config.map((config, index) => (
-              <tr key={index} className=" odd:bg-white even:bg-[#A1B5BC]">
+              <tr key={index} className="odd:bg-white even:bg-[#A1B5BC]">
                 {sensor.sensor_type === "bed_sensor" && (
-                  <td className="p-2  text-center text-4xl">🛏️</td>
+                  <td className="p-2 text-center">
+                    {renderSmallBedIcon(
+                      config.sensor_notifications_config_event
+                    )}
+                  </td>
                 )}
-                <td className="p-2  text-left">
+                <td className="p-2 text-left pl-2">
                   {config.sensor_notifications_config_event}
                 </td>
-                <td className="p-2 pt-4  text-center">
+                <td className="p-2 pt-4 text-center">
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
                       type="checkbox"
@@ -44,9 +74,9 @@ const NotificationTable: React.FC<NotificationTableProps> = ({ sensor }) => {
                     <div className="relative w-11 h-6 items-center bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-500 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#2E5361] dark:peer-checked:bg-black"></div>
                   </label>
                 </td>
-                <td className="p-2  text-center">
+                <td className="p-2 text-center">
                   <select
-                    className="p-1  rounded-2xl bg-white border"
+                    className="p-1 rounded-2xl bg-white border"
                     defaultValue={config.sensor_notifications_config_repeatnoti}
                     title="เลือกค่าการแจ้งเตือนซ้ำ"
                   >
@@ -55,9 +85,9 @@ const NotificationTable: React.FC<NotificationTableProps> = ({ sensor }) => {
                     <option value={10}>10 นาที</option>
                   </select>
                 </td>
-                <td className="p-2  text-center">
+                <td className="p-2 text-center">
                   <select
-                    className="p-1  rounded-2xl bg-white border"
+                    className="p-1 rounded-2xl bg-white border"
                     defaultValue={config.sensor_notifications_config_rangetime}
                     title="ระยะเวลาการแจ้งเตือน"
                   >
@@ -66,9 +96,9 @@ const NotificationTable: React.FC<NotificationTableProps> = ({ sensor }) => {
                     <option value={5}>5 นาที</option>
                   </select>
                 </td>
-                <td className="p-2  text-center">
+                <td className="p-2 text-center">
                   <select
-                    className="p-1  rounded-2xl bg-white border"
+                    className="p-1 rounded-2xl bg-white border"
                     defaultValue={config.sensor_notifications_config_signal}
                     title="สัญญาณ"
                   >
