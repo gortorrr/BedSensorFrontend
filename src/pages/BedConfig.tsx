@@ -22,7 +22,7 @@ const BedConfig: React.FC = () => {
   const [patient, setPatient] = useState<Patient | undefined>();
   const [sensors, setSensor] = useState<Sensor[] | undefined>();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const handlePatientSelect = (selectedPatient: Patient) => {
+  const handlePatientSelect = (selectedPatient: Patient | undefined) => {
     setPatient(selectedPatient);
   };
 
@@ -89,7 +89,8 @@ const BedConfig: React.FC = () => {
       bed.patient_id = patient?.patient_id;
       if (sensors) bed.sensors = sensors;
     }
-    console.log("update", bed);
+    // console.log("update", bed);
+    // console.log(patient);
     if (bed && bed.bed_id) bedStore.saveBedConfig(bed?.bed_id, bed);
     handleCancel();
   };

@@ -10,7 +10,7 @@ import { usePatientStore } from "../../store/patientStore";
 
 interface Props {
   patient_config: Patient | undefined;
-  onPatientSelect: (patient: Patient) => void;
+  onPatientSelect: (patient: Patient | undefined) => void;
   // bed_id: number; // เพิ่มฟังก์ชันรับค่าผู้ป่วย
 }
 
@@ -62,6 +62,7 @@ const PatientWindow: React.FC<Props> = ({
     // console.log(patient_config?.patient_id);
     // console.log(bed_id);
     setSelectedPatient(undefined);
+    onPatientSelect(undefined);
   };
 
   if (!selectedPatient) {
