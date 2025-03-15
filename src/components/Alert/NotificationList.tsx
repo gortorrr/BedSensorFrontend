@@ -93,7 +93,7 @@ const NotificationList: React.FC<NotificationListProps> = ({
   getTimeElapsed,
 }) => {
   return (
-    <div className="p-4 space-y-4 overflow-auto flex-1">
+    <div className="p-4 space-y-4 overflow-auto ">
       {notifications.map((noti) => (
         <NotificationCard
           key={noti.notification_id}

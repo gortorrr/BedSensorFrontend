@@ -3,6 +3,8 @@ import Plot from "react-plotly.js";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format, addDays, subDays } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
 
 interface TimelineGraphProps {
   data: { time: string; position: string }[];
@@ -22,9 +24,9 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
   const statusColors: { [key: string]: string } = {
     ไม่อยู่ที่เตียง: "#80002a",
     นั่ง: "#ffcc00",
-    นอนตะแคงซ้าย: "#99cc99",
+    นอนตะแคงซ้าย: "#FBA518",
     นอนตะแคงขวา: "#e63946",
-    นอนตรง: "#d4e157",
+    นอนตรง: "#A89C29",
   };
 
   // แปลงวันที่ที่เลือกให้เป็น format "yyyy-MM-dd"
@@ -64,18 +66,31 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
   return (
 
     <div className="bg-white rounded-lg p-3 shadow-md ">
-      {/* Date Picker */}
-      <div style={{ display: "flex", alignItems: "center", marginBottom: 10 }}>
-        <span style={{ marginRight: 10 }}>วัน / เดือน / ปี</span>
+      <div className="px-2">
+        {/* Date Picker */}
+      <div className="flex items-center gap-4 mb-4">
+        <span className="text-md font-medium">วัน / เดือน / ปี</span>
+        <div className="relative">
         <DatePicker
           selected={selectedDate}
           onChange={(date) => setSelectedDate(date!)}
           dateFormat="dd/MM/yyyy"
-          className="custom-date-picker"
+          className="custom-date-picker p-2 border-1 rounded-xl text-center font-semibold shadow-md"
         />
-        <button
+        <CalendarIcon className="absolute right-2 top-1.5 text-gray-500" />
+        </div>
+        
+        <MdKeyboardDoubleArrowLeft 
           onClick={() => setSelectedDate(subDays(selectedDate, 1))}
-          style={{ marginLeft: 10, cursor: "pointer" }}
+          style={{ marginLeft: 10, fontSize: 30, cursor: "pointer" }}
+        />
+        <MdKeyboardDoubleArrowRight
+          onClick={() => setSelectedDate(addDays(selectedDate, 1))}
+          style={{ marginLeft: 5, fontSize: 30, cursor: "pointer" }}
+        />
+        {/* <button
+          onClick={() => setSelectedDate(subDays(selectedDate, 1))}
+          style={{ marginLeft: 10, fontSize: 20, cursor: "pointer" }}
         >
           «
         </button>
@@ -84,49 +99,69 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
           style={{ marginLeft: 5, cursor: "pointer" }}
         >
           »
-        </button>
+        </button> */}
+      </div>
+      
       </div>
 
-      <div>
+      <div className="bg-linear-to-r from-[#80a2ad] to-[#e9f6fc] rounded-lg" >
         {/* กราฟ */}
-      <Plot
-        data={traces}
-        layout={{
-          title: "⏳ Timeline ของกิจกรรม",
-          xaxis: {
-            title: "เวลา",
-            type: "date",
-            range: [
-              `${formattedSelectedDate}T00:00:00`,
-              `${formattedSelectedDate}T23:59:59`,
-            ], // ✅ แสดงตั้งแต่ 00:00 - 24:00
-          },
-          yaxis: {
-            title: "สถานะ",
-            tickvals: Object.values(statusMapping),
-            ticktext: Object.keys(statusMapping),
-          },
-          legend: { title: { text: "สถานะ" } }, // ✅ Legend แยกแต่ละสถานะ
-          height: 350,
-        }}
-        useResizeHandler
-        style={{ width: "100%" }}
-      />
+        <Plot
+          data={traces.map((trace) => ({
+            ...trace,
+            line: { width: 4, dash: 'solid' }, // เพิ่มความหนาแส้น
+          }))}
+          layout={{
+            title: "⏳ Timeline ของกิจกรรม",
+            font: { size: 16, color: "#000000", family: "Noto Serif Thai" },
+            xaxis: {
+              title: "เวลา",
+              type: "date",
+              range: [
+                `${formattedSelectedDate}T00:00:00`,
+                `${formattedSelectedDate}T23:59:59`,
+              ], // ✅ แสดงตั้งแต่ 00:00 - 24:00
+            },
+            yaxis: {
+              title: "สถานะ",
+              tickvals: Object.values(statusMapping),
+              ticktext: Object.keys(statusMapping),
+              tickangle: 0, // ✅ แสดงข้อความแนวนอนชัดเจน
+              automargin: true, // ✅ ป้องกันการตัดข้อความ
+            },
+            legend: { 
+              title: { text: "สถานะ", side: "top center"} ,
+              font: { color: "#000000" },
+              orientation: "h", // ย้าย Legend ไปด้านล่างของกราฟ
+              x: 0.5, // จัดกึ่งกลาง
+              y: -0.3, // ขยับลงมาด้านล่าง
+              xanchor: "center",
+              yanchor: "top",
+                    }, // ✅ Legend แยกแต่ละสถานะ
+            height: 350,
+            // กำหนดพื้นหลังเป็นไล่สี (gradient)
+            paper_bgcolor: "transparent", // พื้นหลังของกราฟ
+            plot_bgcolor: "transparent", // พื้นหลังที่อยู่ด้านในกราฟ (สำหรับพื้นที่แสดงข้อมูล)
+            
+          }}
+          useResizeHandler
+          style={{ width: "100%" }}
+        />
 
-      {/* คำอธิบายสี */}
-      <div style={{ display: "flex", flexWrap: "wrap", marginTop: 10 }}>
-        {Object.entries(statusColors).map(([status]) => (
-          <div
-            key={status}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              marginRight: 15,
-              marginBottom: 5,
-            }}
-          ></div>
-        ))}
-      </div>
+        {/* คำอธิบายสี */}
+        <div style={{ display: "flex", flexWrap: "wrap", marginTop: 10 }}>
+          {Object.entries(statusColors).map(([status]) => (
+            <div
+              key={status}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginRight: 15,
+                marginBottom: 5,
+              }}
+            ></div>
+          ))}
+        </div>
       </div>
       
     </div>
