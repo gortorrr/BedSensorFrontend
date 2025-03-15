@@ -12,13 +12,13 @@ const NotificationTable: React.FC<NotificationTableProps> = ({ sensor }) => {
         <thead className="bg-[#95BAC3]">
           <tr>
             {sensor.sensor_type === "bed_sensor" && (
-              <th className="p-2 border">ไอคอน</th>
+              <th className="p-2 ">ไอคอน</th>
             )}
-            <th className="p-2 border">เหตุการณ์</th>
-            <th className="p-2 border">การใช้</th>
-            <th className="p-2 border">การแจ้งเตือนซ้ำ</th>
-            <th className="p-2 border">ระยะเวลาการแจ้งเตือน</th>
-            <th className="p-2 border">สัญญาณ</th>
+            <th className="p-2 text-left">เหตุการณ์</th>
+            <th className="p-2 ">การใช้</th>
+            <th className="p-2 ">การแจ้งเตือนซ้ำ</th>
+            <th className="p-2 ">ระยะเวลาการแจ้งเตือน</th>
+            <th className="p-2 ">สัญญาณ</th>
           </tr>
         </thead>
 
@@ -26,17 +26,14 @@ const NotificationTable: React.FC<NotificationTableProps> = ({ sensor }) => {
           {sensor.sensor_notifications_config &&
           sensor.sensor_notifications_config.length > 0 ? (
             sensor.sensor_notifications_config.map((config, index) => (
-              <tr
-                key={index}
-                className="border-b odd:bg-white even:bg-[#A1B5BC]"
-              >
+              <tr key={index} className=" odd:bg-white even:bg-[#A1B5BC]">
                 {sensor.sensor_type === "bed_sensor" && (
-                  <td className="p-2 border text-center text-4xl">🛏️</td>
+                  <td className="p-2  text-center text-4xl">🛏️</td>
                 )}
-                <td className="p-2 border text-left">
+                <td className="p-2  text-left">
                   {config.sensor_notifications_config_event}
                 </td>
-                <td className="p-2 pt-4 border text-center">
+                <td className="p-2 pt-4  text-center">
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
                       type="checkbox"
@@ -44,12 +41,12 @@ const NotificationTable: React.FC<NotificationTableProps> = ({ sensor }) => {
                       defaultChecked={config.sensor_notifications_config_usage}
                       title="การใช้"
                     />
-                    <div className="relative w-11 h-6 items-center bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#2E5361] dark:peer-checked:bg-blue-600"></div>
+                    <div className="relative w-11 h-6 items-center bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-500 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#2E5361] dark:peer-checked:bg-black"></div>
                   </label>
                 </td>
-                <td className="p-2 border text-center">
+                <td className="p-2  text-center">
                   <select
-                    className="p-1 border rounded bg-white"
+                    className="p-1  rounded-2xl bg-white border"
                     defaultValue={config.sensor_notifications_config_repeatnoti}
                     title="เลือกค่าการแจ้งเตือนซ้ำ"
                   >
@@ -58,9 +55,9 @@ const NotificationTable: React.FC<NotificationTableProps> = ({ sensor }) => {
                     <option value={10}>10 นาที</option>
                   </select>
                 </td>
-                <td className="p-2 border text-center">
+                <td className="p-2  text-center">
                   <select
-                    className="p-1 border rounded bg-white"
+                    className="p-1  rounded-2xl bg-white border"
                     defaultValue={config.sensor_notifications_config_rangetime}
                     title="ระยะเวลาการแจ้งเตือน"
                   >
@@ -69,9 +66,9 @@ const NotificationTable: React.FC<NotificationTableProps> = ({ sensor }) => {
                     <option value={5}>5 นาที</option>
                   </select>
                 </td>
-                <td className="p-2 border text-center">
+                <td className="p-2  text-center">
                   <select
-                    className="p-1 border rounded bg-white"
+                    className="p-1  rounded-2xl bg-white border"
                     defaultValue={config.sensor_notifications_config_signal}
                     title="สัญญาณ"
                   >
