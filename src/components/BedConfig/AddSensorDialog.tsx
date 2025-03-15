@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import type { Sensor } from "../../types/sensor";
 import { useSensorStore } from "../../store/sensorStore";
+// import { useSensorStore } from "../../store/sensorStore";
 
 interface AddSensorDialogProps {
   isOpen: boolean;
@@ -13,22 +14,22 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
   onClose,
   onSelectSensor,
 }) => {
-  const { loadAllSensorFree } = useSensorStore(); // ดึงฟังก์ชันโหลดเซ็นเซอร์
+  // const { loadAllSensorFree } = useSensorStore(); // ดึงฟังก์ชันโหลดเซ็นเซอร์
   const [searchI, setSearchI] = useState("");
   const [searchII, setSearchII] = useState("");
-  const [sensors, setSensors] = useState<Sensor[]>([]);
+  const sensorStore = useSensorStore();
 
-  useEffect(() => {
-    if (isOpen) {
-      loadAllSensorFree().then((data: Sensor[]) => {
-        setSensors(data); // เซ็ตค่าข้อมูลเซ็นเซอร์จาก store
-      });
-    }
-  }, [isOpen, loadAllSensorFree]);
+  // useEffect(() => {
+  //   if (isOpen) {
+  //     loadAllSensorFree().then((data: Sensor[]) => {
+  //       setSensors(data); // เซ็ตค่าข้อมูลเซ็นเซอร์จาก store
+  //     });
+  //   }
+  // }, [isOpen, loadAllSensorFree]);
 
   if (!isOpen) return null;
 
-  const filteredSensors = sensors.filter(
+  const filteredSensors = sensorStore.sensorsFree.filter(
     (sensor) =>
       (sensor.sensor_mac_i?.toLowerCase() || "").includes(
         searchI.toLowerCase()
@@ -94,10 +95,17 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
             </thead>
             <tbody>
               {filteredSensors.map((sensor, index) => (
-                <tr key={sensor.sensor_id} className="odd:bg-white even:bg-gray-100">
+                <tr
+                  key={sensor.sensor_id}
+                  className="odd:bg-white even:bg-gray-100"
+                >
                   <td className="border p-3 text-center">{index + 1}</td>
-                  <td className="border p-3 text-center">{sensor.sensor_mac_i}</td>
-                  <td className="border p-3 text-center">{sensor.sensor_mac_ii}</td>
+                  <td className="border p-3 text-center">
+                    {sensor.sensor_mac_i}
+                  </td>
+                  <td className="border p-3 text-center">
+                    {sensor.sensor_mac_ii}
+                  </td>
                   <td className="border p-3">{sensor.sensor_type}</td>
                   <td className="border p-3 text-center">
                     <button

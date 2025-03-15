@@ -11,7 +11,7 @@ import { usePatientStore } from "../../store/patientStore";
 interface Props {
   patient_config: Patient | undefined;
   onPatientSelect: (patient: Patient) => void;
-  bed_id: number; // เพิ่มฟังก์ชันรับค่าผู้ป่วย
+  // bed_id: number; // เพิ่มฟังก์ชันรับค่าผู้ป่วย
 }
 
 const formatDate = (dateString: string | undefined) => {
@@ -26,7 +26,6 @@ const formatDate = (dateString: string | undefined) => {
 const PatientWindow: React.FC<Props> = ({
   patient_config,
   onPatientSelect,
-  bed_id,
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState<Patient | undefined>(
@@ -54,13 +53,14 @@ const PatientWindow: React.FC<Props> = ({
     onPatientSelect(patient); // ส่งค่ากลับไป C
     closeDialog();
   };
+
   // console.log("🩺 Patient Config Data:", selectedPatient);
 
   const handleDeletePatient = () => {
     if (patient_config)
       patientStore.patients = [patient_config, ...patientStore.patients];
-    console.log(patient_config?.patient_id);
-    console.log(bed_id);
+    // console.log(patient_config?.patient_id);
+    // console.log(bed_id);
     setSelectedPatient(undefined);
   };
 

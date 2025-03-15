@@ -22,7 +22,7 @@ const AddPatientDialog: React.FC<AddPatientDialogProps> = ({
     patientStore.patients = patientStore.patients.filter(
       (p) => p.patient_id !== patient.patient_id
     );
-    console.log(patientStore.patients);
+    // console.log(patientStore.patients);
   };
 
   const filteredPatients = patientStore.patients.filter((patient) =>

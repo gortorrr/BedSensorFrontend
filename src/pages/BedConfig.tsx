@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PatientWindow from "../components/BedConfig/PatientWindow.tsx";
 import BedWindow from "../components/BedConfig/BedWindow.tsx";
 import SensorTableWindow from "../components/BedConfig/SensorTableWindow.tsx";
@@ -10,14 +10,17 @@ import { Bed } from "../types/bed";
 import Icon from "@mdi/react";
 import { mdiPlus } from "@mdi/js";
 import AddSensorDialog from "../components/BedConfig/AddSensorDialog.tsx";
+import { useSensorStore } from "../store/sensorStore.ts";
 
 const BedConfig: React.FC = () => {
   const { bed_id } = useParams<{ bed_id?: string }>();
   const bedStore = useBedStore();
+  const sensorStore = useSensorStore();
+  const navigate = useNavigate();
 
   const [bed, setBed] = useState<Bed | undefined>();
   const [patient, setPatient] = useState<Patient | undefined>();
-  const [sensor, setSensor] = useState<Sensor[] | undefined>();
+  const [sensors, setSensor] = useState<Sensor[] | undefined>();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const handlePatientSelect = (selectedPatient: Patient) => {
     setPatient(selectedPatient);
@@ -46,10 +49,49 @@ const BedConfig: React.FC = () => {
     }
   }, [bed_id, bedStore]);
 
+  useEffect(() => {
+    sensorStore.loadAllSensorFree();
+  }, []);
+
+  const handleSelectSensor = (selectedSensor: Sensor) => {
+    setSensor((prevSensors) => {
+      if (prevSensors) {
+        return [...prevSensors, selectedSensor]; // เพิ่ม sensor ใหม่ใน array
+      }
+      return [selectedSensor]; // ถ้าไม่มี sensor เก่าเลย, สร้าง array ใหม่
+    });
+    sensorStore.sensorsFree = sensorStore.sensorsFree.filter(
+      (ss) => ss.sensor_id !== selectedSensor.sensor_id
+    );
+    handleCloseDialog();
+  };
+
+  const handleDeleteSensor = (targetSensor: Sensor) => {
+    sensorStore.sensorsFree = [targetSensor, ...sensorStore.sensorsFree];
+    setSensor((prevSensors) => {
+      if (prevSensors) {
+        // ใช้ filter เพื่อลบเซ็นเซอร์ที่ไม่ตรงกับ sensorToDelete
+        return prevSensors.filter(
+          (sensor) => sensor.sensor_id !== targetSensor.sensor_id
+        );
+      }
+      return [];
+    });
+  };
+
   const handleConfirm = () => {
-    console.log(bed);
-    console.log(patient);
-    console.log(sensor);
+    // console.log(bed);
+    // console.log(patient);
+    // console.log(sensors);
+
+    if (bed) {
+      bed.patient = patient;
+      bed.patient_id = patient?.patient_id;
+      if (sensors) bed.sensors = sensors;
+    }
+    console.log("update", bed);
+    if (bed && bed.bed_id) bedStore.saveBedConfig(bed?.bed_id, bed);
+    handleCancel();
   };
 
   const handleOpenDialog = () => {
@@ -58,6 +100,10 @@ const BedConfig: React.FC = () => {
 
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
+  };
+
+  const handleCancel = () => {
+    navigate("/");
   };
 
   return (
@@ -85,13 +131,15 @@ const BedConfig: React.FC = () => {
             <PatientWindow
               patient_config={patient ?? undefined}
               onPatientSelect={handlePatientSelect}
-              bed_id={bed?.bed_id ?? 0}
             />
           </div>
         </div>
         {/* Right Column: Sensors */}
         <div className="p-2">
-          <SensorTableWindow sensors={sensor ?? undefined} />
+          <SensorTableWindow
+            sensors={sensors ?? undefined}
+            onDeleteSensor={handleDeleteSensor}
+          />
         </div>
       </div>
       {/* Footer */}
@@ -102,7 +150,10 @@ const BedConfig: React.FC = () => {
         >
           ยืนยัน
         </button>
-        <button className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400 cursor-pointer">
+        <button
+          className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400 cursor-pointer"
+          onClick={handleCancel}
+        >
           ยกเลิก
         </button>
       </div>
