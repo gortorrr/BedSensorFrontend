@@ -12,7 +12,12 @@ const Home: React.FC = () => {
   const [isClicked, setIsClicked] = useState(false); // State สำหรับจัดการการคลิกปุ่ม
 
   useEffect(() => {
-    loadBeds();
+    const timer = setTimeout(() => {
+      loadBeds();
+    }, 100); // 100 milliseconds delay
+
+    // Cleanup the timer when the component unmounts or before the next effect
+    return () => clearTimeout(timer);
   }, [loadBeds]);
 
   const filteredBeds: Bed[] = beds.filter(
@@ -21,7 +26,7 @@ const Home: React.FC = () => {
       (!search ||
         (bed.patient?.patient_name?.toLowerCase() || "").includes(
           search.toLowerCase()
-        ))  
+        ))
   );
 
   const handleAddPatientClick = () => {
@@ -31,9 +36,9 @@ const Home: React.FC = () => {
       setIsClicked(false); // รีเซ็ต state หลังจาก 1 วินาที
     }, 150);
   };
-  
+
   return (
-    <div style={{ padding: "20px" , backgroundColor: "#e7f0f3" }}>
+    <div style={{ padding: "20px", backgroundColor: "#e7f0f3" }}>
       <h2 className="text-[#2E5361] text-4xl font-bold mb-4 pl-4 py-2">
         รายการเตียงผู้ป่วย
       </h2>
