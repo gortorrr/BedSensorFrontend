@@ -62,7 +62,8 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
   });
 
   return (
-    <div>
+
+    <div className="bg-white rounded-lg p-3 shadow-md ">
       {/* Date Picker */}
       <div style={{ display: "flex", alignItems: "center", marginBottom: 10 }}>
         <span style={{ marginRight: 10 }}>วัน / เดือน / ปี</span>
@@ -86,7 +87,8 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
         </button>
       </div>
 
-      {/* กราฟ */}
+      <div>
+        {/* กราฟ */}
       <Plot
         data={traces}
         layout={{
@@ -125,6 +127,8 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
           ></div>
         ))}
       </div>
+      </div>
+      
     </div>
   );
 };
