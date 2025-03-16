@@ -1,8 +1,9 @@
 import { Sensor_Notification_Config } from "../types/sensor_Notifications_config";
 import http from "./http";
 import { AxiosError } from "axios"; // ✅ นำเข้า AxiosError (ถ้าใช้ axios)
-import { Notification } from "../types/notification";
+// import { Notification } from "../types/notification";
 import { Bed } from "../types/bed";
+import { Log_bed_patient_sensor } from "../types/log_bed_patient_sensor";
 export const sensorNotificationsConfigService = {
   async loadSensorNotificationConfig(
     bed_id: number
@@ -50,12 +51,24 @@ export const sensorNotificationsConfigService = {
     }
   },
 
-  async fetchNotification(): Promise<Notification[]> {
+  async fetchNotification(
+    bed_id: number,
+    patient_id: number,
+    sensor_id: number
+  ): Promise<Log_bed_patient_sensor | undefined> {
     return new Promise((resolve) => {
-      setTimeout(() => resolve(notificationFetchExamData), 500);
+      setTimeout(() => {
+        // ค้นหาข้อมูลที่ตรงกับ bed_id, patient_id, และ sensor_id
+        const result = logNotificationFetchExamData.find(
+          (log) =>
+            log.bed_id === bed_id &&
+            log.patient_id === patient_id &&
+            log.sensor_id === sensor_id
+        );
+        resolve(result); // ส่งคืนข้อมูลที่พบ หรือ undefined ถ้าไม่พบ
+      }, 100);
     });
   },
-
   async loadBedWithSensorConfig(bed_id: number): Promise<Bed> {
     {
       const res = await http.get(`beds/sensor-config/${bed_id}`);
@@ -64,100 +77,85 @@ export const sensorNotificationsConfigService = {
   },
 };
 
-const notificationFetchExamData: Notification[] = [
+const logNotificationFetchExamData: Log_bed_patient_sensor[] = [
   {
-    sensor_notifications_config_id: 4,
-    notification_successed: true,
-    notification_category: "Emergency",
-    notification_accepted: true,
-    notification_createdate: "2025-03-08T07:08:24",
-    notification_updatedate: "2025-03-08T07:08:24",
-    notification_id: 1,
-    sensor_notifications_config: {
-      sensor_id: 4,
-      sensor_notifications_config_event: "นอนตะแคงขวา",
-      sensor_notifications_config_usage: true,
-      sensor_notifications_config_repeatnoti: 4,
-      sensor_notifications_config_rangetime: 25,
-      sensor_notifications_config_signal: "เฝ้าระวัง",
-      sensor_notifications_config_id: 4,
-      sensor: undefined,
-    },
+    log_bed_patient_sensor_id: 1,
+    bed_id: 1,
+    patient_id: 1,
+    sensor_id: 1,
+    notifications: [
+      {
+        sensor_notifications_config_id: 0,
+        notification_id: 0,
+        notification_successed: false,
+        notification_category: "แฉ็งหัว",
+        notification_accepted: false,
+        log_bed_patient_sensor_id: 0,
+        sensor_notifications_config: {
+          sensor_notifications_config_id: 0,
+          sensor_notifications_config_event: "แฉ็งหัว",
+          sensor_notifications_config_usage: false,
+          sensor_notifications_config_repeatnoti: 0,
+          sensor_notifications_config_rangetime: 0,
+          sensor_notifications_config_signal: "",
+        },
+      },
+      {
+        sensor_notifications_config_id: 0,
+        notification_id: 0,
+        notification_successed: false,
+        notification_category: "แฉ็งหัว",
+        notification_accepted: false,
+        log_bed_patient_sensor_id: 0,
+        sensor_notifications_config: {
+          sensor_notifications_config_id: 0,
+          sensor_notifications_config_event: "ส้มหยุด",
+          sensor_notifications_config_usage: false,
+          sensor_notifications_config_repeatnoti: 0,
+          sensor_notifications_config_rangetime: 0,
+          sensor_notifications_config_signal: "",
+        },
+      },
+      {
+        sensor_notifications_config_id: 0,
+        notification_id: 0,
+        notification_successed: false,
+        notification_category: "แฉ็งหัว",
+        notification_accepted: false,
+        log_bed_patient_sensor_id: 0,
+        sensor_notifications_config: {
+          sensor_notifications_config_id: 0,
+          sensor_notifications_config_event: "เปรต",
+          sensor_notifications_config_usage: false,
+          sensor_notifications_config_repeatnoti: 0,
+          sensor_notifications_config_rangetime: 0,
+          sensor_notifications_config_signal: "",
+        },
+      },
+    ],
   },
   {
-    sensor_notifications_config_id: 14,
-    notification_successed: true,
-    notification_category: "SOS",
-    notification_accepted: true,
-    notification_createdate: "2025-03-08T07:08:24",
-    notification_updatedate: "2025-03-08T07:08:24",
-    notification_id: 2,
-    sensor_notifications_config: {
-      sensor_id: 4,
-      sensor_notifications_config_event: "นอนตะแคงซ้าย",
-      sensor_notifications_config_usage: true,
-      sensor_notifications_config_repeatnoti: 3,
-      sensor_notifications_config_rangetime: 5,
-      sensor_notifications_config_signal: "เฝ้าระวัง",
-      sensor_notifications_config_id: 14,
-      sensor: undefined,
-    },
-  },
-  {
-    sensor_notifications_config_id: 4,
-    notification_successed: true,
-    notification_category: "SOS",
-    notification_accepted: true,
-    notification_createdate: "2025-03-08T07:08:24",
-    notification_updatedate: "2025-03-08T07:08:24",
-    notification_id: 3,
-    sensor_notifications_config: {
-      sensor_id: 4,
-      sensor_notifications_config_event: "นอนตะแคงขวา",
-      sensor_notifications_config_usage: true,
-      sensor_notifications_config_repeatnoti: 4,
-      sensor_notifications_config_rangetime: 25,
-      sensor_notifications_config_signal: "เฝ้าระวัง",
-      sensor_notifications_config_id: 4,
-      sensor: undefined,
-    },
-  },
-  {
-    sensor_notifications_config_id: 14,
-    notification_successed: true,
-    notification_category: "SOS",
-    notification_accepted: true,
-    notification_createdate: "2025-03-08T07:08:24",
-    notification_updatedate: "2025-03-08T07:08:24",
-    notification_id: 4,
-    sensor_notifications_config: {
-      sensor_id: 4,
-      sensor_notifications_config_event: "นอนตะแคงซ้าย",
-      sensor_notifications_config_usage: true,
-      sensor_notifications_config_repeatnoti: 3,
-      sensor_notifications_config_rangetime: 5,
-      sensor_notifications_config_signal: "เฝ้าระวัง",
-      sensor_notifications_config_id: 14,
-      sensor: undefined,
-    },
-  },
-  {
-    sensor_notifications_config_id: 4,
-    notification_successed: true,
-    notification_category: "Emergency",
-    notification_accepted: true,
-    notification_createdate: "2025-03-08T07:08:24",
-    notification_updatedate: "2025-03-08T07:08:24",
-    notification_id: 5,
-    sensor_notifications_config: {
-      sensor_id: 4,
-      sensor_notifications_config_event: "นอนตะแคงขวา",
-      sensor_notifications_config_usage: true,
-      sensor_notifications_config_repeatnoti: 4,
-      sensor_notifications_config_rangetime: 25,
-      sensor_notifications_config_signal: "เฝ้าระวัง",
-      sensor_notifications_config_id: 4,
-      sensor: undefined,
-    },
+    log_bed_patient_sensor_id: 1,
+    bed_id: 1,
+    patient_id: 1,
+    sensor_id: 2,
+    notifications: [
+      {
+        sensor_notifications_config_id: 0,
+        notification_id: 0,
+        notification_successed: false,
+        notification_category: "แฉ็งหัว",
+        notification_accepted: false,
+        log_bed_patient_sensor_id: 0,
+        sensor_notifications_config: {
+          sensor_notifications_config_id: 0,
+          sensor_notifications_config_event: "หยาหนัด",
+          sensor_notifications_config_usage: false,
+          sensor_notifications_config_repeatnoti: 0,
+          sensor_notifications_config_rangetime: 0,
+          sensor_notifications_config_signal: "",
+        },
+      },
+    ],
   },
 ];

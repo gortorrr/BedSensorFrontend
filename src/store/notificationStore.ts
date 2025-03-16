@@ -1,46 +1,47 @@
 import { create } from "zustand";
-import { notificationService } from "../services/notificationService";
-import { Notification } from "../types/notification";
+// import { notificationService } from "../services/notificationService";
+// import { Notification } from "../types/notification";
+import { Log_bed_patient_sensor } from "../types/log_bed_patient_sensor";
+import { sensorNotificationsConfigService } from "../services/sensorNotificationsConfigService";
 
 interface NotificationStore {
-  NotificationByPatientAndSensor: Notification[];
+  // NotificationByPatientAndSensor: Notification[];
   showAlert: boolean;
   selectedAlertType: string;
+  LogHistoryNotifications: Log_bed_patient_sensor | null;
   setSelectedAlertType: (type: string) => void;
   setShowAlert: (value: boolean) => void;
-  loadAllNotificationByPatient: (
+  loadLogHistoryNotifications: (
+    bed_id: number,
     patient_id: number,
     sensor_id: number
-  ) => Promise<Notification[] | null>;
+  ) => Promise<void>;
 }
 
 export const useNotificationStore = create<NotificationStore>((set) => ({
-  NotificationByPatientAndSensor: [],
+  // NotificationByPatientAndSensor: [],
+  LogHistoryNotifications: {},
   showAlert: false,
   selectedAlertType: "", // ค่าเริ่มต้น
   setSelectedAlertType: (type) => set({ selectedAlertType: type }),
 
   setShowAlert: (value) => set({ showAlert: value }),
 
-  loadAllNotificationByPatient: async (
+  loadLogHistoryNotifications: async (
+    bed_id: number,
     patient_id: number,
     sensor_id: number
   ) => {
-    //สามารถดูตัวอย่างการเรียกได้ Setting Noti
-    try {
-      const res = await notificationService.loadAllNotificationByPatient(
-        patient_id,
-        sensor_id
-      );
-      console.log("✅ API Response NotificationByPatient :", res);
-
-      const notifications = Array.isArray(res) ? res : res ? [res] : []; // ✅ ป้องกัน API คืนค่า undefined หรือ object เดี่ยว
-
-      return notifications; // ✅ คืนค่าเป็น Notification[]
-    } catch (error) {
-      console.error("❌ โหลดข้อมูลแจ้งเตือนล้มเหลว:", error);
-      return []; // ✅ คืนค่าเป็น array ว่างถ้าเกิดข้อผิดพลาด
-    }
+    console.log(bed_id);
+    console.log(patient_id);
+    console.log(sensor_id);
+    const res = await sensorNotificationsConfigService.fetchNotification(
+      bed_id,
+      patient_id,
+      sensor_id
+    );
+    console.log("✅ API Response Log History Notifications:", res);
+    set({ LogHistoryNotifications: res ?? null });
   },
 }));
 // loadAllNotificationByPatient: async (patient_id: number, sensor_id: number) => {

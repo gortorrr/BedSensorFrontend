@@ -12,12 +12,14 @@ const Home: React.FC = () => {
   const [isClicked, setIsClicked] = useState(false); // State สำหรับจัดการการคลิกปุ่ม
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      loadBeds();
-    }, 100); // 100 milliseconds delay
+    // const timer = setTimeout(() => {
+    loadBeds();
+    // }, 100); // 100 milliseconds delay
 
     // Cleanup the timer when the component unmounts or before the next effect
-    return () => clearTimeout(timer);
+    // return () => clearTimeout(timer);
+
+    console.log(beds);
   }, [loadBeds]);
 
   const filteredBeds: Bed[] = beds.filter(

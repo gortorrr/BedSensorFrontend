@@ -32,14 +32,14 @@ const SettingNoti: React.FC = () => {
   // const [notifications, setNotifications] = useState<Notification[]>([]);
 
   // const updateNotifications = (newNotifications: Notification[]) => {
-  const updateNotifications = async (p: number, s: number) => {
-    const res: Notification[] | null =
-      await NotificationStore.loadAllNotificationByPatient(p, s);
-    console.log("ทำไมวะ", res);
-    if (res) {
-      setNotifications(res);
-    }
-  };
+  // const updateNotifications = async (p: number, s: number) => {
+  //   const res: Notification[] | null =
+  //     await NotificationStore.loadAllNotificationByPatient(p, s);
+  //   console.log("ทำไมวะ", res);
+  //   if (res) {
+  //     setNotifications(res);
+  //   }
+  // };
 
   // const selectSensorToConfig = async (sensor_id: number) => {
   //   const res: Notification[] | null =
@@ -154,7 +154,7 @@ const SettingNoti: React.FC = () => {
 
   // }, [bed_id, bedStore]);
 
-  const updateSensorSelectedToConfig = async (sensor_id) => {};
+  // const updateSensorSelectedToConfig = async (sensor_id) => {};
 
   const handleSensorChange = (sensorId: number) => {
     const newSensor = sensorList?.find((s) => s.sensor_id === sensorId);
@@ -234,27 +234,14 @@ const SettingNoti: React.FC = () => {
 
       {activeTab === "history" && selectedSensor && (
         <>
-          {selectedSensor.sensor_name === "Bed Sensor" && (
+          {bed && (
             <HistoryNotificationTable
               bed={bed}
-              notifications={notifications}
+              patient_id={bed?.patient_id ?? 0}
+              sensor_id={selectedSensor.sensor_id}
             ></HistoryNotificationTable>
           )}
-          {selectedSensor.sensor_name === "Heart Rate" && (
-            <div className="bg-white rounded-lg p-4 shadow-md text-red-500">
-              ประวัติ Heart Rate
-            </div>
-          )}
-          {selectedSensor.sensor_name === "SpO2 Sensor" && (
-            <div className="bg-white rounded-lg p-4 shadow-md text-green-500">
-              ประวัติ SpO2 Sensor
-            </div>
-          )}
-          {selectedSensor.sensor_name === "Respiration" && (
-            <div className="bg-white rounded-lg p-4 shadow-md text-blue-500">
-              ประวัติ Respiration
-            </div>
-          )}
+
           <div>yellow = Emergency</div>
           <div>red = SOS</div>
           <div>I think we should re design this page later</div>

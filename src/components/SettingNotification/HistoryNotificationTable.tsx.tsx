@@ -1,17 +1,29 @@
 import React, { useEffect } from "react";
+// import { Bed } from "../../types/bed";
+import { useNotificationStore } from "../../store/notificationStore";
 import { Bed } from "../../types/bed";
-import { Notification } from "../../types/notification";
+// import { Notification } from "../../types/notification";
 
 interface HistoryNotificationTableProps {
-  notifications: Notification[];
-  bed?: Bed;
+  bed: Bed;
+  patient_id: number;
+  sensor_id: number;
 }
 
 const HistoryNotificationTable: React.FC<HistoryNotificationTableProps> = ({
   bed,
-  notifications,
+  patient_id,
+  sensor_id,
 }) => {
-  useEffect(() => {});
+  const { loadLogHistoryNotifications, LogHistoryNotifications } =
+    useNotificationStore();
+
+  useEffect(() => {
+    // เรียกใช้ฟังก์ชัน loadLogHistoryNotifications เมื่อ bed_id, patient_id, หรือ sensor_id เปลี่ยน
+    if (bed.bed_id && patient_id && sensor_id) {
+      loadLogHistoryNotifications(bed.bed_id, patient_id, sensor_id);
+    }
+  }, [bed.bed_id, patient_id, sensor_id, loadLogHistoryNotifications]);
 
   return (
     <div className="bg-white rounded-lg p-4 shadow-md">
@@ -28,8 +40,9 @@ const HistoryNotificationTable: React.FC<HistoryNotificationTableProps> = ({
           </tr>
         </thead>
         <tbody>
-          {notifications?.length > 0 ? (
-            notifications.map((noti, index) => {
+          {LogHistoryNotifications?.notifications &&
+          LogHistoryNotifications?.notifications.length > 0 ? (
+            LogHistoryNotifications?.notifications.map((noti, index) => {
               // กำหนดสีของแถวตามประเภทของการแจ้งเตือน
               let rowColor = "bg-white";
               if (noti.notification_category === "Emergency") {
@@ -70,7 +83,7 @@ const HistoryNotificationTable: React.FC<HistoryNotificationTableProps> = ({
           ) : (
             <tr>
               <td colSpan={7} className="p-4 text-center text-gray-500">
-                ไม่มีข้อมูลการแจ้งเตือน
+                ไม่มีข้อมูลการแจ้งเตือน {bed.bed_id}
               </td>
             </tr>
           )}

@@ -9,4 +9,5 @@ export interface Notification {
   notification_createdate?: string;
   notification_updatedate?: string;
   sensor_notifications_config: Sensor_Notification_Config;
+  log_bed_patient_sensor_id: number;
 }
