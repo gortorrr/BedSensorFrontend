@@ -26,17 +26,17 @@ const HistoryNotificationTable: React.FC<HistoryNotificationTableProps> = ({
   }, [bed.bed_id, patient_id, sensor_id, loadLogHistoryNotifications]);
 
   return (
-    <div className="bg-white rounded-lg p-4 shadow-md">
+    <div className="bg-white rounded-lg p-3 shadow-md">
       <table className="w-full border-collapse">
-        <thead>
+        <thead className="h-16">
           <tr className="bg-[#B7D6DE]">
-            <th className="p-2 border">วัน/เวลา</th>
-            <th className="p-2 border">อาคาร</th>
-            <th className="p-2 border">ชั้น</th>
-            <th className="p-2 border">ห้อง</th>
-            <th className="p-2 border">เตียง</th>
-            <th className="p-2 border">การแจ้งเตือน</th>
-            <th className="p-2 border">สถานะ</th>
+            <th className="p-2 ">วัน/เวลา</th>
+            <th className="p-2 ">อาคาร</th>
+            <th className="p-2 ">ชั้น</th>
+            <th className="p-2 ">ห้อง</th>
+            <th className="p-2 ">เตียง</th>
+            <th className="p-2 ">การแจ้งเตือน</th>
+            <th className="p-2 ">สถานะ</th>
           </tr>
         </thead>
         <tbody>
