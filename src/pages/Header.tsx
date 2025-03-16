@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Bell, FileClock } from "lucide-react";
+import { Bell } from "lucide-react";
 import { useNotificationStore } from "../store/notificationStore";
 
 interface User {
@@ -58,7 +58,7 @@ export default function Header({ isOnline }: HeaderProps) {
             title="SOS Alert"
             onClick={() => {
               notificationStore.setShowAlert(!notificationStore.showAlert);
-              notificationStore.setSelectedAlertType("ต้องการความช่วยเหลือ"); // ตั้งค่าหัวข้อเป็น "ประวัติการแจ้งเตือน"
+              notificationStore.setSelectedAlertType("ต้องการความช่วยเหลือ"); 
             }}
           >
             <span className="bg-red-700 text-xs text-white px-2 py-1 rounded-full shadow-md transform transition-all">
@@ -72,12 +72,13 @@ export default function Header({ isOnline }: HeaderProps) {
             title="Emergency"
             onClick={() => {
               notificationStore.setShowAlert(!notificationStore.showAlert);
-              notificationStore.setSelectedAlertType("แจ้งเตือนฉุกเฉิน"); // ตั้งค่าหัวข้อเป็น "ประวัติการแจ้งเตือน"
+              notificationStore.setSelectedAlertType("แจ้งเตือนฉุกเฉิน");
             }}
           >
             <Bell className="w-6 h-6 text-yellow-500 fill-yellow-500 transition-all" />
           </button>
 
+          {/*
           <button
             className="cursor-pointer hover:scale-125 transition-transform transform hover:shadow-lg hover:bg-[#5E8892] hover:text-white p-2 rounded-full"
             title="History"
@@ -88,6 +89,7 @@ export default function Header({ isOnline }: HeaderProps) {
           >
             <FileClock className="w-6 h-6 text-yellow-500 fill-white transition-all" />
           </button>
+          */}
         </div>
       </header>
     </>

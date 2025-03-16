@@ -3,7 +3,7 @@ import { Notification } from "../../types/notification";
 
 interface NotificationCardProps {
   notification: Notification;
-  updateStatus: (id: number, accepted?: string, successed?: boolean) => void;
+  updateStatus: (id: number, accepted?: boolean, successed?: boolean) => void;
   getTimeElapsed: (notificationDate: Date) => string;
 }
 
@@ -36,27 +36,29 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
         <p
           className={`font-semibold ${
             notification.notification_successed
-            //   ? "text-gray-400"
-            //   : notification.notification_accepted === "รอการตอบรับ"
-            //   ? "text-gray-500"
-            //   : notification.notification_accepted === "กำลังดำเนินการ"
-            //   ? "text-yellow-500"
-            //   : "text-gray-400"
+              ? "text-gray-400"
+              : notification.notification_accepted === false
+              ? "text-gray-500"
+              : notification.notification_accepted === true
+              ? "text-yellow-500"
+              : "text-gray-400"
           }`}
         >
           สถานะ:{" "}
           {notification.notification_successed
             ? "เสร็จสิ้น"
-            : notification.notification_accepted}
+            : notification.notification_accepted
+            ? "กำลังดำเนินการ"
+            : "รอการตอบรับ"}
         </p>
 
         {/* ปุ่มแสดงเป็นข้อความแทน */}
         <div className="flex space-x-3 mt-2">
           {/* แสดงปุ่ม "รับทราบ" ตลอดเวลา */}
-          {!notification.notification_successed && (
+          {!notification.notification_successed && !notification.notification_accepted &&  (
             <button
               onClick={() =>
-                updateStatus(notification.notification_id, "กำลังดำเนินการ")
+                updateStatus(notification.notification_id, true)
               }
               className="text-[#007FCF] font-semibold hover:text-[#7cb1d0] cursor-pointer"
             >
@@ -83,7 +85,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
 
 interface NotificationListProps {
   notifications: Notification[];
-  updateStatus: (id: number, accepted?: string, successed?: boolean) => void;
+  updateStatus: (id: number, accepted?: boolean, successed?: boolean) => void;
   getTimeElapsed: (notificationDate: Date) => string;
 }
 
