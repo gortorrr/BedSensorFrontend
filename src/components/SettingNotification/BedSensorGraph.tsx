@@ -40,13 +40,12 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
   // ✅ แยกข้อมูลเป็น trace ตามแต่ละสถานะ และปรับโครงสร้างให้ถูกต้อง
   const traces: Plotly.Data[] = Object.keys(statusMapping).map((status) => {
     const statusData = filteredData.filter((d) => d.position === status);
-
     return {
       x: statusData.map((d) => d.time),
       y: statusData.map((d) => statusMapping[d.position]),
       text: statusData.map(
         (d) =>
-          `🟢 สถานะ: ${d.position}<br>🕒 เวลา: ${format(
+          `<span style="font-size: 14px; font-weight: bold;>🟢 สถานะ: ${d.position}</span><br>🕒 เวลา: ${format(
             new Date(d.time),
             "HH:mm"
           )}`
@@ -62,6 +61,8 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
       hoverinfo: "x+y+text", // ✅ แก้ให้โชว์ข้อมูลให้ครบ
     };
   });
+
+  
 
   return (
 
@@ -104,7 +105,7 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
       
       </div>
 
-      <div className="bg-linear-to-r from-[#80a2ad] to-[#e9f6fc] rounded-lg" >
+      <div className="bg-linear-to-r from-[#80a2ad] to-[#e9f6fc] rounded-lg w-full" >
         {/* กราฟ */}
         <Plot
           data={traces.map((trace) => ({
@@ -142,11 +143,22 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
             // กำหนดพื้นหลังเป็นไล่สี (gradient)
             paper_bgcolor: "transparent", // พื้นหลังของกราฟ
             plot_bgcolor: "transparent", // พื้นหลังที่อยู่ด้านในกราฟ (สำหรับพื้นที่แสดงข้อมูล)
-            
-          }}
-          useResizeHandler
-          style={{ width: "100%" }}
-        />
+            margin: { l: 80, r: 50, t: 80, b: 120 }, // ปรับ margin ให้พอดี
+            autosize: true // ให้ปรับขนาดอัตโนมัติภายในพื้นที่ที่กำหนด
+            }}
+            config={{
+              responsive: true,
+              // displayModeBar: false // ซ่อนแถบเครื่องมือเพื่อประหยัดพื้นที่
+            }}
+            useResizeHandler={true}
+            className="mx-auto" // จัดให้อยู่ตรงกลาง
+            style={{ 
+              width: "100%", 
+              maxWidth: "100%",
+              height: "auto"
+            }}
+          />
+
 
         {/* คำอธิบายสี */}
         <div style={{ display: "flex", flexWrap: "wrap", marginTop: 10 }}>

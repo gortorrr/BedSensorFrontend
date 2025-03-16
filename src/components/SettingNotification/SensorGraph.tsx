@@ -114,10 +114,10 @@ const SensorGraph: React.FC<SensorGraphProps> = ({
             line: { shape: "spline", width: 4 },
             name: title,
             hovertemplate:
-              `<b>${title}</><br>` +
-              `📅 วันที่: %{x|%d/%m/%Y}<br>` +
-              `🕒 เวลาเฉลี่ย: %{x|%H:%M} - %{x|%H:%M+30m}<br>` +
-              `📊 ค่าเฉลี่ย: <b>%{y} ${unit}</b><br>` +
+              `<b style="font-size: 16px; color: #2d6a4f;">${title}</b><br>` +
+              `<span style="font-size: 14px; color: #6c757d;">📅 <span style="font-weight: bold;">วันที่:</span> %{x|%d/%m/%Y}</span><br>` +
+              `<span style="font-size: 14px; color: #6c757d;">🕒 <span style="font-weight: bold;">เวลาเฉลี่ย:</span> %{x|%H:%M} - %{x|%H:%M+30m}</span><br>` +
+              `<span style="font-size: 14px; color: #f39c12;">📊 <span style="font-weight: bold;">ค่าเฉลี่ย:</span> <b>%{y} ${unit}</b></span><br>` +
               `<extra></extra>`,
           },
           {
@@ -165,7 +165,7 @@ const SensorGraph: React.FC<SensorGraphProps> = ({
           hovermode: "x unified",
         }}
         useResizeHandler
-        style={{ width: "100%" }}
+        // style={{ width: "100%" }}
       />
     </div>
     </div>
