@@ -31,4 +31,18 @@ export const notificationService = {
       throw error;
     }
   },
+
+  async acceptEmergencyByNotification(
+    notification_id: number
+  ): Promise<Notification> {
+    try {
+      const response = await http.put(
+        `notifications/notifications_accepted_emer/${notification_id}`
+      );
+      return response.data; // ✅ คืนค่าข้อมูลที่ได้จาก API
+    } catch (error) {
+      console.error("Error accepting emergency notification:", error);
+      throw error;
+    }
+  },
 };
