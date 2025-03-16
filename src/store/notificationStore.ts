@@ -2,7 +2,7 @@ import { create } from "zustand";
 // import { notificationService } from "../services/notificationService";
 // import { Notification } from "../types/notification";
 import { Log_bed_patient_sensor } from "../types/log_bed_patient_sensor";
-import { sensorNotificationsConfigService } from "../services/sensorNotificationsConfigService";
+// import { sensorNotificationsConfigService } from "../services/sensorNotificationsConfigService";
 
 interface NotificationStore {
   // NotificationByPatientAndSensor: Notification[];
@@ -11,11 +11,11 @@ interface NotificationStore {
   LogHistoryNotifications: Log_bed_patient_sensor | null;
   setSelectedAlertType: (type: string) => void;
   setShowAlert: (value: boolean) => void;
-  loadLogHistoryNotifications: (
-    bed_id: number,
-    patient_id: number,
-    sensor_id: number
-  ) => Promise<void>;
+  // loadLogHistoryNotifications: (
+  //   bed_id: number,
+  //   patient_id: number,
+  //   sensor_id: number
+  // ) => Promise<void>;
 }
 
 export const useNotificationStore = create<NotificationStore>((set) => ({
@@ -27,22 +27,22 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
 
   setShowAlert: (value) => set({ showAlert: value }),
 
-  loadLogHistoryNotifications: async (
-    bed_id: number,
-    patient_id: number,
-    sensor_id: number
-  ) => {
-    console.log(bed_id);
-    console.log(patient_id);
-    console.log(sensor_id);
-    const res = await sensorNotificationsConfigService.fetchNotification(
-      bed_id,
-      patient_id,
-      sensor_id
-    );
-    console.log("✅ API Response Log History Notifications:", res);
-    set({ LogHistoryNotifications: res ?? null });
-  },
+  // loadLogHistoryNotifications: async (
+  //   bed_id: number,
+  //   patient_id: number,
+  //   sensor_id: number
+  // ) => {
+  //   console.log(bed_id);
+  //   console.log(patient_id);
+  //   console.log(sensor_id);
+  //   const res = await sensorNotificationsConfigService.fetchNotification(
+  //     bed_id,
+  //     patient_id,
+  //     sensor_id
+  //   );
+  //   console.log("✅ API Response Log History Notifications:", res);
+  //   set({ LogHistoryNotifications: res ?? null });
+  // },
 }));
 // loadAllNotificationByPatient: async (patient_id: number, sensor_id: number) => {
 //   set({NotificationByPatientAndSensor:[]})

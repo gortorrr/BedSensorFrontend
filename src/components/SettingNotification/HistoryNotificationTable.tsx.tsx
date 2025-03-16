@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 // import { Bed } from "../../types/bed";
-import { useNotificationStore } from "../../store/notificationStore";
+// import { useNotificationStore } from "../../store/notificationStore";
 import { Bed } from "../../types/bed";
+import { useSensorNotificationsConfigStore } from "../../store/sensorNotificationsConfigStore";
 // import { Notification } from "../../types/notification";
 
 interface HistoryNotificationTableProps {
@@ -15,15 +16,30 @@ const HistoryNotificationTable: React.FC<HistoryNotificationTableProps> = ({
   patient_id,
   sensor_id,
 }) => {
-  const { loadLogHistoryNotifications, LogHistoryNotifications } =
-    useNotificationStore();
+  // const { loadLogHistoryNotifications, LogHistoryNotifications } =
+  //   useNotificationStore();
+  const {
+    loadLogNotifications,
+    // logAllNotifications,
+    targetLog,
+    targetLogHistory,
+  } = useSensorNotificationsConfigStore();
+
+  useEffect(() => {
+    // เรียกใช้ฟังก์ชัน loadLogHistoryNotifications เมื่อ bed_id, patient_id, หรือ sensor_id เปลี่ยน
+    // if (bed.bed_id && patient_id && sensor_id) {
+    //   loadLogHistoryNotifications(bed.bed_id, patient_id, sensor_id);
+    // }
+    // console.log();
+    loadLogNotifications(bed.bed_id, patient_id);
+  }, [bed.bed_id, patient_id, loadLogNotifications]);
 
   useEffect(() => {
     // เรียกใช้ฟังก์ชัน loadLogHistoryNotifications เมื่อ bed_id, patient_id, หรือ sensor_id เปลี่ยน
     if (bed.bed_id && patient_id && sensor_id) {
-      loadLogHistoryNotifications(bed.bed_id, patient_id, sensor_id);
+      targetLog(bed.bed_id, patient_id, sensor_id);
     }
-  }, [bed.bed_id, patient_id, sensor_id, loadLogHistoryNotifications]);
+  }, [bed.bed_id, patient_id, sensor_id, targetLog]);
 
   return (
     <div className="bg-white rounded-lg p-3 shadow-md">
@@ -40,9 +56,9 @@ const HistoryNotificationTable: React.FC<HistoryNotificationTableProps> = ({
           </tr>
         </thead>
         <tbody>
-          {LogHistoryNotifications?.notifications &&
-          LogHistoryNotifications?.notifications.length > 0 ? (
-            LogHistoryNotifications?.notifications.map((noti, index) => {
+          {targetLogHistory?.notifications &&
+          targetLogHistory?.notifications.length > 0 ? (
+            targetLogHistory?.notifications.map((noti, index) => {
               // กำหนดสีของแถวตามประเภทของการแจ้งเตือน
               let rowColor = "bg-white";
               if (noti.notification_category === "Emergency") {

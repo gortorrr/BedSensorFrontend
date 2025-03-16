@@ -121,7 +121,7 @@ const SettingNoti: React.FC = () => {
 
     loadData();
     // console.log(bed); // remove this to avoid logging the initial state of bed before it's updated.
-  }, [bed_id, useSenNotiCon]); // Remove `bed` from the dependencies list
+  }, []); // Remove `bed` from the dependencies list
 
   // useEffect(() => {
   //   updateNotifications(1,4);
