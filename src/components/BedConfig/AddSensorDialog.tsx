@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import type { Sensor } from "../../types/sensor";
 import { useSensorStore } from "../../store/sensorStore";
+import { motion, AnimatePresence } from "framer-motion";
 // import { useSensorStore } from "../../store/sensorStore";
 
 interface AddSensorDialogProps {
@@ -61,7 +62,28 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
   // ];
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center backdrop-blur-sm bg-transparent z-40">
+    <AnimatePresence>
+      {isOpen && (
+        <>
+        {/* Fully transparent overlay with blur */}
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-40 bg-transparent backdrop-blur-sm"
+            onClick={onClose}
+            aria-hidden="true"
+          />
+
+          {/* Dialog */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 50 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 50 }}
+            transition={{ type: "spring", stiffness: 500, damping: 25 }}
+            className="fixed inset-0 z-50 flex justify-center items-center"
+          >
+    {/* <div className="fixed inset-0 flex justify-center items-center backdrop-blur-sm bg-transparent z-40"> */}
       <div className="bg-white p-6 rounded-lg shadow-lg w-[800px] max-h-[80vh] overflow-auto ">
         <h2 className="text-2xl font-semibold mb-4">เพิ่มเซ็นเซอร์</h2>
 
@@ -130,7 +152,10 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
+            </>
+          )}
+        </AnimatePresence>
   );
 };
 
