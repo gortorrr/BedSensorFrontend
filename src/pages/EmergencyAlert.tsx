@@ -107,7 +107,14 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
         >
           {notificationStore.selectedAlertType} {/* ใช้ค่าจาก Zustand Store */}
         </h3>
-        <img src="src\assets\alarm.png" alt="alarm" className="mr-5 w-8 h-8" />
+        {/* แสดงรูปภาพ alarm เฉพาะเมื่อ selectedAlertType เป็น "แจ้งเตือนฉุกเฉิน" */}
+        {notificationStore.selectedAlertType === "แจ้งเตือนฉุกเฉิน" && (
+          <img
+            src="src/assets/alarm.png"
+            alt="alarm"
+            className="mr-4 w-8 h-8"
+          />
+        )}{" "}
         <button
           onClick={onClose}
           className="text-[#2E5361] text-xl hover:text-gray-300 absolute top-3 right-3"

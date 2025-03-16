@@ -58,7 +58,7 @@ export default function Header({ isOnline }: HeaderProps) {
             title="SOS Alert"
             onClick={() => {
               notificationStore.setShowAlert(!notificationStore.showAlert);
-              notificationStore.setSelectedAlertType("การแจ้งเตือน SOS"); // ตั้งค่าหัวข้อเป็น "ประวัติการแจ้งเตือน"
+              notificationStore.setSelectedAlertType("ต้องการความช่วยเหลือ"); // ตั้งค่าหัวข้อเป็น "ประวัติการแจ้งเตือน"
             }}
           >
             <span className="bg-red-700 text-xs text-white px-2 py-1 rounded-full shadow-md transform transition-all">
@@ -72,9 +72,7 @@ export default function Header({ isOnline }: HeaderProps) {
             title="Emergency"
             onClick={() => {
               notificationStore.setShowAlert(!notificationStore.showAlert);
-              notificationStore.setSelectedAlertType(
-                "ประวัติการแจ้งเตือน Emergency"
-              ); // ตั้งค่าหัวข้อเป็น "ประวัติการแจ้งเตือน"
+              notificationStore.setSelectedAlertType("แจ้งเตือนฉุกเฉิน"); // ตั้งค่าหัวข้อเป็น "ประวัติการแจ้งเตือน"
             }}
           >
             <Bell className="w-6 h-6 text-yellow-500 fill-yellow-500 transition-all" />
@@ -85,9 +83,7 @@ export default function Header({ isOnline }: HeaderProps) {
             title="History"
             onClick={() => {
               notificationStore.setShowAlert(!notificationStore.showAlert);
-              notificationStore.setSelectedAlertType(
-                "ประวัติการแจ้งเตือน History"
-              ); // ตั้งค่าหัวข้อเป็น "ประวัติการแจ้งเตือน"
+              notificationStore.setSelectedAlertType("ประวัติการแจ้งเตือน"); // ตั้งค่าหัวข้อเป็น "ประวัติการแจ้งเตือน"
             }}
           >
             <FileClock className="w-6 h-6 text-yellow-500 fill-white transition-all" />
