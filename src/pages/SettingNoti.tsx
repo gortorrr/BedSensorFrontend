@@ -74,7 +74,7 @@ const SettingNoti: React.FC = () => {
     };
 
     loadData();
-  }, [bed_id, useSenNotiCon]);
+  }, [bed_id]);
 
   useEffect(() => {
     const loadSensorHistory = async () => {
