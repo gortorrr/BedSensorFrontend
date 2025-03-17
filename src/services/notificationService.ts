@@ -36,7 +36,7 @@ export const notificationService = {
     notification_id: number
   ): Promise<Notification> {
     try {
-      const response = await http.put(
+      const response = await http.patch(
         `notifications/notifications_accepted_emer/${notification_id}`
       );
       return response.data; // ✅ คืนค่าข้อมูลที่ได้จาก API

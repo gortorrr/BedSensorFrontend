@@ -1,5 +1,6 @@
 import React from "react";
 import { Notification } from "../../types/notification";
+import { useNotificationStore } from "../../store/notificationStore";
 
 interface NotificationCardProps {
   notification: Notification;
@@ -12,6 +13,13 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
   updateStatus,
   getTimeElapsed,
 }) => {
+  const notificationStore = useNotificationStore();
+  const handleTabClick = (notification:Notification) => {
+    console.log(notification.notification_id)
+    if(notification.notification_category === "Emergency"){
+     notificationStore.acceptEmergencyByNotification(notification.notification_id) 
+    }
+  };
   return (
     <div className="flex items-center p-4 bg-slate-100 rounded-lg shadow">
       {/* แถบสีแนวตั้ง */}
@@ -58,7 +66,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
           {!notification.notification_successed && !notification.notification_accepted &&  (
             <button
               onClick={() =>
-                updateStatus(notification.notification_id, true)
+                handleTabClick(notification)
               }
               className="text-[#007FCF] font-semibold hover:text-[#7cb1d0] cursor-pointer"
             >
