@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Bell } from "lucide-react";
 import { useNotificationStore } from "../store/notificationStore";
+import SosAlert from "./SoSAlert";
+import EmergencyAlert from "./EmergencyAlert";
 
 interface User {
   name: string;
@@ -14,6 +16,8 @@ interface HeaderProps {
 
 export default function Header({ isOnline }: HeaderProps) {
   const [time, setTime] = useState(new Date());
+  const [showSosAlert, setShowSosAlert] = useState(false);
+  const [showEmergencyAlert, setShowEmergencyAlert] = useState(false);
   const notificationStore = useNotificationStore(); // ใช้ store
 
   useEffect(() => {
@@ -57,8 +61,9 @@ export default function Header({ isOnline }: HeaderProps) {
             className="relative animate-pulse cursor-pointer hover:scale-105 transition-transform hover:opacity-110 flex items-center justify-center p-2 rounded-full bg-red-600 shadow-md"
             title="SOS Alert"
             onClick={() => {
-              notificationStore.setShowAlert(!notificationStore.showAlert);
-              notificationStore.setSelectedAlertType("ต้องการความช่วยเหลือ"); 
+              setShowSosAlert(true);
+              setShowEmergencyAlert(false); // ปิด Emergency ถ้ามีการเปิด SOS
+              notificationStore.setSelectedAlertType("ต้องการความช่วยเหลือ");
             }}
           >
             <span className="bg-red-700 text-xs text-white px-2 py-1 rounded-full shadow-md transform transition-all">
@@ -71,7 +76,8 @@ export default function Header({ isOnline }: HeaderProps) {
             className="cursor-pointer hover:scale-125 transition-transform transform hover:shadow-lg hover:bg-[#5E8892] hover:text-white p-2 rounded-full"
             title="Emergency"
             onClick={() => {
-              notificationStore.setShowAlert(!notificationStore.showAlert);
+              setShowEmergencyAlert(true);
+              setShowSosAlert(false); // ปิด SOS ถ้ามีการเปิด Emergency
               notificationStore.setSelectedAlertType("แจ้งเตือนฉุกเฉิน");
             }}
           >
@@ -92,6 +98,19 @@ export default function Header({ isOnline }: HeaderProps) {
           */}
         </div>
       </header>
+      
+      {/* Sidebar */}
+      {showSosAlert && (
+        <div className="fixed top-0 right-0 w-96 h-full bg-white shadow-lg z-30">
+          <SosAlert onClose={() => setShowSosAlert(false)} />
+        </div>
+      )}
+
+      {showEmergencyAlert && (
+        <div className="fixed top-0 right-0 w-96 h-full bg-white shadow-lg z-30">
+          <EmergencyAlert onClose={() => setShowEmergencyAlert(false)} />
+        </div>
+      )}
     </>
   );
 }

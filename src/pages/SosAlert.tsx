@@ -3,11 +3,11 @@ import { Notification } from "../types/notification";
 import { useNotificationStore } from "../store/notificationStore";
 import NotificationList from "../components/Alert/NotificationList";
 
-interface EmergencyAlertProps {
+interface SosAlertProps {
   onClose?: () => void;
 }
 
-export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
+export default function SosAlert({ onClose }: SosAlertProps) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const notificationStore = useNotificationStore();
 
@@ -15,21 +15,21 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
     setNotifications((prev) => [
       ...prev,
       {
-        sensor_notifications_config_id: 291,
+        sensor_notifications_config_id: 132,
         notification_successed: false,
-        notification_category: "Emergency",
+        notification_category: "SOS",
         notification_accepted: false,
         notification_createdate: "2025-01-01T19:45:47",
         notification_updatedate: "2025-03-04T14:22:38",
         notification_id: 2,
         sensor_notifications_config: {
           sensor_id: 77,
-          sensor_notifications_config_event: "ออกซิเจนในเลือดต่ำมาก (< 95%)",
+          sensor_notifications_config_event: "ไม่อยู่ที่เตียง",
           sensor_notifications_config_usage: true,
           sensor_notifications_config_repeatnoti: 120,
           sensor_notifications_config_rangetime: 120,
           sensor_notifications_config_signal: "อันตราย",
-          sensor_notifications_config_id: 291,
+          sensor_notifications_config_id: 132,
         },
         log_bed_patient_sensor_id: 1,
       },
