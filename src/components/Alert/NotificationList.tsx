@@ -1,5 +1,6 @@
 import React from "react";
 import { Notification } from "../../types/notification";
+import { useNotificationStore } from "../../store/notificationStore";
 
 interface NotificationCardProps {
   notification: Notification;
@@ -12,6 +13,26 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
   updateStatus,
   getTimeElapsed,
 }) => {
+  const notificationStore = useNotificationStore();
+  const handleTabClick = (notification: Notification) => {
+    console.log(notification.notification_id);
+    updateStatus(notification.notification_id, true, undefined);
+    if (notification.notification_category === "Emergency") {
+      notificationStore.acceptEmergencyByNotification(
+        notification.notification_id
+      );
+    }
+  };
+
+  const handleCompleteClick = () => {
+    updateStatus(notification.notification_id, undefined, true); // อัปเดตสถานะเป็น "เสร็จสิ้น"
+    if (notification.notification_category === "Emergency") {
+      notificationStore.successEmergencyByNotification(
+        notification.notification_id
+      ); // ลบการแจ้งเตือนจากลิสต์
+    }
+  };
+
   return (
     <div className="flex items-center p-4 bg-slate-100 rounded-lg shadow">
       {/* แถบสีแนวตั้ง */}
@@ -36,38 +57,39 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
         <p
           className={`font-semibold ${
             notification.notification_successed
-            //   ? "text-gray-400"
-            //   : notification.notification_accepted === "รอการตอบรับ"
-            //   ? "text-gray-500"
-            //   : notification.notification_accepted === "กำลังดำเนินการ"
-            //   ? "text-yellow-500"
-            //   : "text-gray-400"
+              ? "text-gray-400"
+              : notification.notification_accepted === false
+              ? "text-gray-500"
+              : notification.notification_accepted === true
+              ? "text-yellow-500"
+              : "text-gray-400"
           }`}
         >
           สถานะ:{" "}
           {notification.notification_successed
             ? "เสร็จสิ้น"
-            : notification.notification_accepted}
+            : notification.notification_accepted
+            ? "กำลังดำเนินการ"
+            : "รอการตอบรับ"}
         </p>
 
         {/* ปุ่มแสดงเป็นข้อความแทน */}
         <div className="flex space-x-3 mt-2">
           {/* แสดงปุ่ม "รับทราบ" ตลอดเวลา */}
-          {!notification.notification_successed && (
-            <button
-              onClick={() => updateStatus(notification.notification_id, true)}
-              className="text-[#007FCF] font-semibold hover:text-[#7cb1d0] cursor-pointer"
-            >
-              รับทราบ
-            </button>
-          )}
+          {!notification.notification_successed &&
+            !notification.notification_accepted && (
+              <button
+                onClick={() => handleTabClick(notification)}
+                className="text-[#007FCF] font-semibold hover:text-[#7cb1d0] cursor-pointer"
+              >
+                รับทราบ
+              </button>
+            )}
 
           {/* แสดงปุ่ม "เสร็จสิ้น" ตลอดเวลา */}
           {!notification.notification_successed && (
             <button
-              onClick={() =>
-                updateStatus(notification.notification_id, undefined, true)
-              }
+              onClick={handleCompleteClick}
               className="text-[#22c265] font-semibold hover:text-[#7bdebf] animate-jump1 cursor-pointer"
             >
               เสร็จสิ้น

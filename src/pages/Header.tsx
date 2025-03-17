@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-import { Bell, FileClock } from "lucide-react";
+import { Bell } from "lucide-react";
 import { useNotificationStore } from "../store/notificationStore";
+// import SosAlert from "./SosAlert";
+// import EmergencyAlert from "./EmergencyAlert";
 
 interface User {
   name: string;
@@ -10,10 +12,14 @@ interface User {
 interface HeaderProps {
   user: User | null;
   isOnline: boolean;
+  setShowSosAlert: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowEmergencyAlert: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Header({ isOnline }: HeaderProps) {
+export default function Header({ isOnline, setShowSosAlert, setShowEmergencyAlert }: HeaderProps) {
   const [time, setTime] = useState(new Date());
+  // const [showSosAlert, setShowSosAlert] = useState(false);
+  // const [showEmergencyAlert, setShowEmergencyAlert] = useState(false);
   const notificationStore = useNotificationStore(); // ใช้ store
 
   useEffect(() => {
@@ -57,8 +63,9 @@ export default function Header({ isOnline }: HeaderProps) {
             className="relative animate-pulse cursor-pointer hover:scale-105 transition-transform hover:opacity-110 flex items-center justify-center p-2 rounded-full bg-red-600 shadow-md"
             title="SOS Alert"
             onClick={() => {
-              notificationStore.setShowAlert(!notificationStore.showAlert);
-              notificationStore.setSelectedAlertType("การแจ้งเตือน SOS"); // ตั้งค่าหัวข้อเป็น "ประวัติการแจ้งเตือน"
+              setShowSosAlert(true);
+              setShowEmergencyAlert(false); // ปิด Emergency ถ้ามีการเปิด SOS
+              notificationStore.setSelectedAlertType("ต้องการความช่วยเหลือ");
             }}
           >
             <span className="bg-red-700 text-xs text-white px-2 py-1 rounded-full shadow-md transform transition-all">
@@ -71,29 +78,41 @@ export default function Header({ isOnline }: HeaderProps) {
             className="cursor-pointer hover:scale-125 transition-transform transform hover:shadow-lg hover:bg-[#5E8892] hover:text-white p-2 rounded-full"
             title="Emergency"
             onClick={() => {
-              notificationStore.setShowAlert(!notificationStore.showAlert);
-              notificationStore.setSelectedAlertType(
-                "ประวัติการแจ้งเตือน Emergency"
-              ); // ตั้งค่าหัวข้อเป็น "ประวัติการแจ้งเตือน"
+              setShowEmergencyAlert(true);
+              setShowSosAlert(false); // ปิด SOS ถ้ามีการเปิด Emergency
+              notificationStore.setSelectedAlertType("แจ้งเตือนฉุกเฉิน");
             }}
           >
             <Bell className="w-6 h-6 text-yellow-500 fill-yellow-500 transition-all" />
           </button>
 
+          {/*
           <button
             className="cursor-pointer hover:scale-125 transition-transform transform hover:shadow-lg hover:bg-[#5E8892] hover:text-white p-2 rounded-full"
             title="History"
             onClick={() => {
               notificationStore.setShowAlert(!notificationStore.showAlert);
-              notificationStore.setSelectedAlertType(
-                "ประวัติการแจ้งเตือน History"
-              ); // ตั้งค่าหัวข้อเป็น "ประวัติการแจ้งเตือน"
+              notificationStore.setSelectedAlertType("ประวัติการแจ้งเตือน"); // ตั้งค่าหัวข้อเป็น "ประวัติการแจ้งเตือน"
             }}
           >
             <FileClock className="w-6 h-6 text-yellow-500 fill-white transition-all" />
           </button>
+          */}
         </div>
       </header>
+      
+      {/* Sidebar */}
+      {/* {showSosAlert && (
+        <div className="fixed top-23 right-3 h-[calc(100vh-103px)] w-[360px] bg-white shadow-lg z-30">
+          <SosAlert onClose={() => setShowSosAlert(false)} />
+        </div>
+      )}
+
+      {showEmergencyAlert && (
+        <div className="fixed top-23 right-3 h-[calc(100vh-103px)] w-[360px] bg-white shadow-lg z-30">
+          <EmergencyAlert onClose={() => setShowEmergencyAlert(false)} />
+        </div>
+      )} */}
     </>
   );
 }

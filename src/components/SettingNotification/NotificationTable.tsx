@@ -35,7 +35,7 @@ const NotificationTable: React.FC<NotificationTableProps> = ({ sensor }) => {
   return (
     <div className="bg-white rounded-lg p-3 shadow-md ">
       <table className="w-full border-collapse">
-        <thead className="bg-[#95BAC3] h-16 py-4 text-lg font-bold">
+        <thead className="bg-[#B7D6DE] h-16 py-4 font-bold">
           <tr>
             {sensor.sensor_type === "bed_sensor" && (
               <th className="p-2">ไอคอน</th>

@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
-// import { Bed } from "../../types/bed";
-import { useNotificationStore } from "../../store/notificationStore";
 import { Bed } from "../../types/bed";
-// import { Notification } from "../../types/notification";
+import { useSensorNotificationsConfigStore } from "../../store/sensorNotificationsConfigStore";
 
 interface HistoryNotificationTableProps {
   bed: Bed;
@@ -15,68 +13,67 @@ const HistoryNotificationTable: React.FC<HistoryNotificationTableProps> = ({
   patient_id,
   sensor_id,
 }) => {
-  const { loadLogHistoryNotifications, LogHistoryNotifications } =
-    useNotificationStore();
+  const { loadLogNotifications, targetLog, targetLogHistory } =
+    useSensorNotificationsConfigStore();
 
   useEffect(() => {
-    // เรียกใช้ฟังก์ชัน loadLogHistoryNotifications เมื่อ bed_id, patient_id, หรือ sensor_id เปลี่ยน
+    loadLogNotifications(bed.bed_id, patient_id);
+  }, [bed.bed_id, patient_id, loadLogNotifications]);
+
+  useEffect(() => {
     if (bed.bed_id && patient_id && sensor_id) {
-      loadLogHistoryNotifications(bed.bed_id, patient_id, sensor_id);
+      targetLog(bed.bed_id, patient_id, sensor_id);
     }
-  }, [bed.bed_id, patient_id, sensor_id, loadLogHistoryNotifications]);
+  }, [bed.bed_id, patient_id, sensor_id, targetLog]);
 
   return (
-    <div className="bg-white rounded-lg p-4 shadow-md">
+    <div className="bg-white rounded-lg p-3 shadow-md">
       <table className="w-full border-collapse">
-        <thead>
+        <thead className="h-16">
           <tr className="bg-[#B7D6DE]">
-            <th className="p-2 border">วัน/เวลา</th>
-            <th className="p-2 border">อาคาร</th>
-            <th className="p-2 border">ชั้น</th>
-            <th className="p-2 border">ห้อง</th>
-            <th className="p-2 border">เตียง</th>
-            <th className="p-2 border">การแจ้งเตือน</th>
-            <th className="p-2 border">สถานะ</th>
+            <th className="p-2 ">วัน/เวลา</th>
+            <th className="p-2 ">อาคาร</th>
+            <th className="p-2 ">ชั้น</th>
+            <th className="p-2 ">ห้อง</th>
+            <th className="p-2 ">เตียง</th>
+            <th className="p-2 ">การแจ้งเตือน</th>
+            <th className="p-2 ">สถานะ</th>
           </tr>
         </thead>
         <tbody>
-          {LogHistoryNotifications?.notifications &&
-          LogHistoryNotifications?.notifications.length > 0 ? (
-            LogHistoryNotifications?.notifications.map((noti, index) => {
-              // กำหนดสีของแถวตามประเภทของการแจ้งเตือน
-              let rowColor = "bg-white";
-              if (noti.notification_category === "Emergency") {
-                rowColor = "bg-yellow-100";
-              } else if (noti.notification_category === "SOS") {
-                rowColor = "bg-red-200";
-              }
+          {targetLogHistory?.notifications &&
+          targetLogHistory?.notifications.length > 0 ? (
+            targetLogHistory?.notifications.map((noti, index) => {
+              let rowColor = index % 2 === 0 ? "bg-white" : "bg-[#A1B5BC]";
 
-              // กำหนดข้อความสถานะ
               let statusText = "ยังไม่จัดการ";
+              let statusColor: string = "text-[#FF0000] font-medium"; // กำหนดค่าเริ่มต้น
               if (noti.notification_accepted) {
                 if (noti.notification_successed) {
                   statusText = "แจ้งเตือนเสร็จสิ้น";
+                  statusColor = "text-[#0FB700] font-medium";
                 } else {
                   statusText = "กำลังดำเนินการ";
+                  statusColor = "text-[#FFA100] font-medium";
                 }
               }
 
               return (
-                <tr key={index} className={`text-center border-b ${rowColor}`}>
-                  <td className="p-2 border">{noti.notification_createdate}</td>
-                  <td className="p-2 border">
+                <tr key={index} className={`text-center ${rowColor}`}>
+                  <td className="p-2 ">{noti.notification_createdate}</td>
+                  <td className="p-2 ">
                     {bed?.room.floor.building.building_name}
                   </td>
-                  <td className="p-2 border">{bed?.room.floor.floor_name}</td>
-                  <td className="p-2 border">{bed?.room.room_name}</td>
-                  <td className="p-2 border">{bed?.bed_name}</td>
-                  <td className="p-2 border">
+                  <td className="p-2 ">{bed?.room.floor.floor_name}</td>
+                  <td className="p-2 ">{bed?.room.room_name}</td>
+                  <td className="p-2 ">{bed?.bed_name}</td>
+                  <td className="p-2 ">
                     {
                       noti.sensor_notifications_config
                         .sensor_notifications_config_event
                     }
                   </td>
-                  <td className="p-2 border">{statusText}</td>
+                  <td className={`p-2 ${statusColor}`}>{statusText}</td>
                 </tr>
               );
             })

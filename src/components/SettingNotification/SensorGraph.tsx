@@ -4,6 +4,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format, addDays, subDays } from "date-fns";
 import { th } from "date-fns/locale";
+import { CalendarIcon } from "lucide-react";
+import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
 
 interface SensorGraphProps {
   title: string;
@@ -60,20 +62,31 @@ const SensorGraph: React.FC<SensorGraphProps> = ({
   const actualMaxValue = maxValue ?? Math.max(...yValues);
 
   return (
-    <div>
+    <div className="bg-white rounded-lg p-3 shadow-md ">
+    <div className="px-2">
       {/* Date Picker UI */}
-      <div style={{ display: "flex", alignItems: "center", marginBottom: 10 }}>
-        <span style={{ marginRight: 10, fontWeight: "bold" }}>
-          วัน / เดือน / ปี
-        </span>
+      <div className="flex items-center gap-4 mb-4">
+        <span className="text-md font-medium">วัน / เดือน / ปี</span>
+        <div className="relative">
         <DatePicker
           selected={selectedDate}
           onChange={(date) => setSelectedDate(date!)}
           dateFormat="dd/MM/yyyy"
           locale={th}
-          className="custom-date-picker"
+          className="custom-date-picker p-2 border-1 rounded-xl text-center font-semibold shadow-md"
         />
-        <button
+          <CalendarIcon className="absolute right-2 top-1.5 text-gray-500" />
+        </div>
+
+        <MdKeyboardDoubleArrowLeft 
+          onClick={() => setSelectedDate(subDays(selectedDate, 1))}
+          style={{ marginLeft: 10, fontSize: 30, cursor: "pointer" }}
+        />
+        <MdKeyboardDoubleArrowRight
+          onClick={() => setSelectedDate(addDays(selectedDate, 1))}
+          style={{ marginLeft: 5, fontSize: 30, cursor: "pointer" }}
+        />
+        {/* <button
           onClick={() => setSelectedDate(subDays(selectedDate, 1))}
           style={{ marginLeft: 10, cursor: "pointer", fontSize: "18px" }}
         >
@@ -84,9 +97,11 @@ const SensorGraph: React.FC<SensorGraphProps> = ({
           style={{ marginLeft: 5, cursor: "pointer", fontSize: "18px" }}
         >
           »
-        </button>
+        </button> */}
+        </div>
       </div>
 
+      <div className="bg-linear-to-r from-[#80a2ad] to-[#e9f6fc] rounded-lg w-full" >
       {/* กราฟ Plotly */}
       <Plot
         data={[
@@ -95,14 +110,14 @@ const SensorGraph: React.FC<SensorGraphProps> = ({
             y: yValues,
             type: "scatter",
             mode: "lines+markers",
-            marker: { color: color, size: 6 },
-            line: { shape: "spline" },
+            marker: { color: color, size: 7 },
+            line: { shape: "spline", width: 4 },
             name: title,
             hovertemplate:
-              `<b>${title}</b><br>` +
-              `📅 วันที่: %{x|%d/%m/%Y}<br>` +
-              `🕒 เวลาเฉลี่ย: %{x|%H:%M} - %{x|%H:%M+30m}<br>` +
-              `📊 ค่าเฉลี่ย: <b>%{y} ${unit}</b><br>` +
+              `<b style="font-size: 16px; color: #2d6a4f;">${title}</b><br>` +
+              `<span style="font-size: 14px; color: #6c757d;">📅 <span style="font-weight: bold;">วันที่:</span> %{x|%d/%m/%Y}</span><br>` +
+              `<span style="font-size: 14px; color: #6c757d;">🕒 <span style="font-weight: bold;">เวลาเฉลี่ย:</span> %{x|%H:%M} - %{x|%H:%M+30m}</span><br>` +
+              `<span style="font-size: 14px; color: #f39c12;">📊 <span style="font-weight: bold;">ค่าเฉลี่ย:</span> <b>%{y} ${unit}</b></span><br>` +
               `<extra></extra>`,
           },
           {
@@ -126,17 +141,44 @@ const SensorGraph: React.FC<SensorGraphProps> = ({
         ]}
         layout={{
           title: `${title} (${unit})`,
+          font: { size: 16, color: "#000000", family: "Noto Serif Thai" },
           xaxis: { title: "เวลา", type: "date" },
           yaxis: {
             title: `${title} (${unit})`,
+            tickangle: 0, // ✅ แสดงข้อความแนวนอนชัดเจน
+            automargin: true, // ✅ ป้องกันการตัดข้อความ
             range: [actualMinValue - 10, actualMaxValue + 10],
           },
+          legend: { 
+            title: { side: "top center"} ,
+            font: { color: "#000000" },
+            orientation: "h", // ย้าย Legend ไปด้านล่างของกราฟ
+            x: 0.5, // จัดกึ่งกลาง
+            y: -0.3, // ขยับลงมาด้านล่าง
+            xanchor: "center",
+            yanchor: "top",
+                  }, // ✅ Legend แยกแต่ละสถานะ
           height: 300,
+          // กำหนดพื้นหลังเป็นไล่สี (gradient)
+          paper_bgcolor: "transparent", // พื้นหลังของกราฟ
+          plot_bgcolor: "transparent", // พื้นหลังที่อยู่ด้านในกราฟ (สำหรับพื้นที่แสดงข้อมูล)
           hovermode: "x unified",
-        }}
-        useResizeHandler
-        style={{ width: "100%" }}
-      />
+          margin: { l: 80, r: 50, t: 80, b: 120 }, // ปรับ margin ให้พอดี
+          autosize: true // ให้ปรับขนาดอัตโนมัติภายในพื้นที่ที่กำหนด
+            }}
+            config={{
+              responsive: true,
+              // displayModeBar: false // ซ่อนแถบเครื่องมือเพื่อประหยัดพื้นที่
+            }}
+            useResizeHandler={true}
+            className="mx-auto" // จัดให้อยู่ตรงกลาง
+            style={{ 
+              width: "100%", 
+              maxWidth: "100%",
+              height: "auto"
+            }}
+          />
+    </div>
     </div>
   );
 };

@@ -51,111 +51,22 @@ export const sensorNotificationsConfigService = {
     }
   },
 
-  async fetchNotification(
-    bed_id: number,
-    patient_id: number,
-    sensor_id: number
-  ): Promise<Log_bed_patient_sensor | undefined> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        // ค้นหาข้อมูลที่ตรงกับ bed_id, patient_id, และ sensor_id
-        const result = logNotificationFetchExamData.find(
-          (log) =>
-            log.bed_id === bed_id &&
-            log.patient_id === patient_id &&
-            log.sensor_id === sensor_id
-        );
-        resolve(result); // ส่งคืนข้อมูลที่พบ หรือ undefined ถ้าไม่พบ
-      }, 100);
-    });
-  },
   async loadBedWithSensorConfig(bed_id: number): Promise<Bed> {
     {
       const res = await http.get(`beds/sensor-config/${bed_id}`);
       return res.data;
     }
   },
-};
 
-const logNotificationFetchExamData: Log_bed_patient_sensor[] = [
-  {
-    log_bed_patient_sensor_id: 1,
-    bed_id: 1,
-    patient_id: 1,
-    sensor_id: 1,
-    notifications: [
-      {
-        sensor_notifications_config_id: 0,
-        notification_id: 0,
-        notification_successed: false,
-        notification_category: "แฉ็งหัว",
-        notification_accepted: false,
-        log_bed_patient_sensor_id: 0,
-        sensor_notifications_config: {
-          sensor_notifications_config_id: 0,
-          sensor_notifications_config_event: "แฉ็งหัว",
-          sensor_notifications_config_usage: false,
-          sensor_notifications_config_repeatnoti: 0,
-          sensor_notifications_config_rangetime: 0,
-          sensor_notifications_config_signal: "",
-        },
-      },
-      {
-        sensor_notifications_config_id: 0,
-        notification_id: 0,
-        notification_successed: false,
-        notification_category: "แฉ็งหัว",
-        notification_accepted: false,
-        log_bed_patient_sensor_id: 0,
-        sensor_notifications_config: {
-          sensor_notifications_config_id: 0,
-          sensor_notifications_config_event: "ส้มหยุด",
-          sensor_notifications_config_usage: false,
-          sensor_notifications_config_repeatnoti: 0,
-          sensor_notifications_config_rangetime: 0,
-          sensor_notifications_config_signal: "",
-        },
-      },
-      {
-        sensor_notifications_config_id: 0,
-        notification_id: 0,
-        notification_successed: false,
-        notification_category: "แฉ็งหัว",
-        notification_accepted: false,
-        log_bed_patient_sensor_id: 0,
-        sensor_notifications_config: {
-          sensor_notifications_config_id: 0,
-          sensor_notifications_config_event: "เปรต",
-          sensor_notifications_config_usage: false,
-          sensor_notifications_config_repeatnoti: 0,
-          sensor_notifications_config_rangetime: 0,
-          sensor_notifications_config_signal: "",
-        },
-      },
-    ],
+  async loadLogNotifications(
+    bed_id: number,
+    patient_id: number
+  ): Promise<Log_bed_patient_sensor[]> {
+    {
+      const res = await http.get(
+        `log_bed_patient_sensor/notifications/bed/${bed_id}/patient/${patient_id}`
+      );
+      return res.data;
+    }
   },
-  {
-    log_bed_patient_sensor_id: 1,
-    bed_id: 1,
-    patient_id: 1,
-    sensor_id: 2,
-    notifications: [
-      {
-        sensor_notifications_config_id: 0,
-        notification_id: 0,
-        notification_successed: false,
-        notification_category: "แฉ็งหัว",
-        notification_accepted: false,
-        log_bed_patient_sensor_id: 0,
-        sensor_notifications_config: {
-          sensor_notifications_config_id: 0,
-          sensor_notifications_config_event: "หยาหนัด",
-          sensor_notifications_config_usage: false,
-          sensor_notifications_config_repeatnoti: 0,
-          sensor_notifications_config_rangetime: 0,
-          sensor_notifications_config_signal: "",
-        },
-      },
-    ],
-  },
-];
+};
