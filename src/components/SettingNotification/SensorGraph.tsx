@@ -22,7 +22,7 @@ const SensorGraph: React.FC<SensorGraphProps> = ({
   minValue,
   maxValue,
 }) => {
-  const [selectedDate, setSelectedDate] = useState(new Date(2025, 2, 12));
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   // กรองข้อมูลเฉพาะวันที่เลือก
   const formattedSelectedDate = format(selectedDate, "yyyy-MM-dd");

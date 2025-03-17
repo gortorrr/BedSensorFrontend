@@ -3,7 +3,7 @@ import AppRouter from "./routes/AppRouter";
 import Navbar from "./pages/Navbar";
 import Header from "./pages/Header";
 import { useNotificationStore } from "./store/notificationStore";
-import EmergencyAlert from "./pages/EmergencyAlert";
+import EmergencyAlert from "./pages/NotificationAlert";
 
 interface User {
   name: string;
@@ -26,8 +26,8 @@ const App: React.FC = () => {
         {/* Header - กำหนดให้คงที่ ไม่ขยับตาม */}
         <Header user={user} isOnline={isOnline} />
 
-      {/* ส่วนเนื้อหา AppRouter ที่ขยับตาม Emergency Alert */}
-      <div
+        {/* ส่วนเนื้อหา AppRouter ที่ขยับตาม Emergency Alert */}
+        <div
           className={`flex-1 overflow-auto bg-gray-50 transition-all duration-500  ${
             showAlert ? "mr-[360px]" : "mr-0" // ขยับเนื้อหามาทางขวาเมื่อ emergency alert แสดง
           }`}
@@ -45,7 +45,6 @@ const App: React.FC = () => {
         <EmergencyAlert onClose={() => setShowAlert(false)} />
       </div>
     </div>
-
   );
 };
 

@@ -3,7 +3,7 @@ import { Notification } from "../../types/notification";
 
 interface NotificationCardProps {
   notification: Notification;
-  updateStatus: (id: number, accepted?: string, successed?: boolean) => void;
+  updateStatus: (id: number, accepted?: boolean, successed?: boolean) => void;
   getTimeElapsed: (notificationDate: Date) => string;
 }
 
@@ -55,9 +55,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
           {/* แสดงปุ่ม "รับทราบ" ตลอดเวลา */}
           {!notification.notification_successed && (
             <button
-              onClick={() =>
-                updateStatus(notification.notification_id, "กำลังดำเนินการ")
-              }
+              onClick={() => updateStatus(notification.notification_id, true)}
               className="text-[#007FCF] font-semibold hover:text-[#7cb1d0] cursor-pointer"
             >
               รับทราบ
@@ -83,7 +81,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
 
 interface NotificationListProps {
   notifications: Notification[];
-  updateStatus: (id: number, accepted?: string, successed?: boolean) => void;
+  updateStatus: (id: number, accepted?: boolean, successed?: boolean) => void;
   getTimeElapsed: (notificationDate: Date) => string;
 }
 
