@@ -64,29 +64,33 @@ export const useSensorNotificationsConfigStore =
       set({ logAllNotifications: res });
     },
 
-    targetLog: async (
-      bed_id: number,
-      patient_id: number,
-      sensor_id: number
-    ) => {
-      // Use get to access the current state
+    targetLog: async (bed_id: number, patient_id: number, sensor_id: number) => {
+      // รอให้ logAllNotifications มีข้อมูลก่อน
+      const waitForData = () =>
+        new Promise<void>((resolve) => {
+          const checkData = () => {
+            if (get().logAllNotifications.length > 0) {
+              resolve();
+            } else {
+              setTimeout(checkData, 100); // เช็คซ้ำทุก 100ms
+            }
+          };
+          checkData();
+        });
+    
+      await waitForData(); // รอข้อมูลก่อนทำงาน
+    
       const { logAllNotifications } = get();
-
-      console.log(bed_id);
-      console.log(patient_id);
-      console.log(sensor_id);
-
-      // Fix the filter conditions with proper comparison operators
+    
+      console.log(bed_id, patient_id, sensor_id);
+    
       const res = logAllNotifications.filter(
         (notification) =>
           notification.bed_id === bed_id &&
           notification.patient_id === patient_id &&
           notification.sensor_id === sensor_id
       );
-
-      // console.log("✅ API Response Log History Notifications:", res);
-
-      // Update targetLogHistory instead of LogHistoryNotifications
+    
       set({ targetLogHistory: res[0] ?? null });
-    },
+    },    
   }));
