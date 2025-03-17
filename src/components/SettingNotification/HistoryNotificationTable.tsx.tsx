@@ -1,9 +1,6 @@
 import React, { useEffect } from "react";
-// import { Bed } from "../../types/bed";
-// import { useNotificationStore } from "../../store/notificationStore";
 import { Bed } from "../../types/bed";
 import { useSensorNotificationsConfigStore } from "../../store/sensorNotificationsConfigStore";
-// import { Notification } from "../../types/notification";
 
 interface HistoryNotificationTableProps {
   bed: Bed;
@@ -16,26 +13,14 @@ const HistoryNotificationTable: React.FC<HistoryNotificationTableProps> = ({
   patient_id,
   sensor_id,
 }) => {
-  // const { loadLogHistoryNotifications, LogHistoryNotifications } =
-  //   useNotificationStore();
-  const {
-    loadLogNotifications,
-    // logAllNotifications,
-    targetLog,
-    targetLogHistory,
-  } = useSensorNotificationsConfigStore();
+  const { loadLogNotifications, targetLog, targetLogHistory } =
+    useSensorNotificationsConfigStore();
 
   useEffect(() => {
-    // เรียกใช้ฟังก์ชัน loadLogHistoryNotifications เมื่อ bed_id, patient_id, หรือ sensor_id เปลี่ยน
-    // if (bed.bed_id && patient_id && sensor_id) {
-    //   loadLogHistoryNotifications(bed.bed_id, patient_id, sensor_id);
-    // }
-    // console.log();
     loadLogNotifications(bed.bed_id, patient_id);
   }, [bed.bed_id, patient_id, loadLogNotifications]);
 
   useEffect(() => {
-    // เรียกใช้ฟังก์ชัน loadLogHistoryNotifications เมื่อ bed_id, patient_id, หรือ sensor_id เปลี่ยน
     if (bed.bed_id && patient_id && sensor_id) {
       targetLog(bed.bed_id, patient_id, sensor_id);
     }
@@ -59,35 +44,36 @@ const HistoryNotificationTable: React.FC<HistoryNotificationTableProps> = ({
           {targetLogHistory?.notifications &&
           targetLogHistory?.notifications.length > 0 ? (
             targetLogHistory?.notifications.map((noti, index) => {
-              // กำหนดสีของแถวตามประเภทของการแจ้งเตือน
               let rowColor = index % 2 === 0 ? "bg-white" : "bg-[#A1B5BC]";
 
-              // กำหนดข้อความสถานะ
               let statusText = "ยังไม่จัดการ";
+              let statusColor: string = "text-[#FF0000] font-medium"; // กำหนดค่าเริ่มต้น
               if (noti.notification_accepted) {
                 if (noti.notification_successed) {
                   statusText = "แจ้งเตือนเสร็จสิ้น";
+                  statusColor = "text-[#0FB700] font-medium";
                 } else {
                   statusText = "กำลังดำเนินการ";
+                  statusColor = "text-[#FFA100] font-medium";
                 }
               }
 
               return (
-                <tr key={index} className={`text-center  ${rowColor}`}>
-                  <td className="p-2 h-13">{noti.notification_createdate}</td>
-                  <td className="p-2 h-13">
+                <tr key={index} className={`text-center ${rowColor}`}>
+                  <td className="p-2 ">{noti.notification_createdate}</td>
+                  <td className="p-2 ">
                     {bed?.room.floor.building.building_name}
                   </td>
-                  <td className="p-2 h-13">{bed?.room.floor.floor_name}</td>
-                  <td className="p-2 h-13">{bed?.room.room_name}</td>
-                  <td className="p-2 h-13">{bed?.bed_name}</td>
-                  <td className="p-2 h-13">
+                  <td className="p-2 ">{bed?.room.floor.floor_name}</td>
+                  <td className="p-2 ">{bed?.room.room_name}</td>
+                  <td className="p-2 ">{bed?.bed_name}</td>
+                  <td className="p-2 ">
                     {
                       noti.sensor_notifications_config
                         .sensor_notifications_config_event
                     }
                   </td>
-                  <td className="p-2 ">{statusText}</td>
+                  <td className={`p-2 ${statusColor}`}>{statusText}</td>
                 </tr>
               );
             })
