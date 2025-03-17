@@ -60,12 +60,7 @@ const HistoryNotificationTable: React.FC<HistoryNotificationTableProps> = ({
           targetLogHistory?.notifications.length > 0 ? (
             targetLogHistory?.notifications.map((noti, index) => {
               // กำหนดสีของแถวตามประเภทของการแจ้งเตือน
-              let rowColor = "bg-white";
-              if (noti.notification_category === "Emergency") {
-                rowColor = "bg-yellow-100";
-              } else if (noti.notification_category === "SOS") {
-                rowColor = "bg-red-200";
-              }
+              let rowColor = index % 2 === 0 ? "bg-white" : "bg-[#A1B5BC]";
 
               // กำหนดข้อความสถานะ
               let statusText = "ยังไม่จัดการ";
@@ -78,21 +73,21 @@ const HistoryNotificationTable: React.FC<HistoryNotificationTableProps> = ({
               }
 
               return (
-                <tr key={index} className={`text-center border-b ${rowColor}`}>
-                  <td className="p-2 border">{noti.notification_createdate}</td>
-                  <td className="p-2 border">
+                <tr key={index} className={`text-center  ${rowColor}`}>
+                  <td className="p-2 h-13">{noti.notification_createdate}</td>
+                  <td className="p-2 h-13">
                     {bed?.room.floor.building.building_name}
                   </td>
-                  <td className="p-2 border">{bed?.room.floor.floor_name}</td>
-                  <td className="p-2 border">{bed?.room.room_name}</td>
-                  <td className="p-2 border">{bed?.bed_name}</td>
-                  <td className="p-2 border">
+                  <td className="p-2 h-13">{bed?.room.floor.floor_name}</td>
+                  <td className="p-2 h-13">{bed?.room.room_name}</td>
+                  <td className="p-2 h-13">{bed?.bed_name}</td>
+                  <td className="p-2 h-13">
                     {
                       noti.sensor_notifications_config
                         .sensor_notifications_config_event
                     }
                   </td>
-                  <td className="p-2 border">{statusText}</td>
+                  <td className="p-2 ">{statusText}</td>
                 </tr>
               );
             })
