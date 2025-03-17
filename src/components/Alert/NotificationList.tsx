@@ -21,6 +21,14 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
      notificationStore.acceptEmergencyByNotification(notification.notification_id) 
     }
   };
+
+  const handleCompleteClick = () => {
+    updateStatus(notification.notification_id, undefined, true); // อัปเดตสถานะเป็น "เสร็จสิ้น"
+    if (notification.notification_category === "Emergency") {
+      notificationStore.successEmergencyByNotification(notification.notification_id); // ลบการแจ้งเตือนจากลิสต์
+    }
+  };
+
   return (
     <div className="flex items-center p-4 bg-slate-100 rounded-lg shadow">
       {/* แถบสีแนวตั้ง */}
@@ -78,9 +86,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
           {/* แสดงปุ่ม "เสร็จสิ้น" ตลอดเวลา */}
           {!notification.notification_successed && (
             <button
-              onClick={() =>
-                updateStatus(notification.notification_id, undefined, true)
-              }
+              onClick={handleCompleteClick}
               className="text-[#22c265] font-semibold hover:text-[#7bdebf] animate-jump1 cursor-pointer"
             >
               เสร็จสิ้น
