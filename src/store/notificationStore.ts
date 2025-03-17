@@ -2,6 +2,7 @@ import { create } from "zustand";
 // import { notificationService } from "../services/notificationService";
 // import { Notification } from "../types/notification";
 import { Log_bed_patient_sensor } from "../types/log_bed_patient_sensor";
+import { notificationService } from "../services/notificationService";
 // import { sensorNotificationsConfigService } from "../services/sensorNotificationsConfigService";
 
 interface NotificationStore {
@@ -11,6 +12,7 @@ interface NotificationStore {
   LogHistoryNotifications: Log_bed_patient_sensor | null;
   setSelectedAlertType: (type: string) => void;
   setShowAlert: (value: boolean) => void;
+  acceptEmergencyByNotification:( notification_id: number) => Promise<void>;
   // loadLogHistoryNotifications: (
   //   bed_id: number,
   //   patient_id: number,
@@ -27,7 +29,18 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
 
   setShowAlert: (value) => set({ showAlert: value }),
 
-  // loadLogHistoryNotifications: async (
+  acceptEmergencyByNotification: async (notification_id: number) => {
+      notificationService.acceptEmergencyByNotification(notification_id);
+    },
+}));
+// loadAllNotificationByPatient: async (patient_id: number, sensor_id: number) => {
+//   set({NotificationByPatientAndSensor:[]})
+//     const res = await notificationService.loadAllNotificationByPatient(patient_id, sensor_id);
+//     console.log("✅ API Response NotificationByPatient :", res);
+//     if (res) {
+//       set({ NotificationByPatientAndSensor: Array.isArray(res) ? res : [res] }); // ✅ ป้องกัน error
+//     } // ✅ ถ้า res เป็น undefined → เปลี่ยนเป็น null
+// loadLogHistoryNotifications: async (
   //   bed_id: number,
   //   patient_id: number,
   //   sensor_id: number
@@ -43,11 +56,3 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
   //   console.log("✅ API Response Log History Notifications:", res);
   //   set({ LogHistoryNotifications: res ?? null });
   // },
-}));
-// loadAllNotificationByPatient: async (patient_id: number, sensor_id: number) => {
-//   set({NotificationByPatientAndSensor:[]})
-//     const res = await notificationService.loadAllNotificationByPatient(patient_id, sensor_id);
-//     console.log("✅ API Response NotificationByPatient :", res);
-//     if (res) {
-//       set({ NotificationByPatientAndSensor: Array.isArray(res) ? res : [res] }); // ✅ ป้องกัน error
-//     } // ✅ ถ้า res เป็น undefined → เปลี่ยนเป็น null
