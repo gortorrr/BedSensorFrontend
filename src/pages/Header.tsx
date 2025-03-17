@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Bell } from "lucide-react";
 import { useNotificationStore } from "../store/notificationStore";
-import SosAlert from "./SoSAlert";
-import EmergencyAlert from "./EmergencyAlert";
+// import SosAlert from "./SosAlert";
+// import EmergencyAlert from "./EmergencyAlert";
 
 interface User {
   name: string;
@@ -12,12 +12,14 @@ interface User {
 interface HeaderProps {
   user: User | null;
   isOnline: boolean;
+  setShowSosAlert: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowEmergencyAlert: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Header({ isOnline }: HeaderProps) {
+export default function Header({ isOnline, setShowSosAlert, setShowEmergencyAlert }: HeaderProps) {
   const [time, setTime] = useState(new Date());
-  const [showSosAlert, setShowSosAlert] = useState(false);
-  const [showEmergencyAlert, setShowEmergencyAlert] = useState(false);
+  // const [showSosAlert, setShowSosAlert] = useState(false);
+  // const [showEmergencyAlert, setShowEmergencyAlert] = useState(false);
   const notificationStore = useNotificationStore(); // ใช้ store
 
   useEffect(() => {
@@ -100,17 +102,17 @@ export default function Header({ isOnline }: HeaderProps) {
       </header>
       
       {/* Sidebar */}
-      {showSosAlert && (
-        <div className="fixed top-0 right-0 w-96 h-full bg-white shadow-lg z-30">
+      {/* {showSosAlert && (
+        <div className="fixed top-23 right-3 h-[calc(100vh-103px)] w-[360px] bg-white shadow-lg z-30">
           <SosAlert onClose={() => setShowSosAlert(false)} />
         </div>
       )}
 
       {showEmergencyAlert && (
-        <div className="fixed top-0 right-0 w-96 h-full bg-white shadow-lg z-30">
+        <div className="fixed top-23 right-3 h-[calc(100vh-103px)] w-[360px] bg-white shadow-lg z-30">
           <EmergencyAlert onClose={() => setShowEmergencyAlert(false)} />
         </div>
-      )}
+      )} */}
     </>
   );
 }
