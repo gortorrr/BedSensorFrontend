@@ -16,6 +16,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
   const notificationStore = useNotificationStore();
   const handleTabClick = (notification:Notification) => {
     console.log(notification.notification_id)
+    updateStatus(notification.notification_id, true, undefined)
     if(notification.notification_category === "Emergency"){
      notificationStore.acceptEmergencyByNotification(notification.notification_id) 
     }
