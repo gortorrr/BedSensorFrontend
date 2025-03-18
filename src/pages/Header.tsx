@@ -126,11 +126,16 @@ export default function Header({
 
           {/* ไอคอนแจ้งเตือน */}
           <button
-            className="cursor-pointer hover:scale-125 transition-transform transform hover:shadow-lg hover:bg-[#5E8892] hover:text-white p-2 rounded-full"
+            className="cursor-pointer hover:scale-125 transition-transform transform hover:shadow-sm hover:bg-[#5E8892] hover:text-white p-2 rounded-full"
             title="Emergency"
             onClick={toggleEmergencyAlert}
           >
-            <Bell className="w-6 h-6 text-yellow-500 fill-yellow-500 transition-all" />
+            <span className="absolute inset-0 flex items-center justify-center">
+              <span className="w-8 h-8 bg-yellow-500 opacity-50 rounded-full animate-ping"></span>
+            </span>
+
+            {/* ไอคอนหลัก */}
+            <Bell className="relative w-6 h-6 text-yellow-500 fill-yellow-500 transition-all" />
           </button>
 
           {/*
