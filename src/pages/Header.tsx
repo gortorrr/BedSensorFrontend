@@ -34,7 +34,11 @@ export default function Header({
   // Watch for changes in emergencyDatas and sosDatas
   useEffect(() => {
     if (sosDatas.length > 0) {
-      toggleSosAlert(); // Trigger SOS alert toggle
+      // toggleSosAlert(); // Trigger SOS alert toggle
+      setIsSosAlertOpen(true);
+      setShowSosAlert(true);
+      setShowEmergencyAlert(false);
+      notificationStore.setSelectedAlertType("ต้องการความช่วยเหลือ");
     }
   }, [sosDatas.length]); // Dependency on sosDatas
 

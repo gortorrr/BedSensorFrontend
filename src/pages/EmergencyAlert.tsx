@@ -11,9 +11,25 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const { emergencyDatas, selectedAlertType } = useNotificationStore();
 
+  // useEffect(() => {
+  //   setNotifications(emergencyDatas);
+  // });
+
   useEffect(() => {
-    setNotifications(emergencyDatas);
-  });
+    setNotifications(
+      [...emergencyDatas].sort((a, b) => {
+        const dateA = a.notification_createdate
+          ? new Date(a.notification_createdate).getTime()
+          : 0;
+        const dateB = b.notification_createdate
+          ? new Date(b.notification_createdate).getTime()
+          : 0;
+        return dateB - dateA; // เรียงจากใหม่ไปเก่า
+      })
+    );
+  }, [emergencyDatas]);
+  
+  
   // const { loadEmergencyNotAccepted } = useNotificationStore();
 
   // useEffect(() => {
