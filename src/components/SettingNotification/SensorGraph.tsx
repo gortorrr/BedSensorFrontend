@@ -101,7 +101,7 @@ const SensorGraph: React.FC<SensorGraphProps> = ({
         </div>
       </div>
 
-      <div className="bg-linear-to-r from-[#80a2ad] to-[#e9f6fc] rounded-lg w-full" >
+      <div className="bg-linear-to-r from-[#80a2ad] to-[#e9f6fc] rounded-lg w-full px-4" >
       {/* กราฟ Plotly */}
       <Plot
         data={[
@@ -164,7 +164,7 @@ const SensorGraph: React.FC<SensorGraphProps> = ({
           plot_bgcolor: "transparent", // พื้นหลังที่อยู่ด้านในกราฟ (สำหรับพื้นที่แสดงข้อมูล)
           hovermode: "x unified",
           margin: { l: 80, r: 50, t: 80, b: 120 }, // ปรับ margin ให้พอดี
-          autosize: true // ให้ปรับขนาดอัตโนมัติภายในพื้นที่ที่กำหนด
+          // autosize: true // ให้ปรับขนาดอัตโนมัติภายในพื้นที่ที่กำหนด
             }}
             config={{
               responsive: true,

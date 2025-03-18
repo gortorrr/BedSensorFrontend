@@ -100,7 +100,7 @@ const Navbar: React.FC<NavbarProps> = ({ setUser, setIsOnline, user }) => {
           ) : (
             <button
               onClick={handleLogin}
-              className="text-sm text-white hover:scale-105 transition-transform"
+              className="text-sm text-white hover:scale-105 transition-transform cursor-pointer"
             >
               เข้าสู่ระบบ
             </button>
@@ -123,7 +123,7 @@ const Navbar: React.FC<NavbarProps> = ({ setUser, setIsOnline, user }) => {
           menu.submenus ? (
             <div key={index}>
               <div
-                className="flex items-center text-lg gap-3.5 font-medium p-2 hover:bg-[#879EA4] rounded-md transition-all duration-300 hover:scale-105 active:scale-95"
+                className="flex items-center text-lg gap-3.5 font-medium p-2 hover:bg-[#879EA4] rounded-md transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
                 onClick={() => setExpanded(!expanded)}
               >
                 <div className="transition-transform hover:scale-110">
@@ -196,11 +196,11 @@ const Navbar: React.FC<NavbarProps> = ({ setUser, setIsOnline, user }) => {
       </nav>
 
       {/* Logout Button */}
-      <div className="p-1 border-gray-700 mt-auto flex-col">
+      <div className="py-1 border-gray-700 mt-auto flex-col">
         <button
           onClick={handleLogout}
           className="flex items-center w-full text-lg gap-3.5 font-medium hover:bg-[#879EA4] rounded-md p-2 
-            transition-all duration-300 hover:scale-105 active:scale-95"
+            transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
         >
           <div className="transition-transform hover:scale-110">
             {React.createElement(IoLogOut, { size: "35" })}

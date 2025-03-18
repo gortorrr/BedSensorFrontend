@@ -109,7 +109,7 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
         </div>
       </div>
 
-      <div className="bg-linear-to-r from-[#80a2ad] to-[#e9f6fc] rounded-lg w-full">
+      <div className="bg-linear-to-r from-[#80a2ad] to-[#e9f6fc] rounded-lg w-full px-4">
         {/* กราฟ */}
         <Plot
           data={traces.map((trace) => ({
@@ -148,7 +148,7 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
             paper_bgcolor: "transparent", // พื้นหลังของกราฟ
             plot_bgcolor: "transparent", // พื้นหลังที่อยู่ด้านในกราฟ (สำหรับพื้นที่แสดงข้อมูล)
             margin: { l: 80, r: 50, t: 80, b: 120 }, // ปรับ margin ให้พอดี
-            autosize: true, // ให้ปรับขนาดอัตโนมัติภายในพื้นที่ที่กำหนด
+            // autosize: true, // ให้ปรับขนาดอัตโนมัติภายในพื้นที่ที่กำหนด
           }}
           config={{
             responsive: true,
