@@ -22,12 +22,15 @@ interface NotificationStore {
   // ) => Promise<void>;
   loadEmergencyNotAccepted: () => Promise<void>;
   emergencyDatas: Notification[];
+  loadSosNotAccepted: () => Promise<void>;
+  sosDatas: Notification[];
 }
 
 export const useNotificationStore = create<NotificationStore>((set) => ({
   // NotificationByPatientAndSensor: [],
   LogHistoryNotifications: {},
   emergencyDatas: [],
+  sosDatas: [],
   notifications: [],
   showAlert: false,
   selectedAlertType: "", // ค่าเริ่มต้น
@@ -50,7 +53,13 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
     set({ emergencyDatas: [] });
     const res = await notificationService.loadEmergencyNotAccepted();
     set({ emergencyDatas: res });
-    console.log(res);
+    // console.log(res);
+  },
+  loadSosNotAccepted: async () => {
+    set({ sosDatas: [] });
+    const res = await notificationService.loadSosNotAccepted();
+    set({ sosDatas: res });
+    // console.log(res);
   },
 }));
 // loadAllNotificationByPatient: async (patient_id: number, sensor_id: number) => {

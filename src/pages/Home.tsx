@@ -23,10 +23,12 @@ const Home: React.FC = () => {
     console.log(beds);
   }, [loadBeds]);
 
-  const { loadEmergencyNotAccepted } = useNotificationStore();
+  const { loadEmergencyNotAccepted, loadSosNotAccepted } =
+    useNotificationStore();
 
   useEffect(() => {
     loadEmergencyNotAccepted();
+    loadSosNotAccepted();
   }, []);
 
   const filteredBeds: Bed[] = beds.filter(
