@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Notification } from "../types/notification";
 import { useNotificationStore } from "../store/notificationStore";
 import NotificationList from "../components/Alert/NotificationList";
@@ -9,32 +9,45 @@ interface EmergencyAlertProps {
 
 export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const notificationStore = useNotificationStore();
+  const { emergencyDatas, selectedAlertType } = useNotificationStore();
 
   useEffect(() => {
-    setNotifications((prev) => [
-      ...prev,
-      {
-        sensor_notifications_config_id: 291,
-        notification_successed: false,
-        notification_category: "Emergency",
-        notification_accepted: false,
-        notification_createdate: "2025-01-01T19:45:47",
-        notification_updatedate: "2025-03-04T14:22:38",
-        notification_id: 2,
-        sensor_notifications_config: {
-          sensor_id: 77,
-          sensor_notifications_config_event: "ออกซิเจนในเลือดต่ำมาก (< 95%)",
-          sensor_notifications_config_usage: true,
-          sensor_notifications_config_repeatnoti: 120,
-          sensor_notifications_config_rangetime: 120,
-          sensor_notifications_config_signal: "อันตราย",
-          sensor_notifications_config_id: 291,
-        },
-        log_bed_patient_sensor_id: 1,
-      },
-    ]);
-  }, []);
+    setNotifications(emergencyDatas);
+  });
+  // const { loadEmergencyNotAccepted } = useNotificationStore();
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const data = await loadEmergencyNotAccepted();
+  //     setNotifications(data); // ✅ ใช้ค่าที่เป็น `Notification[]`
+  //   };
+  //   fetchData();
+  // }, []);
+
+  // useEffect(() => {
+  //   setNotifications((prev) => [
+  //     ...prev,
+  //     {
+  //       sensor_notifications_config_id: 291,
+  //       notification_successed: false,
+  //       notification_category: "Emergency",
+  //       notification_accepted: false,
+  //       notification_createdate: "2025-01-01T19:45:47",
+  //       notification_updatedate: "2025-03-04T14:22:38",
+  //       notification_id: 2,
+  //       sensor_notifications_config: {
+  //         sensor_id: 77,
+  //         sensor_notifications_config_event: "ออกซิเจนในเลือดต่ำมาก (< 95%)",
+  //         sensor_notifications_config_usage: true,
+  //         sensor_notifications_config_repeatnoti: 120,
+  //         sensor_notifications_config_rangetime: 120,
+  //         sensor_notifications_config_signal: "อันตราย",
+  //         sensor_notifications_config_id: 291,
+  //       },
+  //       log_bed_patient_sensor_id: 1,
+  //     },
+  //   ]);
+  // }, []);
 
   const updateStatus = (
     id: number,
@@ -82,9 +95,9 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
           className="text-3xl font-semibold flex-grow text-center"
           style={{ textShadow: "2px 2px 5px rgba(0,0,0,0.3)" }}
         >
-          {notificationStore.selectedAlertType}
+          {selectedAlertType}
         </h3>
-        {notificationStore.selectedAlertType === "แจ้งเตือนฉุกเฉิน" && (
+        {selectedAlertType === "แจ้งเตือนฉุกเฉิน" && (
           <img src="/assets/alarm.png" alt="Alarm" className="w-8 h-8 mr-4" />
         )}
         <button

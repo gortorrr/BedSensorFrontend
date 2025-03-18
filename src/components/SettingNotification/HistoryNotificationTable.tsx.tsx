@@ -44,6 +44,7 @@ const HistoryNotificationTable: React.FC<HistoryNotificationTableProps> = ({
           {targetLogHistory?.notifications &&
           targetLogHistory?.notifications.length > 0 ? (
             targetLogHistory?.notifications.map((noti, index) => {
+              // eslint-disable-next-line prefer-const
               let rowColor = index % 2 === 0 ? "bg-white" : "bg-[#A1B5BC]";
 
               let statusText = "ยังไม่จัดการ";

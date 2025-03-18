@@ -1,6 +1,6 @@
 import { create } from "zustand";
 // import { notificationService } from "../services/notificationService";
- import { Notification } from "../types/notification";
+import { Notification } from "../types/notification";
 import { Log_bed_patient_sensor } from "../types/log_bed_patient_sensor";
 import { notificationService } from "../services/notificationService";
 // import { sensorNotificationsConfigService } from "../services/sensorNotificationsConfigService";
@@ -20,11 +20,14 @@ interface NotificationStore {
   //   patient_id: number,
   //   sensor_id: number
   // ) => Promise<void>;
+  loadEmergencyNotAccepted: () => Promise<void>;
+  emergencyDatas: Notification[];
 }
 
 export const useNotificationStore = create<NotificationStore>((set) => ({
   // NotificationByPatientAndSensor: [],
   LogHistoryNotifications: {},
+  emergencyDatas: [],
   notifications: [],
   showAlert: false,
   selectedAlertType: "", // ค่าเริ่มต้น
@@ -42,6 +45,12 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
         (notification) => notification.notification_id !== notification_id
       ),
     }));
+  },
+  loadEmergencyNotAccepted: async () => {
+    set({ emergencyDatas: [] });
+    const res = await notificationService.loadEmergencyNotAccepted();
+    set({ emergencyDatas: res });
+    console.log(res);
   },
 }));
 // loadAllNotificationByPatient: async (patient_id: number, sensor_id: number) => {

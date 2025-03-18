@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppRouter from "./routes/AppRouter";
 import Navbar from "./pages/Navbar";
 import Header from "./pages/Header";
 // import { useNotificationStore } from "./store/notificationStore";
 import EmergencyAlert from "./pages/EmergencyAlert";
 import SosAlert from "./pages/SosAlert";
+import { useNotificationStore } from "./store/notificationStore";
 
 interface User {
   name: string;
@@ -15,12 +16,19 @@ interface User {
 const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isOnline, setIsOnline] = useState(false);
+
   // const { showAlert, setShowAlert } = useNotificationStore();
   // const [showSosAlert, setShowSosAlert] = useNotificationStore();
   // const [showEmergencyAlert, setShowEmergencyAlert] = useNotificationStore();
 
   const [showSosAlert, setShowSosAlert] = useState(false);
   const [showEmergencyAlert, setShowEmergencyAlert] = useState(false);
+
+  const { loadEmergencyNotAccepted } = useNotificationStore();
+
+  useEffect(() => {
+    loadEmergencyNotAccepted();
+  }, []);
 
   return (
     <div className="flex ">

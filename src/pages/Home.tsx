@@ -5,6 +5,7 @@ import { useBedStore } from "../store/bedStore";
 import Icon from "@mdi/react";
 import { mdiMagnify, mdiPlus } from "@mdi/js";
 import { Bed } from "../types/bed";
+import { useNotificationStore } from "../store/notificationStore";
 
 const Home: React.FC = () => {
   const { beds, loadBeds } = useBedStore();
@@ -21,6 +22,12 @@ const Home: React.FC = () => {
 
     console.log(beds);
   }, [loadBeds]);
+
+  const { loadEmergencyNotAccepted } = useNotificationStore();
+
+  useEffect(() => {
+    loadEmergencyNotAccepted();
+  }, []);
 
   const filteredBeds: Bed[] = beds.filter(
     (bed: Bed) =>

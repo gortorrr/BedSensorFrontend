@@ -20,7 +20,7 @@ export const notificationService = {
   async loadEmergencyNotAccepted(): Promise<Notification[]> {
     try {
       const response = await http.get(
-        `notifications//notifications_not_accepted/sos`
+        `notifications/notifications_not_accepted/emergency`
       );
       return response.data; // ✅ คืนค่าข้อมูลที่ได้จาก API
     } catch (error) {
