@@ -111,11 +111,11 @@ export default function Header({
 
           {/* SOS Button */}
           <button
-            className="relative animate-pulse cursor-pointer hover:scale-105 transition-transform hover:opacity-110 flex items-center justify-center p-2 rounded-full bg-red-600 shadow-md"
+            className="relative cursor-pointer hover:scale-105 transition-transform hover:opacity-110 flex items-center justify-center p-2 rounded-full"
             title="SOS Alert"
             onClick={toggleSosAlert}
           >
-            <span className="bg-red-700 text-xs text-white px-2 py-1 rounded-full shadow-md transform transition-all">
+            <span className="bg-red-700 text-xs text-white px-3 py-2 rounded-full shadow-md transform transition-all">
               SOS
             </span>
           </button>
