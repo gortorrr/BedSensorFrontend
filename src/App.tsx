@@ -24,11 +24,24 @@ const App: React.FC = () => {
   const [showSosAlert, setShowSosAlert] = useState(false);
   const [showEmergencyAlert, setShowEmergencyAlert] = useState(false);
 
-  const { loadEmergencyNotAccepted } = useNotificationStore();
+  const { loadEmergencyNotAccepted, loadSosNotAccepted } =
+    useNotificationStore();
 
   useEffect(() => {
     loadEmergencyNotAccepted();
+    loadSosNotAccepted();
   }, []);
+
+  //เผื่ออ๋าผ่านมาเห็น อันนี้อ่ะ มันลูปได้ละ แต่ว่านะอ๋านะ มันลูปได้จริง แต่ไม่รู้ว่าพอ load Noti มาเนี่ย มันจะอยู่บนสุดของหัวตารางมั้ย นั่นแหละประเด็น
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     loadEmergencyNotAccepted();
+  //     loadSosNotAccepted();
+  //   }, 5000); // 5000ms = 5 seconds
+
+  // Clean up interval when component unmounts or dependencies change
+  //   return () => clearInterval(interval);
+  // }, []); // Empty dependency array ensures this runs once on mount and sets the interval
 
   return (
     <div className="flex ">

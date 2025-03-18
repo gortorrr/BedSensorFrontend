@@ -50,13 +50,13 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
     }));
   },
   loadEmergencyNotAccepted: async () => {
-    set({ emergencyDatas: [] });
+    // set({ emergencyDatas: [] });
     const res = await notificationService.loadEmergencyNotAccepted();
     set({ emergencyDatas: res });
     // console.log(res);
   },
   loadSosNotAccepted: async () => {
-    set({ sosDatas: [] });
+    // set({ sosDatas: [] });
     const res = await notificationService.loadSosNotAccepted();
     set({ sosDatas: res });
     // console.log(res);

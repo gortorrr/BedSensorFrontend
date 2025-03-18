@@ -64,7 +64,11 @@ export const useSensorNotificationsConfigStore =
       set({ logAllNotifications: res });
     },
 
-    targetLog: async (bed_id: number, patient_id: number, sensor_id: number) => {
+    targetLog: async (
+      bed_id: number,
+      patient_id: number,
+      sensor_id: number
+    ) => {
       // รอให้ logAllNotifications มีข้อมูลก่อน
       const waitForData = () =>
         new Promise<void>((resolve) => {
@@ -77,20 +81,20 @@ export const useSensorNotificationsConfigStore =
           };
           checkData();
         });
-    
+
       await waitForData(); // รอข้อมูลก่อนทำงาน
-    
+
       const { logAllNotifications } = get();
-    
+
       console.log(bed_id, patient_id, sensor_id);
-    
+
       const res = logAllNotifications.filter(
         (notification) =>
           notification.bed_id === bed_id &&
           notification.patient_id === patient_id &&
           notification.sensor_id === sensor_id
       );
-    
+
       set({ targetLogHistory: res[0] ?? null });
-    },    
+    },
   }));
