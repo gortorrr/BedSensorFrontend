@@ -118,7 +118,7 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
         )}
         <button
           onClick={onClose}
-          className="text-[#2E5361] text-xl hover:text-gray-300 absolute top-3 right-3"
+          className="text-[#2E5361] text-xl hover:text-gray-300 absolute top-3 right-3 cursor-pointer"
           aria-label="Close alert"
         >
           ✖

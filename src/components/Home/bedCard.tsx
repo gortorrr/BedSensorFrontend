@@ -4,6 +4,7 @@ import SensorCard from "./sensorCard";
 import { Sensor } from "../../types/sensor";
 import { useNavigate } from "react-router-dom";
 import BedIcon from "./BedIcon";
+import { HiDotsHorizontal } from "react-icons/hi";
 
 interface Props {
   bed: Bed;
@@ -68,11 +69,12 @@ const BedCard: React.FC<Props> = ({ bed }) => {
           <p className="text-lg px-2 bg-[#B7D6DE] rounded-full drop-shadow-md">
             <strong></strong> {bed.room.room_name} {bed.bed_name}
           </p>
-          <div className="flex gap-2 cursor-pointer">
-            <span title="settingNoti" onClick={goToSettingNoti}>
+          <div className="flex gap-1 cursor-pointer justify-end">
+            <HiDotsHorizontal title="settingNoti" onClick={goToSettingNoti} size={20}  />
+            {/* <span title="settingNoti" onClick={goToSettingNoti}>
               ⋮
-            </span>
-            <span title="config" onClick={configBedById}>
+            </span> */}
+            <span title="config" onClick={configBedById} className="text-xl justify-end">
               ⚙️
             </span>
           </div>
