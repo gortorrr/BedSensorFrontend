@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Plot from "react-plotly.js";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -61,6 +61,32 @@ const SensorGraph: React.FC<SensorGraphProps> = ({
   const actualMinValue = minValue ?? Math.min(...yValues);
   const actualMaxValue = maxValue ?? Math.max(...yValues);
 
+  const [containerWidth, setContainerWidth] = useState(0);
+    const graphContainerRef = useRef<HTMLDivElement>(null);
+  
+     // สร้าง ResizeObserver เพื่อติดตามการเปลี่ยนแปลงขนาดของ container
+     useEffect(() => {
+      if (!graphContainerRef.current) return;
+      
+      const resizeObserver = new ResizeObserver(entries => {
+        for (const entry of entries) {
+          setContainerWidth(entry.contentRect.width);
+        }
+      });
+      
+      resizeObserver.observe(graphContainerRef.current);
+      
+      // เช็คขนาดเริ่มต้นทันที
+      setContainerWidth(graphContainerRef.current.offsetWidth);
+      
+      // Cleanup observer เมื่อ component unmount
+      return () => {
+        if (graphContainerRef.current) {
+          resizeObserver.unobserve(graphContainerRef.current);
+        }
+      };
+    }, []);
+
   return (
     <div className="bg-white rounded-lg p-3 shadow-md ">
     <div className="px-2">
@@ -101,7 +127,11 @@ const SensorGraph: React.FC<SensorGraphProps> = ({
         </div>
       </div>
 
-      <div className="bg-linear-to-r from-[#80a2ad] to-[#e9f6fc] rounded-lg w-full px-4" >
+      <div 
+        ref={graphContainerRef}
+        className="bg-linear-to-r from-[#80a2ad] to-[#e9f6fc] rounded-lg w-full px-4"
+        style={{ position: 'relative' }} 
+        >
       {/* กราฟ Plotly */}
       <Plot
         data={[
@@ -159,25 +189,24 @@ const SensorGraph: React.FC<SensorGraphProps> = ({
             yanchor: "top",
                   }, // ✅ Legend แยกแต่ละสถานะ
           height: 300,
-          // กำหนดพื้นหลังเป็นไล่สี (gradient)
-          paper_bgcolor: "transparent", // พื้นหลังของกราฟ
-          plot_bgcolor: "transparent", // พื้นหลังที่อยู่ด้านในกราฟ (สำหรับพื้นที่แสดงข้อมูล)
-          hovermode: "x unified",
-          margin: { l: 80, r: 50, t: 80, b: 120 }, // ปรับ margin ให้พอดี
-          // autosize: true // ให้ปรับขนาดอัตโนมัติภายในพื้นที่ที่กำหนด
-            }}
-            config={{
-              responsive: true,
-              // displayModeBar: false // ซ่อนแถบเครื่องมือเพื่อประหยัดพื้นที่
-            }}
-            useResizeHandler={true}
-            className="mx-auto" // จัดให้อยู่ตรงกลาง
-            style={{ 
-              width: "100%", 
-              maxWidth: "100%",
-              height: "auto"
-            }}
-          />
+          width: containerWidth > 0 ? containerWidth - 32 : undefined, // หักค่าขอบ padding ที่เป็น px-4 (16px + 16px)
+            // กำหนดพื้นหลังเป็นไล่สี (gradient)
+            paper_bgcolor: "transparent", // พื้นหลังของกราฟ
+            plot_bgcolor: "transparent", // พื้นหลังที่อยู่ด้านในกราฟ (สำหรับพื้นที่แสดงข้อมูล)
+            margin: { l: 80, r: 50, t: 80, b: 120 }, // ปรับ margin ให้พอดี
+            // autosize: true, // ให้ปรับขนาดอัตโนมัติภายในพื้นที่ที่กำหนด
+          }}
+          config={{
+            responsive: true,
+            // displayModeBar: false // ซ่อนแถบเครื่องมือเพื่อประหยัดพื้นที่
+          }}
+          useResizeHandler={true}
+          // className="mx-auto" // จัดให้อยู่ตรงกลาง
+          style={{
+            width: '100%',
+            height: '100%',
+          }}
+        />
     </div>
     </div>
   );

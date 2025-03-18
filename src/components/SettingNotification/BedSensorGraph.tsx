@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Plot from "react-plotly.js";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -15,6 +15,31 @@ interface TimelineGraphProps {
 
 const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [containerWidth, setContainerWidth] = useState(0);
+  const graphContainerRef = useRef<HTMLDivElement>(null);
+
+   // สร้าง ResizeObserver เพื่อติดตามการเปลี่ยนแปลงขนาดของ container
+   useEffect(() => {
+    if (!graphContainerRef.current) return;
+    
+    const resizeObserver = new ResizeObserver(entries => {
+      for (const entry of entries) {
+        setContainerWidth(entry.contentRect.width);
+      }
+    });
+    
+    resizeObserver.observe(graphContainerRef.current);
+    
+    // เช็คขนาดเริ่มต้นทันที
+    setContainerWidth(graphContainerRef.current.offsetWidth);
+    
+    // Cleanup observer เมื่อ component unmount
+    return () => {
+      if (graphContainerRef.current) {
+        resizeObserver.unobserve(graphContainerRef.current);
+      }
+    };
+  }, []);
 
   const statusMapping: { [key: string]: number } = {
     ไม่อยู่ที่เตียง: 1,
@@ -109,7 +134,11 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
         </div>
       </div>
 
-      <div className="bg-linear-to-r from-[#80a2ad] to-[#e9f6fc] rounded-lg w-full px-4">
+      <div 
+        ref={graphContainerRef}
+        className="bg-linear-to-r from-[#80a2ad] to-[#e9f6fc] rounded-lg w-full px-4"
+        style={{ position: 'relative' }}
+      >
         {/* กราฟ */}
         <Plot
           data={traces.map((trace) => ({
@@ -144,6 +173,7 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
               yanchor: "top",
             }, // ✅ Legend แยกแต่ละสถานะ
             height: 350,
+            width: containerWidth > 0 ? containerWidth - 32 : undefined, // หักค่าขอบ padding ที่เป็น px-4 (16px + 16px)
             // กำหนดพื้นหลังเป็นไล่สี (gradient)
             paper_bgcolor: "transparent", // พื้นหลังของกราฟ
             plot_bgcolor: "transparent", // พื้นหลังที่อยู่ด้านในกราฟ (สำหรับพื้นที่แสดงข้อมูล)
@@ -155,11 +185,10 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
             // displayModeBar: false // ซ่อนแถบเครื่องมือเพื่อประหยัดพื้นที่
           }}
           useResizeHandler={true}
-          className="mx-auto" // จัดให้อยู่ตรงกลาง
+          // className="mx-auto" // จัดให้อยู่ตรงกลาง
           style={{
-            width: "100%",
-            maxWidth: "100%",
-            height: "auto",
+            width: '100%',
+            height: '100%',
           }}
         />
 
