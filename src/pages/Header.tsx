@@ -46,7 +46,10 @@ export default function Header({
     if (emergencyDatas.length > 0) {
       // ใช้ setTimeout เพื่อหน่วงเวลา 1 วินาที หลังจากการแจ้งเตือน SOS
       setTimeout(() => {
-        toggleEmergencyAlert(); // Trigger emergency alert toggle
+        setIsEmergencyAlertOpen(true);
+        setShowEmergencyAlert(true);
+        setShowSosAlert(false); // ปิด SOS ถ้า Emergency เปิด
+        notificationStore.setSelectedAlertType("แจ้งเตือนฉุกเฉิน"); // Trigger emergency alert toggle // Trigger emergency alert toggle
       }, 3000); // หน่วงเวลา 3 วินาที
     }
   }, [emergencyDatas.length]); // Dependency on emergencyDatas
