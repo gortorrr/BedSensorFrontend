@@ -15,30 +15,31 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
 }) => {
   const notificationStore = useNotificationStore();
   const handleTabClick = (notification: Notification) => {
-    updateStatus(notification.notification_id,true, undefined);
+    updateStatus(notification.notification_id, true, undefined);
     console.log(notification.notification_id);
     if (notification.notification_category === "Emergency") {
       notificationStore.acceptEmergencyByNotification(
         notification.notification_id
       );
-    }else if (notification.notification_category === "SOS") {
-      notificationStore.acceptEmergencyByNotification(
-        notification.notification_id
-      );
+    } else if (notification.notification_category === "SOS") {
+      notificationStore.acceptSos(notification.notification_id);
     }
   };
 
-  const handleCompleteClick = () => { // อัปเดตสถานะเป็น "เสร็จสิ้น"
+  const handleCompleteClick = () => {
+    // อัปเดตสถานะเป็น "เสร็จสิ้น"
     updateStatus(notification.notification_id, undefined, true);
     console.log(notification.notification_id);
+    if (notification.notification_accepted !== true) {
+      console.log("not accepeted cant success");
+    } else {
       if (notification.notification_category === "Emergency") {
         notificationStore.successEmergencyByNotification(
           notification.notification_id
         ); // ลบการแจ้งเตือนจากลิสต์
-      }else if (notification.notification_category === "SOS") {
-        notificationStore.successSos(
-          notification.notification_id
-        );
+      } else if (notification.notification_category === "SOS") {
+        notificationStore.successSos(notification.notification_id);
+      }
     }
   };
 
@@ -49,8 +50,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
   //     updateStatus(notification.notification_id, undefined, true);
   //   }
   // }
-  
-  
+
   return (
     <div className="flex items-center p-4 bg-slate-100 rounded-lg shadow">
       {/* แถบสีแนวตั้ง */}
@@ -104,15 +104,16 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
               </button>
             )}
 
-          {/* แสดงปุ่ม "เสร็จสิ้น" ตลอดเวลา */}
-          {!notification.notification_successed && (
-            <button
-              onClick={handleCompleteClick}
-              className="text-[#22c265] font-semibold hover:text-[#7bdebf] animate-jump1 cursor-pointer"
-            >
-              เสร็จสิ้น
-            </button>
-          )}
+          {/* แสดงปุ่ม "เสร็จสิ้น" ถ้าไม่ได้รับการยอมรับ */}
+          {!notification.notification_successed &&
+            notification.notification_accepted !== false && (
+              <button
+                onClick={handleCompleteClick}
+                className="text-[#22c265] font-semibold hover:text-[#7bdebf] animate-jump1 cursor-pointer"
+              >
+                เสร็จสิ้น
+              </button>
+            )}
         </div>
       </div>
     </div>
@@ -121,6 +122,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
 
 interface NotificationListProps {
   notifications: Notification[];
+  notificationsWithAccepted: Notification[];
   updateStatus: (id: number, accepted?: boolean, successed?: boolean) => void;
   getTimeElapsed: (notificationDate: Date) => string;
 }
@@ -129,6 +131,7 @@ const NotificationList: React.FC<NotificationListProps> = ({
   notifications,
   updateStatus,
   getTimeElapsed,
+  notificationsWithAccepted,
 }) => {
   return (
     <div className="p-4 space-y-4 overflow-auto flex-1">
@@ -136,6 +139,14 @@ const NotificationList: React.FC<NotificationListProps> = ({
         <NotificationCard
           key={noti.notification_id}
           notification={noti}
+          updateStatus={updateStatus}
+          getTimeElapsed={getTimeElapsed}
+        />
+      ))}
+      {notificationsWithAccepted.map((notiWA) => (
+        <NotificationCard
+          key={notiWA.notification_id}
+          notification={notiWA}
           updateStatus={updateStatus}
           getTimeElapsed={getTimeElapsed}
         />

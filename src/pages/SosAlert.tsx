@@ -9,12 +9,20 @@ interface SosAlertProps {
 
 export default function SosAlert({ onClose }: SosAlertProps) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notificationsWithAccepted, setNotificationsWithAccepted] = useState<
+    Notification[]
+  >([]);
   // const notificationStore = useNotificationStore();
 
-  const { sosDatas, selectedAlertType } = useNotificationStore();
+  const { sosDatas, selectedAlertType, sosDataWithAccepted } =
+    useNotificationStore();
 
   useEffect(() => {
     setNotifications(sosDatas);
+  });
+
+  useEffect(() => {
+    setNotificationsWithAccepted(sosDataWithAccepted);
   });
   // useEffect(() => {
   //   setNotifications((prev) => [
@@ -101,13 +109,14 @@ export default function SosAlert({ onClose }: SosAlertProps) {
         </button>
       </div>
 
-      {notifications.length === 0 ? (
+      {notifications.length === 0 && notificationsWithAccepted.length === 0 ? (
         <p className="text-gray-500 text-center mt-5">ไม่มีการแจ้งเตือน</p>
       ) : (
         <NotificationList
           notifications={sosDatas}
           updateStatus={updateStatus}
           getTimeElapsed={getTimeElapsed}
+          notificationsWithAccepted={notificationsWithAccepted}
         />
       )}
     </div>

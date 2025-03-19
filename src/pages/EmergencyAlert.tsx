@@ -9,7 +9,11 @@ interface EmergencyAlertProps {
 
 export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const { emergencyDatas, selectedAlertType } = useNotificationStore();
+  const { emergencyDatas, selectedAlertType, emergencyDataWithAccepted } =
+    useNotificationStore();
+  const [notificationsWithAccepted, setNotificationsWithAccepted] = useState<
+    Notification[]
+  >([]);
 
   // useEffect(() => {
   //   setNotifications(emergencyDatas);
@@ -28,8 +32,21 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
       })
     );
   }, [emergencyDatas]);
-  
-  
+
+  useEffect(() => {
+    setNotificationsWithAccepted(
+      [...emergencyDataWithAccepted].sort((a, b) => {
+        const dateA = a.notification_createdate
+          ? new Date(a.notification_createdate).getTime()
+          : 0;
+        const dateB = b.notification_createdate
+          ? new Date(b.notification_createdate).getTime()
+          : 0;
+        return dateB - dateA; // เรียงจากใหม่ไปเก่า
+      })
+    );
+  }, [emergencyDataWithAccepted]);
+
   // const { loadEmergencyNotAccepted } = useNotificationStore();
 
   // useEffect(() => {
@@ -125,14 +142,17 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
         </button>
       </div>
 
-      {notifications.length === 0 ? (
+      {notifications.length === 0 && notificationsWithAccepted.length === 0 ? (
         <p className="text-gray-500 text-center mt-5">ไม่มีการแจ้งเตือน</p>
       ) : (
-        <NotificationList
-          notifications={notifications}
-          updateStatus={updateStatus}
-          getTimeElapsed={getTimeElapsed}
-        />
+        <>
+          <NotificationList
+            notifications={notifications}
+            updateStatus={updateStatus}
+            getTimeElapsed={getTimeElapsed}
+            notificationsWithAccepted={notificationsWithAccepted}
+          />
+        </>
       )}
     </div>
   );

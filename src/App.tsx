@@ -24,20 +24,25 @@ const App: React.FC = () => {
   const [showSosAlert, setShowSosAlert] = useState(false);
   const [showEmergencyAlert, setShowEmergencyAlert] = useState(false);
 
-  const { loadEmergencyNotAccepted, loadSosNotAccepted } =
-    useNotificationStore();
+  const {
+    loadEmergencyNotAccepted,
+    loadSosNotAccepted,
+    loadEmergencyNotSuccessed,
+    loadSosNotSuccessed,
+  } = useNotificationStore();
 
-    const N = 5000; // ระยะเวลาเป็นมิลลิวินาที (เช่น 5000ms = 5 วินาที)
-    
-    useEffect(() => {
-      const interval = setInterval(() => {
-        loadEmergencyNotAccepted();
-        loadSosNotAccepted();
-      }, N);
-    
-      return () => clearInterval(interval); // เคลียร์ interval เมื่อ component ถูก unmount
-    }, []);
-    
+  const N = 5000; // ระยะเวลาเป็นมิลลิวินาที (เช่น 5000ms = 5 วินาที)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      loadEmergencyNotAccepted();
+      loadEmergencyNotSuccessed();
+      loadSosNotAccepted();
+      loadSosNotSuccessed();
+    }, N);
+
+    return () => clearInterval(interval); // เคลียร์ interval เมื่อ component ถูก unmount
+  }, []);
 
   //เผื่ออ๋าผ่านมาเห็น อันนี้อ่ะ มันลูปได้ละ แต่ว่านะอ๋านะ มันลูปได้จริง แต่ไม่รู้ว่าพอ load Noti มาเนี่ย มันจะอยู่บนสุดของหัวตารางมั้ย นั่นแหละประเด็น
   // useEffect(() => {
