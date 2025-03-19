@@ -31,6 +31,9 @@ export default function Header({
   const [isEmergencyAlertOpen, setIsEmergencyAlertOpen] = useState(false);
 
   const { emergencyDatas, sosDatas } = useNotificationStore();
+  const notificationCount = emergencyDatas?.length || 0;
+  const notificationCountSos = sosDatas?.length || 0;
+
   // Watch for changes in emergencyDatas and sosDatas
   useEffect(() => {
     if (sosDatas.length > 0) {
@@ -125,20 +128,29 @@ export default function Header({
             <span className="bg-red-700 text-xs text-white px-3 py-2 rounded-full shadow-md transform transition-all">
               SOS
             </span>
+            {/* ✅ แสดงตัวเลขแจ้งเตือนเมื่อ > 0 */}
+            {notificationCountSos > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                {notificationCountSos}
+              </span>
+            )}{" "}
           </button>
 
           {/* ไอคอนแจ้งเตือน */}
+          {/* ปุ่มแจ้งเตือน Emergency */}
           <button
-            className="cursor-pointer hover:scale-125 transition-transform transform hover:shadow-sm hover:bg-[#5E8892] hover:text-white p-2 rounded-full"
+            className="relative cursor-pointer hover:scale-125 transition-transform transform hover:shadow-sm hover:bg-[#5E8892] hover:text-white p-2 rounded-full"
             title="Emergency"
             onClick={toggleEmergencyAlert}
           >
-            <span className="absolute inset-0 flex items-center justify-center">
-              <span className="w-8 h-8 bg-yellow-500 opacity-50 rounded-full animate-ping"></span>
-            </span>
+            <Bell className="relative w-6 h-6 text-yellow-500 fill-yellow-500 transition-all drop-shadow-lg" />
 
-            {/* ไอคอนหลัก */}
-            <Bell className="relative w-6 h-6 text-yellow-500 fill-yellow-500 transition-all" />
+            {/* ✅ แสดงตัวเลขแจ้งเตือนเมื่อ > 0 */}
+            {notificationCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                {notificationCount}
+              </span>
+            )}
           </button>
 
           {/*

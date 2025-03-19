@@ -15,6 +15,7 @@ interface NotificationStore {
   setShowAlert: (value: boolean) => void;
   acceptEmergencyByNotification: (notification_id: number) => Promise<void>;
   successEmergencyByNotification: (notification_id: number) => void;
+  acceptSos: (notification_id: number) => void;
   successSos: (notification_id: number) => void;
   // loadLogHistoryNotifications: (
   //   bed_id: number,
@@ -22,16 +23,22 @@ interface NotificationStore {
   //   sensor_id: number
   // ) => Promise<void>;
   loadEmergencyNotAccepted: () => Promise<void>;
+  loadEmergencyNotSuccessed: () => Promise<void>;
   emergencyDatas: Notification[];
+  emergencyDataWithAccepted: Notification[];
   loadSosNotAccepted: () => Promise<void>;
+  loadSosNotSuccessed: () => Promise<void>;
   sosDatas: Notification[];
+  sosDataWithAccepted: Notification[];
 }
 
 export const useNotificationStore = create<NotificationStore>((set) => ({
   // NotificationByPatientAndSensor: [],
   LogHistoryNotifications: {},
   emergencyDatas: [],
+  emergencyDataWithAccepted: [],
   sosDatas: [],
+  sosDataWithAccepted: [],
   notifications: [],
   showAlert: false,
   selectedAlertType: "", // ค่าเริ่มต้น
@@ -44,11 +51,7 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
   },
 
   successEmergencyByNotification: (notification_id: number) => {
-    set((state) => ({
-      notifications: state.notifications.filter(
-        (notification) => notification.notification_id !== notification_id
-      ),
-    }));
+    notificationService.successEmergencyByNotification(notification_id);
   },
   loadEmergencyNotAccepted: async () => {
     // set({ emergencyDatas: [] });
@@ -56,11 +59,26 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
     set({ emergencyDatas: res });
     // console.log(res);
   },
+  loadEmergencyNotSuccessed: async () => {
+    // set({ emergencyDatas: [] });
+    const res = await notificationService.loadEmergencyNotSuccessed();
+    set({ emergencyDataWithAccepted: res });
+    // console.log(res);
+  },
   loadSosNotAccepted: async () => {
     // set({ sosDatas: [] });
     const res = await notificationService.loadSosNotAccepted();
     set({ sosDatas: res });
     // console.log(res);
+  },
+  loadSosNotSuccessed: async () => {
+    // set({ sosDatas: [] });
+    const res = await notificationService.loadSosNotSuccessed();
+    set({ sosDataWithAccepted: res });
+    // console.log(res);
+  },
+  acceptSos: async (notification_id: number) => {
+    notificationService.acceptSosByNotification(notification_id);
   },
   successSos: async (notification_id: number) => {
     notificationService.successSos(notification_id);
