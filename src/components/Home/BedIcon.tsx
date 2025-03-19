@@ -26,9 +26,9 @@ const BedIcon: React.FC<BedIconProps> = ({
   addPatient,
 }) => {
   const iconMap: { [key: string]: string } = {
-    ตะแคงซ้าย: LeftSide,
-    ตะแคงขวา: RightSide,
-    นอนหงาย: Straight,
+    นอนตะแคงซ้าย: LeftSide,
+    นอนตะแคงขวา: RightSide,
+    นอนตรง: Straight,
     นั่งบนเตียง: Sit,
     ไม่อยู่บนเตียง: NotHere,
   };
@@ -51,7 +51,8 @@ const BedIcon: React.FC<BedIconProps> = ({
 
     const iconPath = iconMap[sensorValue] || Default;
 
-    const iconSize = sensorValue === "นั่งบนเตียง" ? "w-34 h-34" : "w-40 h-40 mb-2";
+    const iconSize =
+      sensorValue === "นั่งบนเตียง" ? "w-34 h-34" : "w-40 h-40 mb-2";
 
     return (
       <div key={index} className="flex items-center">

@@ -16,7 +16,7 @@ const NotificationTable: React.FC<NotificationTableProps> = ({ sensor }) => {
   const renderSmallBedIcon = (eventType: string) => {
     // แมปค่าของเหตุการณ์กับไอคอนที่เหมาะสม
     const iconMap: { [key: string]: string } = {
-      นั่ง: Sit,
+      นั่งบนเตียง: Sit,
       นอนตะแคงซ้าย: LeftSide,
       นอนตะแคงขวา: RightSide,
       นอนตรง: Straight,

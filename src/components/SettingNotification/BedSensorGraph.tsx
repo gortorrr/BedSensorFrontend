@@ -18,21 +18,21 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
   const [containerWidth, setContainerWidth] = useState(0);
   const graphContainerRef = useRef<HTMLDivElement>(null);
 
-   // สร้าง ResizeObserver เพื่อติดตามการเปลี่ยนแปลงขนาดของ container
-   useEffect(() => {
+  // สร้าง ResizeObserver เพื่อติดตามการเปลี่ยนแปลงขนาดของ container
+  useEffect(() => {
     if (!graphContainerRef.current) return;
-    
-    const resizeObserver = new ResizeObserver(entries => {
+
+    const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         setContainerWidth(entry.contentRect.width);
       }
     });
-    
+
     resizeObserver.observe(graphContainerRef.current);
-    
+
     // เช็คขนาดเริ่มต้นทันที
     setContainerWidth(graphContainerRef.current.offsetWidth);
-    
+
     // Cleanup observer เมื่อ component unmount
     return () => {
       if (graphContainerRef.current) {
@@ -43,16 +43,16 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
 
   const statusMapping: { [key: string]: number } = {
     ไม่อยู่ที่เตียง: 1,
-    นั่ง: 2,
-    ตะแคงซ้าย: 3,
+    นั่งบนเตียง: 2,
+    นอนตะแคงซ้าย: 3,
     นอนตะแคงขวา: 4,
     นอนตรง: 5,
   };
 
   const statusColors: { [key: string]: string } = {
     ไม่อยู่ที่เตียง: "#80002a",
-    นั่ง: "#ffcc00",
-    ตะแคงซ้าย: "#FBA518",
+    นั่งบนเตียง: "#ffcc00",
+    นอนตะแคงซ้าย: "#FBA518",
     นอนตะแคงขวา: "#e63946",
     นอนตรง: "#A89C29",
   };
@@ -134,10 +134,10 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
         </div>
       </div>
 
-      <div 
+      <div
         ref={graphContainerRef}
         className="bg-linear-to-r from-[#80a2ad] to-[#e9f6fc] rounded-lg w-full px-4"
-        style={{ position: 'relative' }}
+        style={{ position: "relative" }}
       >
         {/* กราฟ */}
         <Plot
@@ -187,8 +187,8 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
           useResizeHandler={true}
           // className="mx-auto" // จัดให้อยู่ตรงกลาง
           style={{
-            width: '100%',
-            height: '100%',
+            width: "100%",
+            height: "100%",
           }}
         />
 

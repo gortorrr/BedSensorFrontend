@@ -94,25 +94,24 @@ const PatientWindow: React.FC<Props> = ({
   return (
     <>
       {selectedPatient !== undefined && (
-        <div className="border-2 border-gray-300 rounded-md w-full bg-[#F0F0F0] p-3 mt-3 h-73 shadow-md">
+        <div className="border-2 border-gray-300 rounded-md w-full bg-[#F0F0F0] p-3 mt-3 shadow-md">
           <div className="flex items-center p-3 text-xl font-semibold">
-            <FaUser className="mr-2 text-2xl text-[#2E5361]" />{" "}
-            {/* เพิ่มไอคอนผู้ป่วย */}
+            <FaUser className="mr-2 text-2xl text-[#2E5361]" />
             รายละเอียดผู้ป่วย
           </div>
-          <div className="grid grid-cols-2">
-            {/* รหัสผู้ป่วย */}
-            <div className="flex items-center p-3">
+
+          <div className="grid grid-cols-2 gap-x-2">
+            <div className="flex items-center p-2 w-full">
               <label
                 htmlFor="patient_id"
-                className="text-right pl-6 mr-8 font-medium"
+                className="text-right min-w-[100px] flex-shrink-0 font-medium mr-4"
               >
                 รหัสผู้ป่วย:
               </label>
               <input
                 id="patient_id"
                 type="text"
-                className="border border-gray-300 rounded-xl max-w-[250px] pl-3"
+                className="border border-gray-300 rounded-xl w-full pl-3"
                 value={selectedPatient?.patient_id || ""}
                 placeholder="กรอกรหัสผู้ป่วย"
                 readOnly
@@ -120,17 +119,17 @@ const PatientWindow: React.FC<Props> = ({
             </div>
 
             {/* ชื่อ-นามสกุล */}
-            <div className="flex items-center p-3">
+            <div className="flex items-center p-2 w-full">
               <label
                 htmlFor="patient_name"
-                className="text-right pl-6 mr-2 font-medium"
+                className="text-right min-w-[100px] flex-shrink-0 font-medium mr-4"
               >
                 ชื่อ-นามสกุล:
               </label>
               <input
                 id="patient_name"
                 type="text"
-                className="border border-gray-300 rounded-xl max-w-[250px] pl-3"
+                className="border border-gray-300 rounded-xl w-full pl-3"
                 value={selectedPatient?.patient_name || ""}
                 placeholder="Enter patient name"
                 readOnly
@@ -138,14 +137,17 @@ const PatientWindow: React.FC<Props> = ({
             </div>
 
             {/* อายุ */}
-            <div className="flex items-center p-3">
-              <label htmlFor="patient_age" className="pl-6 mr-18 font-medium">
+            <div className="flex items-center p-2 w-full">
+              <label
+                htmlFor="patient_age"
+                className="text-right min-w-[100px] flex-shrink-0 font-medium mr-4"
+              >
                 อายุ:
               </label>
               <input
                 id="patient_age"
                 type="text"
-                className="border border-gray-300 rounded-xl max-w-[250px] pl-3"
+                className="border border-gray-300 rounded-xl w-full pl-3"
                 value={selectedPatient?.patient_age || ""}
                 placeholder="Enter patient age"
                 readOnly
@@ -153,91 +155,85 @@ const PatientWindow: React.FC<Props> = ({
             </div>
 
             {/* วันเกิด */}
-            <div className="flex items-center p-3 pr-2">
+            <div className="flex items-center p-2 w-full">
               <label
                 htmlFor="patient_birthdate"
-                className="pl-6 mr-11 font-medium"
+                className="text-right min-w-[100px] flex-shrink-0 font-medium mr-4"
               >
                 วันเกิด:
               </label>
               <input
                 id="patient_birthdate"
-                className="border border-gray-300 rounded-xl max-w-[250px] pl-3"
+                type="text"
+                className="border border-gray-300 rounded-xl w-full pl-3"
                 value={formatDate(selectedPatient?.patient_dob)}
                 readOnly
               />
             </div>
 
             {/* เพศ */}
-            <div className="flex items-center p-3">
+            <div className="flex items-center p-2 w-full">
               <label
                 htmlFor="patient_gender"
-                className="pl-6 mr-18 font-medium"
+                className="text-right min-w-[100px] flex-shrink-0 font-medium mr-4"
               >
                 เพศ:
               </label>
               <input
                 id="patient_gender"
-                className="border border-gray-300 rounded-xl max-w-[250px] pl-3"
+                type="text"
+                className="border border-gray-300 rounded-xl w-full pl-3"
                 value={selectedPatient?.patient_gender || ""}
                 readOnly
-              >
-                {/* <option value="">เลือกเพศ</option>
-                <option value="male">ชาย</option>
-                <option value="female">หญิง</option>
-                <option value="other">อื่น ๆ</option> */}
-              </input>
+              />
             </div>
 
             {/* หมู่เลือด */}
-            <div className="flex items-center p-3 pr-2">
-              <label htmlFor="patient_blood" className="pl-6 mr-8 font-medium">
+            <div className="flex items-center p-2 w-full">
+              <label
+                htmlFor="patient_blood"
+                className="text-right min-w-[100px] flex-shrink-0 font-medium mr-4"
+              >
                 หมู่เลือด:
               </label>
               <input
                 id="patient_blood"
-                className="border border-gray-300 rounded-xl max-w-[250px] pl-3"
+                type="text"
+                className="border border-gray-300 rounded-xl w-full pl-3"
                 value={selectedPatient?.patient_bloodtype || ""}
                 readOnly
-              >
-                {/* <option value="">เลือกหมู่เลือด</option>
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="AB">AB</option>
-                <option value="O">O</option> */}
-              </input>
+              />
             </div>
 
-            {/* การรักษา */}
-            <div className="flex items-center p-3">
+            {/* โรคประจำตัว */}
+            <div className="flex items-center p-2 w-full">
               <label
                 htmlFor="patient_treatment"
-                className="pl-6 mr-3 font-medium"
+                className="text-right min-w-[100px] flex-shrink-0 font-medium mr-4"
               >
                 โรคประจำตัว:
               </label>
               <input
                 id="patient_treatment"
                 type="text"
-                className="border border-gray-300 rounded-xl max-w-[250px] pl-3"
+                className="border border-gray-300 rounded-xl w-full pl-3"
                 value={selectedPatient?.patient_disease || ""}
                 readOnly
               />
             </div>
+          </div>
 
-            {/* ปุ่มแก้ไขและลบ */}
-            <div className="flex justify-end mr-2 gap-3">
-              {/* ปุ่มลบ */}
-              <button
-                type="button"
-                title="Delete patient record"
-                aria-label="Delete patient record"
-                className="p-3 bg-red-500 text-white rounded-md hover:bg-red-600"
-                onClick={handleDeletePatient}
-              >
-                <Icon path={mdiDelete} size={1} />
-              </button>
-            </div>
+          {/* ปุ่มลบ */}
+          <div className="flex justify-end mt-4 mr-2">
+            <button
+              type="button"
+              title="Delete patient record"
+              aria-label="Delete patient record"
+              className="p-3 bg-red-500 text-white rounded-md hover:bg-red-600"
+              onClick={handleDeletePatient}
+            >
+              <Icon path={mdiDelete} size={1} />
+            </button>
           </div>
         </div>
       )}
