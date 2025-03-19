@@ -15,6 +15,7 @@ interface NotificationStore {
   setShowAlert: (value: boolean) => void;
   acceptEmergencyByNotification: (notification_id: number) => Promise<void>;
   successEmergencyByNotification: (notification_id: number) => void;
+  successSos: (notification_id: number) => void;
   // loadLogHistoryNotifications: (
   //   bed_id: number,
   //   patient_id: number,
@@ -60,6 +61,9 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
     const res = await notificationService.loadSosNotAccepted();
     set({ sosDatas: res });
     // console.log(res);
+  },
+  successSos: async (notification_id: number) => {
+    notificationService.successSos(notification_id);
   },
 }));
 // loadAllNotificationByPatient: async (patient_id: number, sensor_id: number) => {
