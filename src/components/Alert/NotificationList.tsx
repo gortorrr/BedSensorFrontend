@@ -15,24 +15,42 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
 }) => {
   const notificationStore = useNotificationStore();
   const handleTabClick = (notification: Notification) => {
+    updateStatus(notification.notification_id,true, undefined);
     console.log(notification.notification_id);
-    updateStatus(notification.notification_id, true, undefined);
     if (notification.notification_category === "Emergency") {
+      notificationStore.acceptEmergencyByNotification(
+        notification.notification_id
+      );
+    }else if (notification.notification_category === "SOS") {
       notificationStore.acceptEmergencyByNotification(
         notification.notification_id
       );
     }
   };
 
-  const handleCompleteClick = () => {
-    updateStatus(notification.notification_id, undefined, true); // อัปเดตสถานะเป็น "เสร็จสิ้น"
-    if (notification.notification_category === "Emergency") {
-      notificationStore.successEmergencyByNotification(
-        notification.notification_id
-      ); // ลบการแจ้งเตือนจากลิสต์
+  const handleCompleteClick = () => { // อัปเดตสถานะเป็น "เสร็จสิ้น"
+    updateStatus(notification.notification_id, undefined, true);
+    console.log(notification.notification_id);
+      if (notification.notification_category === "Emergency") {
+        notificationStore.successEmergencyByNotification(
+          notification.notification_id
+        ); // ลบการแจ้งเตือนจากลิสต์
+      }else if (notification.notification_category === "SOS") {
+        notificationStore.successSos(
+          notification.notification_id
+        );
     }
   };
 
+  // const checkStatus = () => {
+  //   if(notification.notification_accepted){
+  //     updateStatus(notification.notification_id,true, undefined);
+  //   }else if(notification.notification_successed){
+  //     updateStatus(notification.notification_id, undefined, true);
+  //   }
+  // }
+  
+  
   return (
     <div className="flex items-center p-4 bg-slate-100 rounded-lg shadow">
       {/* แถบสีแนวตั้ง */}
