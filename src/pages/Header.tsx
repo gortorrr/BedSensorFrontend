@@ -31,8 +31,8 @@ export default function Header({
   const [isEmergencyAlertOpen, setIsEmergencyAlertOpen] = useState(false);
 
   const { emergencyDatas, sosDatas } = useNotificationStore();
-  const notificationCount =
-    (sosDatas?.length || 0) + (emergencyDatas?.length || 0);
+  const notificationCount = emergencyDatas?.length || 0;
+  const notificationCountSos = sosDatas?.length || 0;
 
   // Watch for changes in emergencyDatas and sosDatas
   useEffect(() => {
@@ -128,6 +128,12 @@ export default function Header({
             <span className="bg-red-700 text-xs text-white px-3 py-2 rounded-full shadow-md transform transition-all">
               SOS
             </span>
+            {/* ✅ แสดงตัวเลขแจ้งเตือนเมื่อ > 0 */}
+            {notificationCountSos > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                {notificationCountSos}
+              </span>
+            )}{" "}
           </button>
 
           {/* ไอคอนแจ้งเตือน */}
