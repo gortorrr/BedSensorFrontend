@@ -46,6 +46,20 @@ export const notificationService = {
     }
   },
 
+  async successEmergencyByNotification(
+    notification_id: number
+  ): Promise<Notification> {
+    try {
+      const response = await http.patch(
+        `notifications/notifications_success_emer/${notification_id}`
+      );
+      return response.data; // ✅ คืนค่าข้อมูลที่ได้จาก API
+    } catch (error) {
+      console.error("Error success emergency notification:", error);
+      throw error;
+    }
+  },
+
   async loadSosNotAccepted(): Promise<Notification[]> {
     try {
       const response = await http.get(
@@ -53,10 +67,33 @@ export const notificationService = {
       );
       return response.data; // ✅ คืนค่าข้อมูลที่ได้จาก API
     } catch (error) {
-      console.error(
-        "Error loading notifications emergency not accepted:",
-        error
+      console.error("Error loading notifications sos not accepted:", error);
+      throw error;
+    }
+  },
+
+  async acceptSosByNotification(
+    notification_id: number
+  ): Promise<Notification> {
+    try {
+      const response = await http.patch(
+        `notifications/notifications_accepted_sos/${notification_id}`
       );
+      return response.data; // ✅ คืนค่าข้อมูลที่ได้จาก API
+    } catch (error) {
+      console.error("Error accepting sos notification:", error);
+      throw error;
+    }
+  },
+
+  async successSos(notification_id: number): Promise<Notification> {
+    try {
+      const response = await http.patch(
+        `notifications/notifications_success_sos/${notification_id}`
+      );
+      return response.data; // ✅ คืนค่าข้อมูลที่ได้จาก API
+    } catch (error) {
+      console.error("Error success sos notification:", error);
       throw error;
     }
   },
