@@ -1,4 +1,5 @@
 import { Bed } from "./bed";
+import { Building } from "./building";
 import { Notification } from "./notification";
 import { Patient } from "./patient";
 import { Sensor } from "./sensor";
@@ -13,4 +14,5 @@ export interface Log_bed_patient_sensor {
   bed?: Bed;
   patient?: Patient;
   sensor?: Sensor;
+  building?: Building;
 }

@@ -26,9 +26,9 @@ const BedIcon: React.FC<BedIconProps> = ({
   addPatient,
 }) => {
   const iconMap: { [key: string]: string } = {
-    นอนตะแคงซ้าย: LeftSide,
-    นอนตะแคงขวา: RightSide,
-    นอนตรง: Straight,
+    ตะแคงซ้าย: LeftSide,
+    ตะแคงขวา: RightSide,
+    นอนหงาย: Straight,
     นั่งบนเตียง: Sit,
     ไม่อยู่บนเตียง: NotHere,
   };

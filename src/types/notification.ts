@@ -5,6 +5,7 @@ export interface Notification {
   sensor_notifications_config_id: number;
   log_bed_patient_sensor_id: number;
   notification_id: number;
+  notification_name: string;
   notification_successed: boolean;
   notification_category: string;
   notification_accepted: boolean;
