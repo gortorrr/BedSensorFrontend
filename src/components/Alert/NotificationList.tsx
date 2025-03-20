@@ -83,7 +83,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
     <div className={`flex items-center p-4 ${getBackgroundColor()} rounded-lg shadow`}>
 
       <div className="flex-1 justify-end">
-        <p className="font-bold text-lg text-[#DB0000]">
+        <p className="font-semibold text-lg text-[#DB0000]">
           {notification.log_bed_patient_sensor?.bed?.room?.room_name || "ไม่ระบุห้อง"}
           &nbsp; {/* spacebar */}
           {notification.log_bed_patient_sensor?.bed?.bed_name || "ไม่ระบุเตียง"}
