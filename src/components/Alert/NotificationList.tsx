@@ -29,6 +29,9 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
   const handleCompleteClick = () => {
     // อัปเดตสถานะเป็น "เสร็จสิ้น"
     updateStatus(notification.notification_id, undefined, true);
+    notification.notification_successed = true
+    console.log("accepted",notification.notification_accepted);
+    console.log("successed",notification.notification_successed)
     console.log(notification.notification_id);
     if (notification.notification_accepted !== true) {
       console.log("not accepeted cant success");
