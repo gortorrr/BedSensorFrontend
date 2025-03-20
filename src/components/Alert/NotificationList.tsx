@@ -43,6 +43,34 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
     }
   };
 
+  // กำหนดสีพื้นหลังตามประเภทการแจ้งเตือน
+  const getBackgroundColor = () => {
+    switch (notification.notification_category) {
+      case "Emergency":
+        return "bg-[#FFCBCC]";
+      case "SOS":
+        return "bg-[#FFF7AF]";
+      default:
+        return "bg-slate-100";
+    }
+  };
+
+  const formatDateToThai = (date: string) => {
+    const d = new Date(date);
+    
+    // Thai year (Buddhist Era) is 543 years ahead of Gregorian year
+    const thaiYear = d.getFullYear() + 543;
+  
+    // Format the date to dd/mm/yyyy hh:mm (e.g., "7/01/2568 20:31")
+    const day = String(d.getDate()).padStart(2, "0");
+    const month = String(d.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed in JS
+    const year = thaiYear;
+    const hours = String(d.getHours()).padStart(2, "0");
+    const minutes = String(d.getMinutes()).padStart(2, "0");
+  
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
+  };
+
   // const checkStatus = () => {
   //   if(notification.notification_accepted){
   //     updateStatus(notification.notification_id,true, undefined);
@@ -52,47 +80,71 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
   // }
 
   return (
-    <div className="flex items-center p-4 bg-slate-100 rounded-lg shadow">
-      {/* แถบสีแนวตั้ง */}
-      <div className="h-25 w-2 bg-[#FF0000] mr-4"></div>
+    <div className={`flex items-center p-4 ${getBackgroundColor()} rounded-lg shadow`}>
 
       <div className="flex-1 justify-end">
-        <p className="font-semibold text-[#2E5361]">
-          {/* {notification.notification_name} */}
+        <p className="font-bold text-lg text-[#DB0000]">
+          {notification.log_bed_patient_sensor?.bed?.room?.room_name || "ไม่ระบุห้อง"}
+          &nbsp; {/* spacebar */}
+          {notification.log_bed_patient_sensor?.bed?.bed_name || "ไม่ระบุเตียง"}
+          &nbsp; {/* spacebar */}
+          ({notification.sensor_notifications_config?.sensor_notifications_config_event || "ไม่ระบุข้อความ"})
+          {/* RM004 เตียง 4 (ไม่อยู่ที่เตียง) */}
         </p>
-        <p className="text-gray-600">
+        <p className="text-black">
+          อาคาร : {notification.log_bed_patient_sensor?.building?.building_name || "ไม่ระบุอาคาร"}
+          {/* อาคารผู้ป่วยใน */}
+        </p>
+        {/* <p className="text-black">
           ประเภท: {notification.notification_category}
+        </p> */}
+        <p className="text-black">
+        ผู้ป่วย : {notification.log_bed_patient_sensor?.patient?.patient_disease  || "ไม่ระบุโรค"}
+          {/* ผู้ป่วย : Alcoholism */}
         </p>
-
-        {/* เวลาที่ผ่านไปของการแจ้งเตือน */}
-        <p className="text-gray-500 text-sm">
-          {getTimeElapsed(
-            new Date(notification.notification_createdate ?? new Date())
-          )}
+        <p className="text-black">
+        ข้อความ : 
+          <span
+            className={
+              notification.notification_category === "Emergency"
+                ? "text-[#DB0000] font-semibold" // Emergency: Red color
+                : "text-black" // SOS or any other category: Default black color
+            }
+          >
+          &nbsp; {/* spacebar */}{notification.sensor_notifications_config?.sensor_notifications_config_event || "ไม่ระบุข้อความ"}
+          </span>  
+        {/* ข้อความ : ไม่อยู่ที่เตียง */}
         </p>
 
         {/* แสดงสถานะ */}
         <p
-          className={`font-semibold ${
-            notification.notification_successed
+          className={`font-semibold ${notification.notification_successed
               ? "text-gray-400"
               : notification.notification_accepted === false
-              ? "text-gray-500"
-              : notification.notification_accepted === true
-              ? "text-yellow-500"
-              : "text-gray-400"
-          }`}
+                ? "text-[#35B1F6]"
+                : notification.notification_accepted === true
+                  ? "text-[#E77200]"
+                  : "text-gray-400"
+            }`}
         >
           สถานะ:{" "}
           {notification.notification_successed
             ? "เสร็จสิ้น"
             : notification.notification_accepted
-            ? "กำลังดำเนินการ"
-            : "รอการตอบรับ"}
+              ? "กำลังดำเนินการ"
+              : "รอการตอบรับ"}
         </p>
+        <p className="text-gray-500 text-sm text-right">
+          {notification.notification_createdate
+            ? formatDateToThai(notification.notification_createdate)
+            : "ไม่ระบุเวลา"}
+            {/* 7/01/2568  20:31 */}
+          </p>
+        
 
-        {/* ปุ่มแสดงเป็นข้อความแทน */}
-        <div className="flex space-x-3 mt-2">
+        <div>
+          {/* ปุ่มแสดงเป็นข้อความแทน */}
+        <div className="flex justify-between space-x-3 mt-2">
           {/* แสดงปุ่ม "รับทราบ" ตลอดเวลา */}
           {!notification.notification_successed &&
             !notification.notification_accepted && (
@@ -114,6 +166,16 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
                 เสร็จสิ้น
               </button>
             )}
+        
+          
+          {/* เวลาที่ผ่านไปของการแจ้งเตือน */}
+          <p className="text-gray-500 text-right">
+            {getTimeElapsed(
+              new Date(notification.notification_createdate ?? new Date())
+            )}
+          </p>
+        
+        </div>
         </div>
       </div>
     </div>

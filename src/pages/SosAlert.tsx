@@ -98,7 +98,7 @@ export default function SosAlert({ onClose }: SosAlertProps) {
           {selectedAlertType}
         </h3>
         {selectedAlertType === "แจ้งเตือนฉุกเฉิน" && (
-          <img src="/assets/alarm.png" alt="Alarm" className="w-8 h-8 mr-4" />
+          <img src="src/assets/alarm.png" alt="Alarm" className="w-8 h-8 mr-4" />
         )}
         <button
           onClick={onClose}
