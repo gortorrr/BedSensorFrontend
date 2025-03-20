@@ -43,14 +43,6 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
     }
   };
 
-  // const checkStatus = () => {
-  //   if(notification.notification_accepted){
-  //     updateStatus(notification.notification_id,true, undefined);
-  //   }else if(notification.notification_successed){
-  //     updateStatus(notification.notification_id, undefined, true);
-  //   }
-  // }
-
   return (
     <div className="flex items-center p-4 bg-slate-100 rounded-lg shadow">
       {/* แถบสีแนวตั้ง */}
@@ -104,7 +96,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
               </button>
             )}
 
-          {/* แสดงปุ่ม "เสร็จสิ้น" ถ้าไม่ได้รับการยอมรับ */}
+          {/* แสดงปุ่ม "เสร็จสิ้น" ถ้าได้รับการยอมรับ */}
           {!notification.notification_successed &&
             notification.notification_accepted !== false && (
               <button

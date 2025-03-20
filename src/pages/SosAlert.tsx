@@ -17,13 +17,33 @@ export default function SosAlert({ onClose }: SosAlertProps) {
   const { sosDatas, selectedAlertType, sosDataWithAccepted } =
     useNotificationStore();
 
-  useEffect(() => {
-    setNotifications(sosDatas);
-  });
+    useEffect(() => {
+      setNotifications(
+        [...sosDatas].sort((a, b) => {
+          const dateA = a.notification_createdate
+            ? new Date(a.notification_createdate).getTime()
+            : 0;
+          const dateB = b.notification_createdate
+            ? new Date(b.notification_createdate).getTime()
+            : 0;
+          return dateB - dateA; // เรียงจากใหม่ไปเก่า
+        })
+      );
+    }, [sosDatas]);
 
   useEffect(() => {
-    setNotificationsWithAccepted(sosDataWithAccepted);
-  });
+    setNotificationsWithAccepted(
+      [...sosDataWithAccepted].sort((a, b) => {
+        const dateA = a.notification_createdate
+          ? new Date(a.notification_createdate).getTime()
+          : 0;
+        const dateB = b.notification_createdate
+          ? new Date(b.notification_createdate).getTime()
+          : 0;
+        return dateB - dateA; // เรียงจากใหม่ไปเก่า
+      })
+    );
+  }, [sosDataWithAccepted]);
   // useEffect(() => {
   //   setNotifications((prev) => [
   //     ...prev,
@@ -48,6 +68,8 @@ export default function SosAlert({ onClose }: SosAlertProps) {
   //     },
   //   ]);
   // }, []);
+
+  
 
   const updateStatus = (
     id: number,
@@ -113,7 +135,7 @@ export default function SosAlert({ onClose }: SosAlertProps) {
         <p className="text-gray-500 text-center mt-5">ไม่มีการแจ้งเตือน</p>
       ) : (
         <NotificationList
-          notifications={sosDatas}
+          notifications={notifications}
           updateStatus={updateStatus}
           getTimeElapsed={getTimeElapsed}
           notificationsWithAccepted={notificationsWithAccepted}
