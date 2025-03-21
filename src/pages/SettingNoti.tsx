@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 // import { useBedStore } from "../store/bedStore";
 import { Bed } from "../types/bed";
 import { Sensor } from "../types/sensor";
@@ -14,6 +14,7 @@ import SensorGraph from "../components/SettingNotification/SensorGraph.tsx";
 import { useSensorNotificationsConfigStore } from "../store/sensorNotificationsConfigStore";
 import { usehistoryValueSensorStore } from "../store/historyValueSensorStore.ts";
 import HistoryNotificationTable from "../components/SettingNotification/HistoryNotificationTable.tsx";
+import { format } from "date-fns";
 // import { sensorNotificationsConfigService } from "../services/sensorNotificationsConfigService.ts";
 // import { Notification } from "../types/notification.ts";
 // import { useNotificationStore } from "../store/notificationStore.ts";
@@ -37,6 +38,7 @@ const SettingNoti: React.FC = () => {
   const [notificationConfigs, setNotificationConfigs] = useState<
     Sensor_Notification_Config[]
   >([]);
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   // const [sensorNotificationConfigs, setSensorNotificationConfigs] = useState<
   //   Sensor_Notification_Config[]
@@ -83,17 +85,17 @@ const SettingNoti: React.FC = () => {
   useEffect(() => {
     const loadSensorHistory = async () => {
       if (selectedSensor) {
-        const currentDate = new Date().toISOString().split("T")[0]; // วันที่ปัจจุบัน
+        const formattedDate = format(selectedDate, "yyyy-MM-dd");
         console.log(
           "📌 กำลังโหลดข้อมูลสำหรับ sensor:",
           selectedSensor.sensor_id,
           "วันที่:",
-          currentDate
+          formattedDate
         );
 
         const historyData = await load1DayHistoryValue(
           selectedSensor.sensor_id,
-          currentDate // ส่ง date_str เป็น argument ที่สอง
+          formattedDate // ✅ ส่งวันที่ที่เลือกไปโหลดข้อมูล
         );
 
         console.log("✅ ข้อมูลที่ได้จาก load1DayHistoryValue:", historyData);
@@ -102,7 +104,7 @@ const SettingNoti: React.FC = () => {
     };
 
     loadSensorHistory();
-  }, [selectedSensor, load1DayHistoryValue]);
+  }, [selectedSensor, selectedDate, load1DayHistoryValue]);
 
   useEffect(() => {
     if (selectedSensor) {
@@ -226,10 +228,14 @@ const SettingNoti: React.FC = () => {
         <>
           {selectedSensor.sensor_name === "Bed Sensor" && (
             <TimelineGraph
-              data={sensorHistory.map((item) => ({
-                time: item.history_value_sensor_time ?? "", // ✅ ใช้ฟิลด์ที่ถูกต้อง
-                position: item.history_value_sensor_value, // ✅ ใช้ฟิลด์ที่ถูกต้อง
-              }))}
+              data={sensorHistory
+                .filter((item) => item.history_value_sensor_time) // ✅ กรองเฉพาะข้อมูลที่มีค่า
+                .map((item) => ({
+                  time: String(item.history_value_sensor_time), // ✅ แปลงให้เป็น string เสมอ
+                  position: item.history_value_sensor_value ?? "ไม่ระบุสถานะ", // ✅ ป้องกันค่าที่เป็น undefined/null
+                }))}
+              selectedDate={selectedDate} // ✅ ส่ง selectedDate ไปที่ TimelineGraph
+              onDateChange={setSelectedDate} // ✅ ส่งฟังก์ชันเปลี่ยนวันที่ไปที่ TimelineGraph
             />
           )}
           {selectedSensor.sensor_name === "Heart Rate" && (
@@ -243,6 +249,8 @@ const SettingNoti: React.FC = () => {
               }))}
               minValue={50}
               maxValue={130}
+              selectedDate={selectedDate} // ✅ ส่ง selectedDate ไปที่ SensorGraph
+              onDateChange={setSelectedDate} // ✅ ให้ onDateChange อัปเดตค่า
             />
           )}
           {selectedSensor.sensor_name === "SpO2 Sensor" && (
@@ -256,6 +264,8 @@ const SettingNoti: React.FC = () => {
               }))}
               minValue={85}
               maxValue={100}
+              selectedDate={selectedDate} // ✅ ส่ง selectedDate ไปที่ SensorGraph
+              onDateChange={setSelectedDate} // ✅ ให้ onDateChange อัปเดตค่า
             />
           )}
           {selectedSensor.sensor_name === "Respiration" && (
@@ -269,6 +279,8 @@ const SettingNoti: React.FC = () => {
               }))}
               minValue={15}
               maxValue={35}
+              selectedDate={selectedDate} // ✅ ส่ง selectedDate ไปที่ SensorGraph
+              onDateChange={setSelectedDate} // ✅ ให้ onDateChange อัปเดตค่า
             />
           )}
         </>
@@ -284,9 +296,6 @@ const SettingNoti: React.FC = () => {
             ></HistoryNotificationTable>
           )}
 
-          <div>yellow = Emergency</div>
-          <div>red = SOS</div>
-          <div>I think we should re design this page later</div>
         </>
       )}
 

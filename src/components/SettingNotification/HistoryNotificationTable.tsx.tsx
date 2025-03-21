@@ -61,7 +61,18 @@ const HistoryNotificationTable: React.FC<HistoryNotificationTableProps> = ({
 
               return (
                 <tr key={index} className={`text-center ${rowColor}`}>
-                  <td className="p-2 ">{noti.notification_createdate}</td>
+                  <td className="p-2 ">
+                    {noti.notification_createdate
+                      ? new Intl.DateTimeFormat("th-TH", {
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          hour12: false,
+                        }).format(new Date(noti.notification_createdate))
+                      : "-"}
+                  </td>
                   <td className="p-2 ">
                     {bed?.room.floor.building.building_name}
                   </td>
