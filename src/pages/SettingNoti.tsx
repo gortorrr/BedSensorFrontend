@@ -170,6 +170,7 @@ const SettingNoti: React.FC = () => {
           // เรียก API PATCH โดยใช้ ID ของ config
           await useSenNotiCon.saveSensorNotificationConfig(
             selectedSensor.sensor_id,
+            config.sensor_notifications_config_id,
             config
           );
         })

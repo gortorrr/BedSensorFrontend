@@ -9,6 +9,7 @@ interface sensorNotificationsConfigStore {
   loadSensorNotificationConfig: (bed_id: number) => Promise<void>;
   saveSensorNotificationConfig: (
     bed_id: number,
+    sensor_notifications_config_id: number,
     sensorNotificationConfig: Sensor_Notification_Config
   ) => Promise<void>;
   loadBedWithSensorConfig: (bed_id: number) => Promise<Bed>;
@@ -41,12 +42,18 @@ export const useSensorNotificationsConfigStore =
     },
     saveSensorNotificationConfig: async (
       sensor_id: number,
+      sensor_notifications_config_id: number,
       sensorNotificationConfig: Sensor_Notification_Config
     ) => {
       await sensorNotificationsConfigService.saveSensorNotificationConfig(
         sensor_id,
+        sensor_notifications_config_id,
         sensorNotificationConfig
       );
+      console.log(
+        "sensorNotificationConfig ที่ store",
+        sensorNotificationConfig
+      ); // ✅ ป้องกัน error
     },
 
     loadBedWithSensorConfig: async (bed_id: number) => {
