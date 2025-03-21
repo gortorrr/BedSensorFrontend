@@ -295,9 +295,6 @@ const SettingNoti: React.FC = () => {
             ></HistoryNotificationTable>
           )}
 
-          <div>yellow = Emergency</div>
-          <div>red = SOS</div>
-          <div>I think we should re design this page later</div>
         </>
       )}
 
