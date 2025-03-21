@@ -11,10 +11,15 @@ import {
 
 interface TimelineGraphProps {
   data: { time: string; position: string }[];
+  selectedDate: Date;
+  onDateChange: (newDate: Date) => void; // ✅ ฟังก์ชันเปลี่ยนวันที่
 }
 
-const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+const TimelineGraph: React.FC<TimelineGraphProps> = ({
+  data,
+  selectedDate,
+  onDateChange,
+}) => {
   const [containerWidth, setContainerWidth] = useState(0);
   const graphContainerRef = useRef<HTMLDivElement>(null);
 
@@ -44,17 +49,17 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
   const statusMapping: { [key: string]: number } = {
     ไม่อยู่ที่เตียง: 1,
     นั่งบนเตียง: 2,
-    นอนตะแคงซ้าย: 3,
-    นอนตะแคงขวา: 4,
-    นอนตรง: 5,
+    ตะแคงซ้าย: 3,
+    ตะแคงขวา: 4,
+    นอนหงาย: 5,
   };
 
   const statusColors: { [key: string]: string } = {
     ไม่อยู่ที่เตียง: "#80002a",
     นั่งบนเตียง: "#ffcc00",
-    นอนตะแคงซ้าย: "#FBA518",
-    นอนตะแคงขวา: "#e63946",
-    นอนตรง: "#A89C29",
+    ตะแคงซ้าย: "#FBA518",
+    ตะแคงขวา: "#e63946",
+    นอนหงาย: "#A89C29",
   };
 
   // แปลงวันที่ที่เลือกให้เป็น format "yyyy-MM-dd"
@@ -104,7 +109,9 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
           <div className="relative">
             <DatePicker
               selected={selectedDate}
-              onChange={(date) => setSelectedDate(date!)}
+              onChange={(date) => {
+                if (date) onDateChange(date); // ✅ เช็คก่อนว่า date ไม่เป็น null
+              }}
               dateFormat="dd/MM/yyyy"
               className="custom-date-picker p-2 border-1 rounded-xl text-center font-semibold shadow-md"
             />
@@ -112,11 +119,11 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({ data }) => {
           </div>
 
           <MdKeyboardDoubleArrowLeft
-            onClick={() => setSelectedDate(subDays(selectedDate, 1))}
+            onClick={() => onDateChange(subDays(selectedDate, 1))}
             style={{ marginLeft: 10, fontSize: 30, cursor: "pointer" }}
           />
           <MdKeyboardDoubleArrowRight
-            onClick={() => setSelectedDate(addDays(selectedDate, 1))}
+            onClick={() => onDateChange(addDays(selectedDate, 1))}
             style={{ marginLeft: 5, fontSize: 30, cursor: "pointer" }}
           />
           {/* <button

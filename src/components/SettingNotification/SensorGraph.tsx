@@ -5,7 +5,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import { format, addDays, subDays } from "date-fns";
 import { th } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
-import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
+import {
+  MdKeyboardDoubleArrowLeft,
+  MdKeyboardDoubleArrowRight,
+} from "react-icons/md";
 
 interface SensorGraphProps {
   title: string;
@@ -14,6 +17,8 @@ interface SensorGraphProps {
   data: { time: string; value: number }[];
   minValue?: number;
   maxValue?: number;
+  selectedDate: Date;
+  onDateChange: (newDate: Date) => void;
 }
 
 const SensorGraph: React.FC<SensorGraphProps> = ({
@@ -23,8 +28,10 @@ const SensorGraph: React.FC<SensorGraphProps> = ({
   data,
   minValue,
   maxValue,
+  selectedDate, // ✅ ใช้ selectedDate จาก props
+  onDateChange, // ✅ ใช้ onDateChange จาก props
 }) => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  // const [selectedDate, setSelectedDate] = useState(new Date());
 
   // กรองข้อมูลเฉพาะวันที่เลือก
   const formattedSelectedDate = format(selectedDate, "yyyy-MM-dd");
@@ -62,57 +69,57 @@ const SensorGraph: React.FC<SensorGraphProps> = ({
   const actualMaxValue = maxValue ?? Math.max(...yValues);
 
   const [containerWidth, setContainerWidth] = useState(0);
-    const graphContainerRef = useRef<HTMLDivElement>(null);
-  
-     // สร้าง ResizeObserver เพื่อติดตามการเปลี่ยนแปลงขนาดของ container
-     useEffect(() => {
-      if (!graphContainerRef.current) return;
-      
-      const resizeObserver = new ResizeObserver(entries => {
-        for (const entry of entries) {
-          setContainerWidth(entry.contentRect.width);
-        }
-      });
-      
-      resizeObserver.observe(graphContainerRef.current);
-      
-      // เช็คขนาดเริ่มต้นทันที
-      setContainerWidth(graphContainerRef.current.offsetWidth);
-      
-      // Cleanup observer เมื่อ component unmount
-      return () => {
-        if (graphContainerRef.current) {
-          resizeObserver.unobserve(graphContainerRef.current);
-        }
-      };
-    }, []);
+  const graphContainerRef = useRef<HTMLDivElement>(null);
+
+  // สร้าง ResizeObserver เพื่อติดตามการเปลี่ยนแปลงขนาดของ container
+  useEffect(() => {
+    if (!graphContainerRef.current) return;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setContainerWidth(entry.contentRect.width);
+      }
+    });
+
+    resizeObserver.observe(graphContainerRef.current);
+
+    // เช็คขนาดเริ่มต้นทันที
+    setContainerWidth(graphContainerRef.current.offsetWidth);
+
+    // Cleanup observer เมื่อ component unmount
+    return () => {
+      if (graphContainerRef.current) {
+        resizeObserver.unobserve(graphContainerRef.current);
+      }
+    };
+  }, []);
 
   return (
     <div className="bg-white rounded-lg p-3 shadow-md ">
-    <div className="px-2">
-      {/* Date Picker UI */}
-      <div className="flex items-center gap-4 mb-4">
-        <span className="text-md font-medium">วัน / เดือน / ปี</span>
-        <div className="relative">
-        <DatePicker
-          selected={selectedDate}
-          onChange={(date) => setSelectedDate(date!)}
-          dateFormat="dd/MM/yyyy"
-          locale={th}
-          className="custom-date-picker p-2 border-1 rounded-xl text-center font-semibold shadow-md"
-        />
-          <CalendarIcon className="absolute right-2 top-1.5 text-gray-500" />
-        </div>
+      <div className="px-2">
+        {/* Date Picker UI */}
+        <div className="flex items-center gap-4 mb-4">
+          <span className="text-md font-medium">วัน / เดือน / ปี</span>
+          <div className="relative">
+            <DatePicker
+              selected={selectedDate}
+              onChange={(date) => onDateChange(date!)}
+              dateFormat="dd/MM/yyyy"
+              locale={th}
+              className="custom-date-picker p-2 border-1 rounded-xl text-center font-semibold shadow-md"
+            />
+            <CalendarIcon className="absolute right-2 top-1.5 text-gray-500" />
+          </div>
 
-        <MdKeyboardDoubleArrowLeft 
-          onClick={() => setSelectedDate(subDays(selectedDate, 1))}
-          style={{ marginLeft: 10, fontSize: 30, cursor: "pointer" }}
-        />
-        <MdKeyboardDoubleArrowRight
-          onClick={() => setSelectedDate(addDays(selectedDate, 1))}
-          style={{ marginLeft: 5, fontSize: 30, cursor: "pointer" }}
-        />
-        {/* <button
+          <MdKeyboardDoubleArrowLeft
+            onClick={() => onDateChange(subDays(selectedDate, 1))}
+            style={{ marginLeft: 10, fontSize: 30, cursor: "pointer" }}
+          />
+          <MdKeyboardDoubleArrowRight
+            onClick={() => onDateChange(addDays(selectedDate, 1))}
+            style={{ marginLeft: 5, fontSize: 30, cursor: "pointer" }}
+          />
+          {/* <button
           onClick={() => setSelectedDate(subDays(selectedDate, 1))}
           style={{ marginLeft: 10, cursor: "pointer", fontSize: "18px" }}
         >
@@ -127,69 +134,69 @@ const SensorGraph: React.FC<SensorGraphProps> = ({
         </div>
       </div>
 
-      <div 
+      <div
         ref={graphContainerRef}
         className="bg-linear-to-r from-[#80a2ad] to-[#e9f6fc] rounded-lg w-full px-4"
-        style={{ position: 'relative' }} 
-        >
-      {/* กราฟ Plotly */}
-      <Plot
-        data={[
-          {
-            x: xValues,
-            y: yValues,
-            type: "scatter",
-            mode: "lines+markers",
-            marker: { color: color, size: 7 },
-            line: { shape: "spline", width: 4 },
-            name: title,
-            hovertemplate:
-              `<b style="font-size: 16px; color: #2d6a4f;">${title}</b><br>` +
-              `<span style="font-size: 14px; color: #6c757d;">📅 <span style="font-weight: bold;">วันที่:</span> %{x|%d/%m/%Y}</span><br>` +
-              `<span style="font-size: 14px; color: #6c757d;">🕒 <span style="font-weight: bold;">เวลาเฉลี่ย:</span> %{x|%H:%M} - %{x|%H:%M+30m}</span><br>` +
-              `<span style="font-size: 14px; color: #f39c12;">📊 <span style="font-weight: bold;">ค่าเฉลี่ย:</span> <b>%{y} ${unit}</b></span><br>` +
-              `<extra></extra>`,
-          },
-          {
-            x: xValues,
-            y: Array(yValues.length).fill(actualMinValue),
-            type: "scatter",
-            mode: "lines",
-            line: { color: "orange", dash: "dash" },
-            name: "ค่าต่ำสุด",
-            hoverinfo: "skip",
-          },
-          {
-            x: xValues,
-            y: Array(yValues.length).fill(actualMaxValue),
-            type: "scatter",
-            mode: "lines",
-            line: { color: "orange", dash: "dash" },
-            name: "ค่าสูงสุด",
-            hoverinfo: "skip",
-          },
-        ]}
-        layout={{
-          title: `${title} (${unit})`,
-          font: { size: 16, color: "#000000", family: "Noto Serif Thai" },
-          xaxis: { title: "เวลา", type: "date" },
-          yaxis: {
+        style={{ position: "relative" }}
+      >
+        {/* กราฟ Plotly */}
+        <Plot
+          data={[
+            {
+              x: xValues,
+              y: yValues,
+              type: "scatter",
+              mode: "lines+markers",
+              marker: { color: color, size: 7 },
+              line: { shape: "spline", width: 4 },
+              name: title,
+              hovertemplate:
+                `<b style="font-size: 16px; color: #2d6a4f;">${title}</b><br>` +
+                `<span style="font-size: 14px; color: #6c757d;">📅 <span style="font-weight: bold;">วันที่:</span> %{x|%d/%m/%Y}</span><br>` +
+                `<span style="font-size: 14px; color: #6c757d;">🕒 <span style="font-weight: bold;">เวลาเฉลี่ย:</span> %{x|%H:%M} - %{x|%H:%M+30m}</span><br>` +
+                `<span style="font-size: 14px; color: #f39c12;">📊 <span style="font-weight: bold;">ค่าเฉลี่ย:</span> <b>%{y} ${unit}</b></span><br>` +
+                `<extra></extra>`,
+            },
+            {
+              x: xValues,
+              y: Array(yValues.length).fill(actualMinValue),
+              type: "scatter",
+              mode: "lines",
+              line: { color: "orange", dash: "dash" },
+              name: "ค่าต่ำสุด",
+              hoverinfo: "skip",
+            },
+            {
+              x: xValues,
+              y: Array(yValues.length).fill(actualMaxValue),
+              type: "scatter",
+              mode: "lines",
+              line: { color: "orange", dash: "dash" },
+              name: "ค่าสูงสุด",
+              hoverinfo: "skip",
+            },
+          ]}
+          layout={{
             title: `${title} (${unit})`,
-            tickangle: 0, // ✅ แสดงข้อความแนวนอนชัดเจน
-            automargin: true, // ✅ ป้องกันการตัดข้อความ
-            range: [actualMinValue - 10, actualMaxValue + 10],
-          },
-          legend: { 
-            title: { side: "top center"} ,
-            font: { color: "#000000" },
-            orientation: "h", // ย้าย Legend ไปด้านล่างของกราฟ
-            x: 0.5, // จัดกึ่งกลาง
-            y: -0.3, // ขยับลงมาด้านล่าง
-            xanchor: "center",
-            yanchor: "top",
-                  }, // ✅ Legend แยกแต่ละสถานะ
-          height: 300,
-          width: containerWidth > 0 ? containerWidth - 32 : undefined, // หักค่าขอบ padding ที่เป็น px-4 (16px + 16px)
+            font: { size: 16, color: "#000000", family: "Noto Serif Thai" },
+            xaxis: { title: "เวลา", type: "date" },
+            yaxis: {
+              title: `${title} (${unit})`,
+              tickangle: 0, // ✅ แสดงข้อความแนวนอนชัดเจน
+              automargin: true, // ✅ ป้องกันการตัดข้อความ
+              range: [actualMinValue - 10, actualMaxValue + 10],
+            },
+            legend: {
+              title: { side: "top center" },
+              font: { color: "#000000" },
+              orientation: "h", // ย้าย Legend ไปด้านล่างของกราฟ
+              x: 0.5, // จัดกึ่งกลาง
+              y: -0.3, // ขยับลงมาด้านล่าง
+              xanchor: "center",
+              yanchor: "top",
+            }, // ✅ Legend แยกแต่ละสถานะ
+            height: 300,
+            width: containerWidth > 0 ? containerWidth - 32 : undefined, // หักค่าขอบ padding ที่เป็น px-4 (16px + 16px)
             // กำหนดพื้นหลังเป็นไล่สี (gradient)
             paper_bgcolor: "transparent", // พื้นหลังของกราฟ
             plot_bgcolor: "transparent", // พื้นหลังที่อยู่ด้านในกราฟ (สำหรับพื้นที่แสดงข้อมูล)
@@ -203,11 +210,11 @@ const SensorGraph: React.FC<SensorGraphProps> = ({
           useResizeHandler={true}
           // className="mx-auto" // จัดให้อยู่ตรงกลาง
           style={{
-            width: '100%',
-            height: '100%',
+            width: "100%",
+            height: "100%",
           }}
         />
-    </div>
+      </div>
     </div>
   );
 };
