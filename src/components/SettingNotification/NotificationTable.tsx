@@ -1,5 +1,6 @@
 import React from "react";
 import { Sensor } from "../../types/sensor";
+import { Sensor_Notification_Config } from "../../types/sensor_Notifications_config";
 // นำเข้ารูปภาพไอคอนต่างๆ
 import LeftSide from "../../assets/LeftSide.png";
 import RightSide from "../../assets/RightSide.png";
@@ -9,9 +10,15 @@ import NotHere from "../../assets/NotHere.png";
 
 interface NotificationTableProps {
   sensor: Sensor;
+  configs: Sensor_Notification_Config[];
+  onConfigsChange: (configs: Sensor_Notification_Config[]) => void;
 }
 
-const NotificationTable: React.FC<NotificationTableProps> = ({ sensor }) => {
+const NotificationTable: React.FC<NotificationTableProps> = ({
+  sensor,
+  configs,
+  onConfigsChange,
+}) => {
   // ฟังก์ชันสำหรับแสดงไอคอนขนาดเล็กตามประเภทของเหตุการณ์
   const renderSmallBedIcon = (eventType: string) => {
     // แมปค่าของเหตุการณ์กับไอคอนที่เหมาะสม
@@ -70,6 +77,12 @@ const NotificationTable: React.FC<NotificationTableProps> = ({ sensor }) => {
                       className="sr-only peer"
                       defaultChecked={config.sensor_notifications_config_usage}
                       title="การใช้"
+                      onChange={(e) => {
+                        const updated = [...configs];
+                        updated[index].sensor_notifications_config_usage =
+                          e.target.checked;
+                        onConfigsChange(updated);
+                      }}
                     />
                     <div className="relative w-11 h-6 items-center bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-500 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#2E5361] dark:peer-checked:bg-black"></div>
                   </label>
@@ -79,6 +92,12 @@ const NotificationTable: React.FC<NotificationTableProps> = ({ sensor }) => {
                     className="p-1 rounded-2xl bg-white border"
                     defaultValue={config.sensor_notifications_config_repeatnoti}
                     title="เลือกค่าการแจ้งเตือนซ้ำ"
+                    onChange={(e) => {
+                      const updated = [...configs];
+                      updated[index].sensor_notifications_config_repeatnoti =
+                        parseInt(e.target.value);
+                      onConfigsChange(updated);
+                    }}
                   >
                     <option value={3}>3 นาที</option>
                     <option value={5}>5 นาที</option>
@@ -90,6 +109,12 @@ const NotificationTable: React.FC<NotificationTableProps> = ({ sensor }) => {
                     className="p-1 rounded-2xl bg-white border"
                     defaultValue={config.sensor_notifications_config_rangetime}
                     title="ระยะเวลาการแจ้งเตือน"
+                    onChange={(e) => {
+                      const updated = [...configs];
+                      updated[index].sensor_notifications_config_repeatnoti =
+                        parseInt(e.target.value);
+                      onConfigsChange(updated);
+                    }}
                   >
                     <option value={1}>1 นาที</option>
                     <option value={3}>3 นาที</option>
@@ -101,6 +126,12 @@ const NotificationTable: React.FC<NotificationTableProps> = ({ sensor }) => {
                     className="p-1 rounded-2xl bg-white border"
                     defaultValue={config.sensor_notifications_config_signal}
                     title="สัญญาณ"
+                    onChange={(e) => {
+                      const updated = [...configs];
+                      updated[index].sensor_notifications_config_repeatnoti =
+                        parseInt(e.target.value);
+                      onConfigsChange(updated);
+                    }}
                   >
                     <option value="Normal">ปกติ</option>
                     <option value="SOS">ช่วยเหลือ</option>

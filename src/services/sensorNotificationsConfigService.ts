@@ -38,7 +38,7 @@ export const sensorNotificationsConfigService = {
   async saveSensorNotificationConfig(
     sensor_id: number,
     sensorNotificationConfig: Sensor_Notification_Config
-  ): Promise<Sensor_Notification_Config[]> {
+  ): Promise<Sensor_Notification_Config> {
     try {
       const response = await http.patch(
         `sensor_notifications_configs/update-sensor-notifications-config/${sensor_id}`,

@@ -1,9 +1,10 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 // import { useBedStore } from "../store/bedStore";
 import { Bed } from "../types/bed";
 import { Sensor } from "../types/sensor";
 import { History_Value_Sensor } from "../types/history_value_sensor";
+import { Sensor_Notification_Config } from "../types/sensor_Notifications_config";
 // import { Sensor_Notification_Config } from "../types/sensor_Notifications_config";
 import SensorAndBedInfo from "../components/SettingNotification/SensorAndBedInfo";
 import NotificationTabs from "../components/SettingNotification/NotificationTabs";
@@ -33,6 +34,9 @@ const SettingNoti: React.FC = () => {
   const load1DayHistoryValue = usehistoryValueSensorStore(
     (state) => state.load1DayHistoryValue
   );
+  const [notificationConfigs, setNotificationConfigs] = useState<
+    Sensor_Notification_Config[]
+  >([]);
 
   // const [sensorNotificationConfigs, setSensorNotificationConfigs] = useState<
   //   Sensor_Notification_Config[]
@@ -100,6 +104,12 @@ const SettingNoti: React.FC = () => {
     loadSensorHistory();
   }, [selectedSensor, load1DayHistoryValue]);
 
+  useEffect(() => {
+    if (selectedSensor) {
+      setNotificationConfigs(selectedSensor.sensor_notifications_config || []);
+    }
+  }, [selectedSensor]);
+
   // useEffect(() => {
   //   updateNotifications(1,4);
   //   const bedIdNumber: number = Number(bed_id);
@@ -147,6 +157,32 @@ const SettingNoti: React.FC = () => {
     navigate("/");
   };
 
+  const handleConfirm = async () => {
+    if (!selectedSensor) {
+      console.error("❌ No sensor selected!");
+      return;
+    }
+
+    try {
+      // ใช้ Promise.all() เพื่อรอให้ PATCH ทุกตัวทำงานเสร็จ
+      await Promise.all(
+        notificationConfigs.map(async (config) => {
+          // เรียก API PATCH โดยใช้ ID ของ config
+          await useSenNotiCon.saveSensorNotificationConfig(
+            selectedSensor.sensor_id,
+            config
+          );
+        })
+      );
+
+      console.log("✅ การตั้งค่าการแจ้งเตือนถูกบันทึกเรียบร้อย!");
+      alert("บันทึกสำเร็จ!");
+    } catch (error) {
+      console.error("❌ เกิดข้อผิดพลาดในการบันทึก:", error);
+      alert("เกิดข้อผิดพลาด กรุณาลองใหม่!");
+    }
+  };
+
   console.log("📌 sensorHistory (ดิบ):", sensorHistory);
 
   console.log(
@@ -177,7 +213,11 @@ const SettingNoti: React.FC = () => {
       {/* Table */}
       {activeTab === "settings" && selectedSensor && (
         <>
-          <NotificationTable sensor={selectedSensor} />
+          <NotificationTable
+            sensor={selectedSensor}
+            configs={notificationConfigs}
+            onConfigsChange={setNotificationConfigs}
+          />
         </>
       )}
 
@@ -251,7 +291,10 @@ const SettingNoti: React.FC = () => {
 
       {/* Footer */}
       <div className="flex justify-end mt-6 gap-4">
-        <button className="px-6 py-2 bg-[#5E8892] text-white rounded-xl hover:bg-[#95BAC3] cursor-pointer">
+        <button
+          className="px-6 py-2 bg-[#5E8892] text-white rounded-xl hover:bg-[#95BAC3] cursor-pointer"
+          onClick={handleConfirm}
+        >
           บันทึก
         </button>
         <button
