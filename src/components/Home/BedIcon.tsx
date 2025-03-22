@@ -30,7 +30,7 @@ const BedIcon: React.FC<BedIconProps> = ({
     ตะแคงขวา: RightSide,
     นอนหงาย: Straight,
     นั่งบนเตียง: Sit,
-    ไม่อยู่บนเตียง: NotHere,
+    ไม่อยู่ที่เตียง: NotHere,
   };
 
   if (!patient) {
