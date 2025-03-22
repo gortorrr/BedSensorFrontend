@@ -21,7 +21,7 @@ const Home: React.FC = () => {
     // return () => clearTimeout(timer);
 
     console.log(beds);
-  }, [loadBeds]);
+  }, []);
 
   const {
     loadEmergencyNotAccepted,

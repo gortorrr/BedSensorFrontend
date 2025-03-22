@@ -6,17 +6,19 @@ import { useBedStore } from "../store/bedStore";
 import { useEffect, useState } from "react";
 import { Patient } from "../types/patient";
 import { Sensor } from "../types/sensor";
-import { Bed } from "../types/bed";
+import { Bed, BedSaveConfig } from "../types/bed";
 import Icon from "@mdi/react";
 import { mdiPlus } from "@mdi/js";
 import AddSensorDialog from "../components/BedConfig/AddSensorDialog.tsx";
 import { useSensorStore } from "../store/sensorStore.ts";
+// import { usePatientStore } from "../store/patientStore.ts";
 
 const BedConfig: React.FC = () => {
   const { bed_id } = useParams<{ bed_id?: string }>();
   const bedStore = useBedStore();
   const sensorStore = useSensorStore();
   const navigate = useNavigate();
+  // const patientStore = usePatientStore();
 
   const [bed, setBed] = useState<Bed | undefined>();
   const [patient, setPatient] = useState<Patient | undefined>();
@@ -80,22 +82,40 @@ const BedConfig: React.FC = () => {
   };
 
   const handleConfirm = () => {
-    // console.log(bed);
-    // console.log(patient);
-    // console.log(sensors);
-
     if (bed) {
       bed.patient = patient;
       bed.patient_id = patient?.patient_id;
       if (sensors) bed.sensors = sensors;
     }
-    // console.log("update", bed);
-    // console.log(patient);
-    if (bed && bed.bed_id) bedStore.saveBedConfig(bed?.bed_id, bed);
-    handleCancel();
 
-    // Wait for 1 second before calling bedStore.loadBeds()
-    window.location.reload();
+    if (bed) {
+      const bedSaveConfig: BedSaveConfig = {
+        bed_id: bed.bed_id,
+        patient_id: bed.patient_id ?? 0,
+        sensors: bed.sensors.map((sensor) => ({
+          sensor_id: sensor.sensor_id,
+          bed_id: bed.bed_id,
+        })),
+      };
+      console.log(bedSaveConfig);
+      bedStore.saveBedConfig(bed?.bed_id, bedSaveConfig);
+    }
+
+    if (bed && bed.bed_id) handleCancel();
+
+    // bedStore.beds.find((item) => item.bed_id === bed?.bed_id ?? 0)?.patient =
+    // bed?.patient;
+
+    setTimeout(() => {
+      bedStore.loadBeds();
+    }, 100);
+    setTimeout(() => {
+      bedStore.loadBeds();
+    }, 100);
+    setTimeout(() => {
+      bedStore.loadBeds();
+    }, 100);
+    // window.location.
   };
 
   const handleOpenDialog = () => {

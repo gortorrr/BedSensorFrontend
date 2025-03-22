@@ -5,13 +5,11 @@ import { mdiDelete } from "@mdi/js";
 import { PlusCircle } from "lucide-react";
 import AddPatientDialog from "./AddPatientDialog";
 import { FaUser } from "react-icons/fa";
-// import { useBedStore } from "../../store/bedStore";
 import { usePatientStore } from "../../store/patientStore";
 
 interface Props {
   patient_config: Patient | undefined;
   onPatientSelect: (patient: Patient | undefined) => void;
-  // bed_id: number; // เพิ่มฟังก์ชันรับค่าผู้ป่วย
 }
 
 const formatDate = (dateString: string | undefined) => {
@@ -31,19 +29,19 @@ const PatientWindow: React.FC<Props> = ({
   const [selectedPatient, setSelectedPatient] = useState<Patient | undefined>(
     patient_config
   );
-  const patientStore = usePatientStore();
+  const { loadPatientsWait, patients, removePatient } = usePatientStore();
 
   useEffect(() => {
     // อัปเดต selectedPatient เมื่อ patient_config เปลี่ยนแปลง
     if (patient_config) {
       setSelectedPatient(patient_config);
     }
-  }, [patient_config]); // ทำงานเมื่อ patient_config เปลี่ยนแปลง
+  }, [patient_config]);
 
   useEffect(() => {
     // โหลด patients แค่ครั้งเดียวตอนเริ่มต้น
-    patientStore.loadPatientsWait();
-  }, []); // ทำงานแค่ครั้งเดียวตอนเปิดหน้า
+    loadPatientsWait();
+  }, [patients.length]);
 
   const openDialog = () => setIsDialogOpen(true);
   const closeDialog = () => setIsDialogOpen(false);
@@ -54,25 +52,21 @@ const PatientWindow: React.FC<Props> = ({
     closeDialog();
   };
 
-  // console.log("🩺 Patient Config Data:", selectedPatient);
-
   const handleDeletePatient = () => {
-    if (patient_config)
-      patientStore.patients = [patient_config, ...patientStore.patients];
-    // console.log(patient_config?.patient_id);
-    // console.log(bed_id);
-    setSelectedPatient(undefined);
-    onPatientSelect(undefined);
+    if (selectedPatient) {
+      // Remove the patient from the list using the store's removePatient method
+      removePatient(selectedPatient.patient_id); // Assuming removePatient accepts patient_id
+      setSelectedPatient(undefined);
+      onPatientSelect(undefined);
+    }
   };
 
   if (!selectedPatient) {
     return (
       <div className="border-2 border-gray-300 rounded-md w-full bg-[#F0F0F0] p-3 mt-3 h-73 shadow-md">
         <div className="flex items-center p-3 text-xl font-semibold">
-          <FaUser className="mr-2 text-2xl text-[#2E5361]" />{" "}
-          {/* เพิ่มไอคอนผู้ป่วย */}
-          รายละเอียดผู้ป่วย
-        </div>{" "}
+          <FaUser className="mr-2 text-2xl text-[#2E5361]" /> รายละเอียดผู้ป่วย
+        </div>
         <div className="flex justify-center items-center p-5">
           <button
             className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] mt-8 transition-transform duration-300 hover:scale-110"

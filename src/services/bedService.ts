@@ -1,4 +1,4 @@
-import { Bed } from "../types/bed";
+import { Bed, BedSaveConfig } from "../types/bed";
 import http from "./http";
 
 export const bedService = {
@@ -48,7 +48,10 @@ export const bedService = {
     }
   },
 
-  async saveBedConfig(bed_id: number, bed: Bed): Promise<Bed> {
+  async saveBedConfig(
+    bed_id: number,
+    bed: BedSaveConfig
+  ): Promise<BedSaveConfig> {
     try {
       const response = await http.patch(`beds/${bed_id}/bedConfig`, bed);
       return response.data; // นำข้อมูลที่ได้จาก response มาใช้

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Bed } from "../types/bed";
+import { Bed, BedSaveConfig } from "../types/bed";
 import { bedService } from "../services/bedService";
 
 interface BedStore {
@@ -12,7 +12,8 @@ interface BedStore {
     sensor_id: number
   ) => Promise<void>;
   saveRemoveShowSensorId: (bed_id: number, sensor_id: number) => Promise<void>;
-  saveBedConfig: (bed_id: number, bed: Bed) => Promise<void>;
+  saveBedConfig: (bed_id: number, bed: BedSaveConfig) => Promise<void>;
+  saveUpdatedBedConfig: (bed_id: number, bed: Bed) => Promise<void>;
   // removePatientFromBed: (bed_id: number, patient_id: number) => Promise<void>;
 }
 
@@ -44,8 +45,21 @@ export const useBedStore = create<BedStore>((set) => ({
     bedService.saveRemoveShowSensorId(bed_id, sensor_id);
   },
 
-  saveBedConfig: async (bed_id: number, bed: Bed) => {
+  saveBedConfig: async (bed_id: number, bed: BedSaveConfig) => {
     bedService.saveBedConfig(bed_id, bed);
+  },
+  saveUpdatedBedConfig: async (bed_id: number, updatedBed: Bed) => {
+    try {
+      // อัปเดตค่า bed ที่มี bed_id ตรงกับที่เลือก
+      set((state) => ({
+        beds: state.beds.map((bed) =>
+          bed.bed_id === bed_id ? { ...bed, ...updatedBed } : bed
+        ),
+      }));
+    } catch (error) {
+      console.error(error);
+      set({ error: "Failed to update bed", loading: false });
+    }
   },
 
   // removePatientFromBed: async (bed_id: number, patient_id: number) => {

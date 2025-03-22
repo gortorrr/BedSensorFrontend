@@ -12,3 +12,9 @@ export interface Bed {
   sensors: Sensor[];
   selectedShowSensorId?: number[];
 }
+
+export interface BedSaveConfig {
+  bed_id: number;
+  patient_id: number;
+  sensors: { sensor_id: number; bed_id: number }[];
+}
