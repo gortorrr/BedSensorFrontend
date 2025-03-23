@@ -3,14 +3,14 @@ import { Sensor_Notification_Config } from "../types/sensor_Notifications_config
 import { sensorNotificationsConfigService } from "../services/sensorNotificationsConfigService";
 import { Bed } from "../types/bed";
 import { Log_bed_patient_sensor } from "../types/log_bed_patient_sensor";
+import { Sensor } from "../types/sensor";
 
 interface sensorNotificationsConfigStore {
   sensorNotiConfigs: Sensor_Notification_Config[];
   loadSensorNotificationConfig: (bed_id: number) => Promise<void>;
   saveSensorNotificationConfig: (
-    bed_id: number,
-    sensor_notifications_config_id: number,
-    sensorNotificationConfig: Sensor_Notification_Config
+    sensor_id: number,
+    sensor: Sensor
   ) => Promise<void>;
   loadBedWithSensorConfig: (bed_id: number) => Promise<Bed>;
 
@@ -40,20 +40,11 @@ export const useSensorNotificationsConfigStore =
         set({ sensorNotiConfigs: Array.isArray(res) ? res : [res] }); // ✅ ป้องกัน error
       }
     },
-    saveSensorNotificationConfig: async (
-      sensor_id: number,
-      sensor_notifications_config_id: number,
-      sensorNotificationConfig: Sensor_Notification_Config
-    ) => {
-      await sensorNotificationsConfigService.saveSensorNotificationConfig(
+    saveSensorNotificationConfig: async (sensor_id: number, sensor: Sensor) => {
+      sensorNotificationsConfigService.saveSensorNotificationConfig(
         sensor_id,
-        sensor_notifications_config_id,
-        sensorNotificationConfig
+        sensor
       );
-      console.log(
-        "sensorNotificationConfig ที่ store",
-        sensorNotificationConfig
-      ); // ✅ ป้องกัน error
     },
 
     loadBedWithSensorConfig: async (bed_id: number) => {

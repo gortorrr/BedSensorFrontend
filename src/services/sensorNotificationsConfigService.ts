@@ -4,6 +4,7 @@ import { AxiosError } from "axios"; // ✅ นำเข้า AxiosError (ถ้
 // import { Notification } from "../types/notification";
 import { Bed } from "../types/bed";
 import { Log_bed_patient_sensor } from "../types/log_bed_patient_sensor";
+import { Sensor } from "../types/sensor";
 export const sensorNotificationsConfigService = {
   async loadSensorNotificationConfig(
     bed_id: number
@@ -37,19 +38,14 @@ export const sensorNotificationsConfigService = {
 
   async saveSensorNotificationConfig(
     sensor_id: number,
-    sensor_notifications_config_id: number,
-    sensorNotificationConfig: Sensor_Notification_Config
-  ): Promise<Sensor_Notification_Config> {
-    try {
-      const response = await http.patch(
-        `sensor_notifications_configs/update-sensor-notifications-config/${sensor_id}/${sensor_notifications_config_id}`,
-        sensorNotificationConfig
-      );
-      return response.data; // นำข้อมูลที่ได้จาก response มาใช้
-    } catch (error) {
-      console.error("Error loading sensorNotiConfig wait:", error);
-      throw error;
-    }
+    sensor: Sensor
+  ): Promise<Sensor> {
+    const res = await http.patch(
+      `sensors/update-sensor-notifications-config/${sensor_id}`,
+      sensor
+    );
+
+    return res.data;
   },
 
   async loadBedWithSensorConfig(bed_id: number): Promise<Bed> {

@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 // import { useBedStore } from "../store/bedStore";
 import { Bed } from "../types/bed";
@@ -22,7 +22,6 @@ import { format } from "date-fns";
 const SettingNoti: React.FC = () => {
   const { bed_id } = useParams<{ bed_id?: string }>();
   // const bedStore = useBedStore();
-  const navigate = useNavigate();
   // const NotificationStore = useNotificationStore();
   const useSenNotiCon = useSensorNotificationsConfigStore();
   const [activeTab, setActiveTab] = useState("settings");
@@ -86,19 +85,19 @@ const SettingNoti: React.FC = () => {
     const loadSensorHistory = async () => {
       if (selectedSensor) {
         const formattedDate = format(selectedDate, "yyyy-MM-dd");
-        console.log(
-          "📌 กำลังโหลดข้อมูลสำหรับ sensor:",
-          selectedSensor.sensor_id,
-          "วันที่:",
-          formattedDate
-        );
+        // console.log(
+        //   "📌 กำลังโหลดข้อมูลสำหรับ sensor:",
+        //   selectedSensor.sensor_id,
+        //   "วันที่:",
+        //   formattedDate
+        // );
 
         const historyData = await load1DayHistoryValue(
           selectedSensor.sensor_id,
           formattedDate // ✅ ส่งวันที่ที่เลือกไปโหลดข้อมูล
         );
 
-        console.log("✅ ข้อมูลที่ได้จาก load1DayHistoryValue:", historyData);
+        // console.log("✅ ข้อมูลที่ได้จาก load1DayHistoryValue:", historyData);
         setSensorHistory(historyData);
       }
     };
@@ -155,46 +154,15 @@ const SettingNoti: React.FC = () => {
   // console.log("asdsd " + JSON.stringify(selectedSensor?.sensor_name, null, 2));
   // console.log("asdsd " + JSON.stringify(sensorList, null, 2));
 
-  const handleCancel = () => {
-    navigate("/");
-  };
+  // console.log("📌 sensorHistory (ดิบ):", sensorHistory);
 
-  const handleConfirm = async () => {
-    if (!selectedSensor) {
-      console.error("❌ No sensor selected!");
-      return;
-    }
-
-    try {
-      // ใช้ Promise.all() เพื่อรอให้ PATCH ทุกตัวทำงานเสร็จ
-      await Promise.all(
-        notificationConfigs.map(async (config) => {
-          // เรียก API PATCH โดยใช้ ID ของ config
-          await useSenNotiCon.saveSensorNotificationConfig(
-            selectedSensor.sensor_id,
-            config.sensor_notifications_config_id,
-            config
-          );
-        })
-      );
-
-      console.log("✅ การตั้งค่าการแจ้งเตือนถูกบันทึกเรียบร้อย!");
-      alert("บันทึกสำเร็จ!");
-    } catch (error) {
-      console.error("❌ เกิดข้อผิดพลาดในการบันทึก:", error);
-      alert("เกิดข้อผิดพลาด กรุณาลองใหม่!");
-    }
-  };
-
-  console.log("📌 sensorHistory (ดิบ):", sensorHistory);
-
-  console.log(
-    "🔍 ตรวจสอบค่าที่จะส่งไปยัง TimelineGraph:",
-    sensorHistory.map((item) => ({
-      time: item.history_value_sensor_time ?? "",
-      position: item.history_value_sensor_value,
-    }))
-  );
+  // console.log(
+  //   "🔍 ตรวจสอบค่าที่จะส่งไปยัง TimelineGraph:",
+  //   sensorHistory.map((item) => ({
+  //     time: item.history_value_sensor_time ?? "",
+  //     position: item.history_value_sensor_value,
+  //   }))
+  // );
 
   return (
     <div className="p-4 bg-[#e7f0f3] min-h-screen ">
@@ -295,25 +263,8 @@ const SettingNoti: React.FC = () => {
               sensor_id={selectedSensor.sensor_id}
             ></HistoryNotificationTable>
           )}
-
         </>
       )}
-
-      {/* Footer */}
-      <div className="flex justify-end mt-6 gap-4">
-        <button
-          className="px-6 py-2 bg-[#5E8892] text-white rounded-xl hover:bg-[#95BAC3] cursor-pointer"
-          onClick={handleConfirm}
-        >
-          บันทึก
-        </button>
-        <button
-          onClick={handleCancel}
-          className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400 cursor-pointer"
-        >
-          ยกเลิก
-        </button>
-      </div>
     </div>
   );
 };
