@@ -47,9 +47,9 @@ const NotificationTable: React.FC<NotificationTableProps> = ({
     // แมปค่าของเหตุการณ์กับไอคอนที่เหมาะสม
     const iconMap: { [key: string]: string } = {
       นั่งบนเตียง: Sit,
-      นอนตะแคงซ้าย: LeftSide,
-      นอนตะแคงขวา: RightSide,
-      นอนตรง: Straight,
+      ตะแคงซ้าย: LeftSide,
+      ตะแคงขวา: RightSide,
+      นอนหงาย: Straight,
       ไม่อยู่ที่เตียง: NotHere,
     };
 

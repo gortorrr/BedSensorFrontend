@@ -56,8 +56,8 @@ const SensorCard: React.FC<Props> = ({
 
     //get every 5 second data
     fetchSensorData(); // โหลดข้อมูลครั้งแรก
-    // const interval = setInterval(fetchSensorData, 5000);
-    // return () => clearInterval(interval);
+    const interval = setInterval(fetchSensorData, 5000);
+    return () => clearInterval(interval);
   }, [sensor, sensorStore]); // ✅ เพิ่ม sensorStore เข้าไปใน dependency array
 
   const toggleDialog = () => {
