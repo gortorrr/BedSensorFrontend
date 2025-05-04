@@ -2,7 +2,8 @@ import axios from "axios";
 
 // สร้าง instance ของ Axios
 const instance = axios.create({
-  baseURL: "http://127.0.0.1:8000/", // เปลี่ยนเป็น API ของคุณ
+  // baseURL: "http://127.0.0.1:8000/", // เปลี่ยนเป็น API ของคุณ
+  baseURL: "http://dekdee3.informatics.buu.ac.th:8030/",
 });
 
 // ฟังก์ชัน Delay (mock delay เพื่อจำลอง latency)

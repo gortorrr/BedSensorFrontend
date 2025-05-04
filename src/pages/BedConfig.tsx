@@ -102,7 +102,7 @@ const BedConfig: React.FC = () => {
     }
 
     if (bed && bed.bed_id) handleCancel();
-
+    window.location.reload();
     // bedStore.beds.find((item) => item.bed_id === bed?.bed_id ?? 0)?.patient =
     // bed?.patient;
 
@@ -131,7 +131,7 @@ const BedConfig: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col p-4 bg-[#e7f0f3] min-h-[874px]">
+    <div className="flex flex-col p-4 bg-[#e7f0f3] min-h-screen">
       {/* Header */}
       <div className="flex justify-between p-4 rounded-lg">
         <h2 className="text-[#2E5361] text-4xl font-bold">
