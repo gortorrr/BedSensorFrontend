@@ -140,6 +140,7 @@ const BedConfig: React.FC = () => {
         <button
           className="flex items-center gap-2 px-4 py-2 bg-[#5E8892] text-white rounded-xl hover:bg-[#95BAC3] transition-transform duration-300 hover:scale-110"
           onClick={handleOpenDialog}
+          id="btnAdd"
         >
           <Icon path={mdiPlus} size={1} />
           <span className="cursor-pointer">เพิ่มเซ็นเซอร์ใหม่</span>
@@ -171,12 +172,14 @@ const BedConfig: React.FC = () => {
         <button
           className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] cursor-pointer"
           onClick={handleConfirm}
+          id="btnOk"
         >
           ยืนยัน
         </button>
         <button
           className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400 cursor-pointer"
           onClick={handleCancel}
+          id="btnCancel"
         >
           ยกเลิก
         </button>
