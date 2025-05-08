@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Notification } from "../types/notification";
 import { useNotificationStore } from "../store/notificationStore";
 import NotificationList from "../components/Alert/NotificationList";
+import { notificationWebSocketService } from "../services/notification.websocket";
+import { sortNotificationByDate } from "../utils/sort";
 
 interface EmergencyAlertProps {
   onClose?: () => void;
@@ -19,33 +21,29 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
   //   setNotifications(emergencyDatas);
   // });
 
+  // รับ noti แบบยังไม่ accept
   useEffect(() => {
-    setNotifications(
-      [...emergencyDatas].sort((a, b) => {
-        const dateA = a.notification_createdate
-          ? new Date(a.notification_createdate).getTime()
-          : 0;
-        const dateB = b.notification_createdate
-          ? new Date(b.notification_createdate).getTime()
-          : 0;
-        return dateB - dateA; // เรียงจากใหม่ไปเก่า
-      })
-    );
-  }, [emergencyDatas]);
+    notificationWebSocketService.connect("/emergency/pending", (data) => {
+      setNotifications((prev) => sortNotificationByDate([...prev, data]));
+    });
 
+    return () => {
+      notificationWebSocketService.disconnect("/emergency/pending");
+    };
+  }, []);
+
+  // รับ noti ที่ accept แล้ว (แต่ยังไม่ success)
   useEffect(() => {
-    setNotificationsWithAccepted(
-      [...emergencyDataWithAccepted].sort((a, b) => {
-        const dateA = a.notification_createdate
-          ? new Date(a.notification_createdate).getTime()
-          : 0;
-        const dateB = b.notification_createdate
-          ? new Date(b.notification_createdate).getTime()
-          : 0;
-        return dateB - dateA; // เรียงจากใหม่ไปเก่า
-      })
-    );
-  }, [emergencyDataWithAccepted]);
+    notificationWebSocketService.connect("/emergency/accepted", (data) => {
+      setNotificationsWithAccepted((prev) =>
+        sortNotificationByDate([...prev, data])
+      );
+    });
+
+    return () => {
+      notificationWebSocketService.disconnect("/emergency/accepted");
+    };
+  }, []);
 
   // const { loadEmergencyNotAccepted } = useNotificationStore();
 

@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Notification } from "../types/notification";
 import { useNotificationStore } from "../store/notificationStore";
 import NotificationList from "../components/Alert/NotificationList";
+import { notificationWebSocketService } from "../services/notification.websocket";
+import { sortNotificationByDate } from "../utils/sort";
 
 interface SosAlertProps {
   onClose?: () => void;
@@ -12,64 +14,32 @@ export default function SosAlert({ onClose }: SosAlertProps) {
   const [notificationsWithAccepted, setNotificationsWithAccepted] = useState<
     Notification[]
   >([]);
-  // const notificationStore = useNotificationStore();
 
-  const { sosDatas, selectedAlertType, sosDataWithAccepted } =
-    useNotificationStore();
+  const { selectedAlertType } = useNotificationStore();
 
-    useEffect(() => {
-      setNotifications(
-        [...sosDatas].sort((a, b) => {
-          const dateA = a.notification_createdate
-            ? new Date(a.notification_createdate).getTime()
-            : 0;
-          const dateB = b.notification_createdate
-            ? new Date(b.notification_createdate).getTime()
-            : 0;
-          return dateB - dateA; // เรียงจากใหม่ไปเก่า
-        })
-      );
-    }, [sosDatas]);
-
+  // รับ noti แบบยังไม่ accept
   useEffect(() => {
-    setNotificationsWithAccepted(
-      [...sosDataWithAccepted].sort((a, b) => {
-        const dateA = a.notification_createdate
-          ? new Date(a.notification_createdate).getTime()
-          : 0;
-        const dateB = b.notification_createdate
-          ? new Date(b.notification_createdate).getTime()
-          : 0;
-        return dateB - dateA; // เรียงจากใหม่ไปเก่า
-      })
-    );
-  }, [sosDataWithAccepted]);
-  // useEffect(() => {
-  //   setNotifications((prev) => [
-  //     ...prev,
-  //     {
-  //       sensor_notifications_config_id: 132,
-  //       notification_successed: false,
-  //       notification_category: "SOS",
-  //       notification_accepted: false,
-  //       notification_createdate: "2025-01-01T19:45:47",
-  //       notification_updatedate: "2025-03-04T14:22:38",
-  //       notification_id: 2,
-  //       sensor_notifications_config: {
-  //         sensor_id: 77,
-  //         sensor_notifications_config_event: "ไม่อยู่ที่เตียง",
-  //         sensor_notifications_config_usage: true,
-  //         sensor_notifications_config_repeatnoti: 120,
-  //         sensor_notifications_config_rangetime: 120,
-  //         sensor_notifications_config_signal: "อันตราย",
-  //         sensor_notifications_config_id: 132,
-  //       },
-  //       log_bed_patient_sensor_id: 1,
-  //     },
-  //   ]);
-  // }, []);
+    notificationWebSocketService.connect("/sos/pending", (data) => {
+      setNotifications((prev) => sortNotificationByDate([...prev, data]));
+    });
 
-  
+    return () => {
+      notificationWebSocketService.disconnect("/sos/pending");
+    };
+  }, []);
+
+  // รับ noti ที่ accept แล้ว (แต่ยังไม่ success)
+  useEffect(() => {
+    notificationWebSocketService.connect("/sos/accepted", (data) => {
+      setNotificationsWithAccepted((prev) =>
+        sortNotificationByDate([...prev, data])
+      );
+    });
+
+    return () => {
+      notificationWebSocketService.disconnect("/sos/accepted");
+    };
+  }, []);
 
   const updateStatus = (
     id: number,
@@ -120,7 +90,11 @@ export default function SosAlert({ onClose }: SosAlertProps) {
           {selectedAlertType}
         </h3>
         {selectedAlertType === "แจ้งเตือนฉุกเฉิน" && (
-          <img src="src/assets/alarm.png" alt="Alarm" className="w-8 h-8 mr-4" />
+          <img
+            src="src/assets/alarm.png"
+            alt="Alarm"
+            className="w-8 h-8 mr-4"
+          />
         )}
         <button
           onClick={onClose}
