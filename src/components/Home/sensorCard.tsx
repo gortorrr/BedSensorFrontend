@@ -12,6 +12,7 @@ import rate1 from "../../assets/sensorType/rate1.png";
 import rate2 from "../../assets/sensorType/rate2.png";
 import rate3 from "../../assets/sensorType/rate3.png";
 import { useSensorStore } from "../../store/sensorStore";
+import { sensorWebSocketService } from "../../services/sensor.websocket";
 
 interface Props {
   sensor?: Sensor;
@@ -41,24 +42,39 @@ const SensorCard: React.FC<Props> = ({
   useEffect(() => {
     setSelectedSensor(sensor);
     setIsHovered(false);
-
+  
     const fetchSensorData = async () => {
       if (!sensor?.sensor_id) return;
+  
       try {
-        const updatedSensor = await sensorStore.loadValueSensor(
-          sensor.sensor_id
-        );
+        // โหลดข้อมูลจาก API ก่อน
+        const updatedSensor = await sensorStore.loadValueSensor(sensor.sensor_id);
         setSelectedSensor(updatedSensor);
       } catch (error) {
         console.error("Error fetching sensor data:", error);
       }
     };
-
-    //get every 5 second data
-    fetchSensorData(); // โหลดข้อมูลครั้งแรก
-    const interval = setInterval(fetchSensorData, 5000);
-    return () => clearInterval(interval);
-  }, [sensor, sensorStore]); // ✅ เพิ่ม sensorStore เข้าไปใน dependency array
+  
+    fetchSensorData(); // โหลดข้อมูลจาก API ครั้งแรก
+  }, [sensor, sensorStore]); // 🚀 เช็คว่า sensor หรือ sensorStore เปลี่ยนแปลง
+  
+  useEffect(() => {
+    if (!sensor?.sensor_id) return;
+  
+    // WebSocket callback function
+    const handleMessage = (updatedSensor: Sensor) => {
+      setSelectedSensor(updatedSensor);
+    };
+  
+    // เชื่อมต่อ WebSocket เมื่อ sensor เปลี่ยนแปลง
+    sensorWebSocketService.connect(sensor.sensor_id, handleMessage);
+  
+    return () => {
+      // cleanup เมื่อ component ถูก unmount หรือ sensor เปลี่ยน
+      sensorWebSocketService.disconnect(sensor.sensor_id);
+    };
+  }, [sensor]); // ใช้ sensor เป็น dependency เพื่อเชื่อมต่อ WebSocket ใหม่เมื่อ sensor เปลี่ยน
+  
 
   const toggleDialog = () => {
     if (!patient || selectedSensor) return;
