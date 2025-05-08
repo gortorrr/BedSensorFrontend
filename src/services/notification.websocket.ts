@@ -2,9 +2,9 @@ import { Notification } from "../types/notification";
 
 type Topic =
   | "sos/pending"
-  | "sos/completed"
+  | "sos/accepted"
   | "emergency/pending"
-  | "emergency/completed";
+  | "emergency/accepted";
 
 type Callback = (data: Notification) => void;
 
@@ -41,7 +41,7 @@ class WebSocketClient {
 
 class NotificationWebSocketManager {
   private clients: Map<Topic, WebSocketClient> = new Map();
-  private baseUrl = "ws://localhost:8000/ws/notifications";
+  private baseUrl = "ws://localhost:8000/ws/notifications/";
 
   connect(topic: Topic, onMessage: Callback) {
     if (this.clients.has(topic)) {

@@ -23,25 +23,25 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
 
   // รับ noti แบบยังไม่ accept
   useEffect(() => {
-    notificationWebSocketService.connect("/emergency/pending", (data) => {
+    notificationWebSocketService.connect("emergency/pending", (data) => {
       setNotifications((prev) => sortNotificationByDate([...prev, data]));
     });
 
     return () => {
-      notificationWebSocketService.disconnect("/emergency/pending");
+      notificationWebSocketService.disconnect("emergency/pending");
     };
   }, []);
 
   // รับ noti ที่ accept แล้ว (แต่ยังไม่ success)
   useEffect(() => {
-    notificationWebSocketService.connect("/emergency/accepted", (data) => {
+    notificationWebSocketService.connect("emergency/accepted", (data) => {
       setNotificationsWithAccepted((prev) =>
         sortNotificationByDate([...prev, data])
       );
     });
 
     return () => {
-      notificationWebSocketService.disconnect("/emergency/accepted");
+      notificationWebSocketService.disconnect("emergency/accepted");
     };
   }, []);
 

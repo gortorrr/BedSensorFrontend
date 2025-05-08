@@ -19,25 +19,25 @@ export default function SosAlert({ onClose }: SosAlertProps) {
 
   // รับ noti แบบยังไม่ accept
   useEffect(() => {
-    notificationWebSocketService.connect("/sos/pending", (data) => {
+    notificationWebSocketService.connect("sos/pending", (data) => {
       setNotifications((prev) => sortNotificationByDate([...prev, data]));
     });
 
     return () => {
-      notificationWebSocketService.disconnect("/sos/pending");
+      notificationWebSocketService.disconnect("sos/pending");
     };
   }, []);
 
   // รับ noti ที่ accept แล้ว (แต่ยังไม่ success)
   useEffect(() => {
-    notificationWebSocketService.connect("/sos/accepted", (data) => {
+    notificationWebSocketService.connect("sos/accepted", (data) => {
       setNotificationsWithAccepted((prev) =>
         sortNotificationByDate([...prev, data])
       );
     });
 
     return () => {
-      notificationWebSocketService.disconnect("/sos/accepted");
+      notificationWebSocketService.disconnect("sos/accepted");
     };
   }, []);
 
