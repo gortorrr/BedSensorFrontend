@@ -51,12 +51,14 @@ const SensorTableWindow: React.FC<Props> = ({ sensors, onDeleteSensor }) => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex space-x-4 justify-end">
                         <Icon
+                          data-testid="settings-icon"
                           path={mdiCog}
                           size={1}
                           className="text-gray-600 hover:text-gray-900 cursor-pointer"
                         />
                         <div onClick={() => onDeleteSensor(sensor)}>
                           <Icon
+                            data-testid="delete-icon"
                             path={mdiDelete}
                             size={1}
                             className="text-red-600 hover:text-red-800 cursor-pointer"

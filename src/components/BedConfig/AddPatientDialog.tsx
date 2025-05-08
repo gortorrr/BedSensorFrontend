@@ -55,6 +55,7 @@ const AddPatientDialog: React.FC<AddPatientDialogProps> = ({
               <h2 className="text-2xl font-bold mb-4">เลือกผู้ป่วย</h2>
 
               <input
+                id="searchPatient"
                 type="text"
                 placeholder="ค้นหาชื่อผู้ป่วย"
                 className="w-full p-3 border border-gray-300 rounded-md mb-4 text-lg inset-shadow"
@@ -103,6 +104,7 @@ const AddPatientDialog: React.FC<AddPatientDialogProps> = ({
                           <button
                             className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer"
                             onClick={() => handleSelectPatient(patient)}
+                            id="btnSelect"
                           >
                             เลือก
                           </button>
@@ -117,6 +119,7 @@ const AddPatientDialog: React.FC<AddPatientDialogProps> = ({
                 <button
                   className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400 cursor-pointer"
                   onClick={onClose}
+                  id="btnCancel"
                 >
                   ยกเลิก
                 </button>

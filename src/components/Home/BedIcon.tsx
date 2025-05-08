@@ -38,6 +38,7 @@ const BedIcon: React.FC<BedIconProps> = ({
       <div
         className="flex items-center justify-center cursor-pointer pt-6"
         onClick={addPatient}
+        id="btnAddPatient"
       >
         <i className="bi bi-patch-plus-fill text-7xl text-[#2E5361]"></i>
       </div>
@@ -56,7 +57,7 @@ const BedIcon: React.FC<BedIconProps> = ({
 
     return (
       <div key={index} className="flex items-center">
-        <img src={iconPath} alt={sensorValue} className={`${iconSize}`} />
+        <img src={iconPath} alt={sensorValue} className={`${iconSize}`} id="bedImgValue"/>
       </div>
     );
   });

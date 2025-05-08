@@ -100,6 +100,7 @@ const SensorCard: React.FC<Props> = ({
 
   return (
     <div
+      id="sensorCard"
       className="relative border border-black rounded-lg w-34 h-1/3 bg-[#B7D6DE] p-1 transition-all overflow-hidden duration-250 shadow-[0_3px_10px_rgb(0,0,0,0.2)]"
       onClick={toggleDialog}
       onMouseEnter={() => setIsHovered(true)}
@@ -110,6 +111,7 @@ const SensorCard: React.FC<Props> = ({
           className="absolute top-1 right-1 text-white w-6 h-6 flex items-center justify-center rounded-full shadow-md hover:bg-red-700 transition-all duration-150 cursor-pointer"
           onClick={handleRemoveSensor}
           aria-label="Remove Sensor"
+          id="btnRemove"
         >
           <IoCloseCircle />
         </button>
@@ -118,9 +120,17 @@ const SensorCard: React.FC<Props> = ({
         <>
           <p className="font-normal">{selectedSensor.sensor_name}</p>
           <div className="flex items-center justify-between pl-1">
-            <img src={iconPath} alt={sensorType} className="w-6 h-6" />
+            <img
+              src={iconPath}
+              alt={sensorType}
+              className="w-6 h-6"
+              id="sensorImg"
+            />
             <div className="relative w-full h-1/3">
-              <h5 className="text-2xl font-bold text-center m-0 ">
+              <h5
+                className="text-2xl font-bold text-center m-0 "
+                id="sensorValue"
+              >
                 {selectedSensor ? (
                   // ตรวจสอบชนิดของเซ็นเซอร์และจัดการตำแหน่ง
                   selectedSensor.sensor_name === "Heart Rate" ? (
@@ -151,7 +161,7 @@ const SensorCard: React.FC<Props> = ({
                 )}
               </h5>
             </div>
-            <p className="font-normal text-right">
+            <p className="font-normal text-right" id="unit">
               {selectedSensor.sensor_unit}
             </p>
           </div>
@@ -160,11 +170,15 @@ const SensorCard: React.FC<Props> = ({
               src={wavePath}
               alt={`${sensorType} Wave`}
               className="w-16 h-9"
+              id="sensorWave"
             />
           </div>
         </>
       ) : (
-        <div className="flex items-center justify-center cursor-pointer pt-6 ">
+        <div
+          id="addSensor"
+          className="flex items-center justify-center cursor-pointer pt-6 "
+        >
           <i className="bi bi-patch-plus-fill text-4xl text-[#2E5361] "></i>
         </div>
       )}

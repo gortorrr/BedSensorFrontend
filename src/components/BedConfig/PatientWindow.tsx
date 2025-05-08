@@ -71,6 +71,7 @@ const PatientWindow: React.FC<Props> = ({
           <button
             className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] mt-8 transition-transform duration-300 hover:scale-110"
             onClick={openDialog}
+             id="btnAddPatient"
           >
             <PlusCircle size={24} />
             <span className="text-lg cursor-pointer">เพิ่มผู้ป่วย</span>
@@ -225,6 +226,7 @@ const PatientWindow: React.FC<Props> = ({
               aria-label="Delete patient record"
               className="p-3 bg-red-500 text-white rounded-md hover:bg-red-600"
               onClick={handleDeletePatient}
+              id="btnDelPatient"
             >
               <Icon path={mdiDelete} size={1} />
             </button>

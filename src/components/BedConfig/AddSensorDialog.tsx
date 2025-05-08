@@ -89,6 +89,7 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
 
         <div className="flex gap-4 mb-4">
           <input
+            id="seachSensor1"
             type="text"
             placeholder="ค้นหาเซ็นเซอร์ I"
             className="flex-1 p-2 border border-gray-300 rounded-md"
@@ -96,6 +97,7 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
             onChange={(e) => setSearchI(e.target.value)}
           />
           <input
+            id="seachSensor2"
             type="text"
             placeholder="ค้นหาเซ็นเซอร์ II"
             className="flex-1 p-2 border border-gray-300 rounded-md"
@@ -133,6 +135,7 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
                     <button
                       className="px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] cursor-pointer transition-transform duration-300 hover:scale-110"
                       onClick={() => onSelectSensor(sensor)}
+                      id="btnSelect"
                     >
                       เลือก
                     </button>
@@ -147,6 +150,7 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
           <button
             className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400 cursor-pointer"
             onClick={onClose}
+            id="btnCancel"
           >
             ยกเลิก
           </button>
