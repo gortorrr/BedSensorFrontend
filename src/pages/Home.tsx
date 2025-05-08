@@ -55,14 +55,18 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: "20px", backgroundColor: "#e7f0f3" }}>
-      <h2 className="text-[#2E5361] text-4xl font-bold mb-4 pl-4 py-2">
+    <div id="homePage" style={{ padding: "20px", backgroundColor: "#e7f0f3" }}>
+      <h2
+        id="homeTitle"
+        className="text-[#2E5361] text-4xl font-bold mb-4 pl-4 py-2"
+      >
         รายการเตียงผู้ป่วย
       </h2>
       <div className="flex space-x-4 justify-between mb-4">
         {/* ช่องค้นหา + ไอคอนค้นหา */}
         <div className="relative flex-auto pl-4 ">
           <input
+            id="searchName"
             type="text"
             placeholder="ค้นหาชื่อผู้ป่วย"
             value={search}
@@ -77,6 +81,7 @@ const Home: React.FC = () => {
         </div>
 
         <button
+          id="btnAddPatient"
           className={`flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer ${
             isClicked ? "animate-jump" : ""
           }`}
@@ -87,6 +92,7 @@ const Home: React.FC = () => {
         </button>
       </div>
       <div
+        id="bedList"
         style={{ display: "flex", flexWrap: "wrap" }}
         className="justify-stretch p-4 gap-3"
       >

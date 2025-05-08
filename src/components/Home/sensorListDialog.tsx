@@ -61,6 +61,7 @@ const SensorListDialog: React.FC<Props> = ({
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-40 bg-transparent backdrop-blur-sm"
             onClick={onClose}
+            id="sensorDialogOverlay"
           />
 
           {/* Dialog */}
@@ -90,14 +91,16 @@ const SensorListDialog: React.FC<Props> = ({
             <div
               className="bg-white bg-opacity-70 p-6 rounded-lg w-96 pointer-events-auto shadow-2xl"
               onClick={(e) => e.stopPropagation()}
+              id="sensorDialog"
             >
               <h2 className="text-2xl mb-4 text-[#2E5361]">Sensor List</h2>
-              <ul>
+              <ul id="sensorList">
                 {filteredSensorList.map((sensor, index) => (
                   <li
                     key={index}
                     className="border-b py-2 cursor-pointer hover:bg-gray-200 transition-colors"
                     onClick={() => handleSelect(sensor)}
+                    id="sensorItem"
                   >
                     {sensor.sensor_type}
                   </li>
@@ -109,6 +112,7 @@ const SensorListDialog: React.FC<Props> = ({
               tracking-wide font-semibold focus:outline-none focus:shadow-outline 
               hover:bg-[#6B97A1] shadow-lg transition ease-in duration-300"
                   onClick={onClose}
+                  id="btnClose"
                 >
                   Close
                 </button>
