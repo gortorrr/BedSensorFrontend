@@ -21,6 +21,7 @@ const NotificationTabs: React.FC<NotificationTabsProps> = ({ onTabChange }) => {
             : "bg-gray-300 text-gray-700"
         }`}
         onClick={() => handleTabClick("settings")}
+        id="settingNoti"
       >
         ตั้งค่าการแจ้งเตือน
       </button>
@@ -31,6 +32,7 @@ const NotificationTabs: React.FC<NotificationTabsProps> = ({ onTabChange }) => {
             : "bg-gray-300 text-gray-700"
         }`}
         onClick={() => handleTabClick("timeline")}
+        id="timeline"
       >
         ไทม์ไลน์
       </button>
@@ -41,6 +43,7 @@ const NotificationTabs: React.FC<NotificationTabsProps> = ({ onTabChange }) => {
             : "bg-gray-300 text-gray-700"
         }`}
         onClick={() => handleTabClick("history")}
+        id="historyNoti"
       >
         ประวัติการแจ้งเตือน
       </button>

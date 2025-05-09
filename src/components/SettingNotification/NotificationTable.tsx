@@ -97,6 +97,7 @@ const NotificationTable: React.FC<NotificationTableProps> = ({
                   <td className="p-2 pt-4 text-center">
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input
+                        id="checkboxUsesenSor"
                         type="checkbox"
                         className="sr-only peer"
                         defaultChecked={
@@ -186,12 +187,14 @@ const NotificationTable: React.FC<NotificationTableProps> = ({
         <button
           className="px-6 py-2 bg-[#5E8892] text-white rounded-xl hover:bg-[#95BAC3] cursor-pointer"
           onClick={handleConfirm}
+          id="btnSave"
         >
           บันทึก
         </button>
         <button
           onClick={handleCancel}
           className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400 cursor-pointer"
+          id="btnCancel"
         >
           ยกเลิก
         </button>

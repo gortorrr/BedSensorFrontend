@@ -35,16 +35,28 @@ const SensorAndBedInfo: React.FC<SensorAndBedInfoProps> = ({
       </select>
 
       {/* ปุ่มแสดงข้อมูลเตียง */}
-      <button className="px-4 py-2 bg-white border rounded-lg inset-shadow">
+      <button
+        className="px-4 py-2 bg-white border rounded-lg inset-shadow"
+        id="buildingName"
+      >
         {bed?.room?.floor?.building?.building_name}
       </button>
-      <button className="px-4 py-2 bg-white border rounded-lg inset-shadow">
+      <button
+        className="px-4 py-2 bg-white border rounded-lg inset-shadow"
+        id="floorName"
+      >
         {bed?.room?.floor?.floor_name}
       </button>
-      <button className="px-4 py-2 bg-white border rounded-lg inset-shadow">
+      <button
+        className="px-4 py-2 bg-white border rounded-lg inset-shadow"
+        id="roomName"
+      >
         {bed?.room?.room_name}
       </button>
-      <button className="px-4 py-2 bg-white border rounded-lg inset-shadow">
+      <button
+        className="px-4 py-2 bg-white border rounded-lg inset-shadow"
+        id="bedName"
+      >
         {bed?.bed_name}
       </button>
     </div>

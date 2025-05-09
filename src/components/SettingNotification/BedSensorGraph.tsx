@@ -106,7 +106,7 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({
         {/* Date Picker */}
         <div className="flex items-center gap-4 mb-4">
           <span className="text-md font-medium">วัน / เดือน / ปี</span>
-          <div className="relative">
+          <div className="relative" id="timeline-datepicker">
             <DatePicker
               selected={selectedDate}
               onChange={(date) => {
@@ -114,16 +114,19 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({
               }}
               dateFormat="dd/MM/yyyy"
               className="custom-date-picker p-2 border-1 rounded-xl text-center font-semibold shadow-md"
+              id="timeline-datepicker-input"
             />
             <CalendarIcon className="absolute right-2 top-1.5 text-gray-500" />
           </div>
 
           <MdKeyboardDoubleArrowLeft
             onClick={() => onDateChange(subDays(selectedDate, 1))}
+            id="timeline-button-prev"
             style={{ marginLeft: 10, fontSize: 30, cursor: "pointer" }}
           />
           <MdKeyboardDoubleArrowRight
             onClick={() => onDateChange(addDays(selectedDate, 1))}
+            id="timeline-button-next"
             style={{ marginLeft: 5, fontSize: 30, cursor: "pointer" }}
           />
           {/* <button
@@ -145,6 +148,7 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({
         ref={graphContainerRef}
         className="bg-linear-to-r from-[#80a2ad] to-[#e9f6fc] rounded-lg w-full px-4"
         style={{ position: "relative" }}
+        id="timeline-graph-container"
       >
         {/* กราฟ */}
         <Plot
@@ -197,13 +201,18 @@ const TimelineGraph: React.FC<TimelineGraphProps> = ({
             width: "100%",
             height: "100%",
           }}
+          divId="timeline-plot"
         />
 
         {/* คำอธิบายสี */}
-        <div style={{ display: "flex", flexWrap: "wrap", marginTop: 10 }}>
+        <div
+          style={{ display: "flex", flexWrap: "wrap", marginTop: 10 }}
+          id="timeline-status-color-legend"
+        >
           {Object.entries(statusColors).map(([status]) => (
             <div
               key={status}
+              id={`timeline-status-${statusMapping[status]}`}
               style={{
                 display: "flex",
                 alignItems: "center",
