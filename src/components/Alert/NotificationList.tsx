@@ -84,6 +84,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
 
   return (
     <div
+      id={`notification-card-${notification.notification_id}`}
       className={`flex items-center p-4 ${getBackgroundColor()} rounded-lg shadow`}
     >
       <div className="flex-1 justify-end">
@@ -119,6 +120,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
         <p className="text-black">
           ข้อความ :
           <span
+            id="message-content"
             className={
               notification.notification_category === "Emergency"
                 ? "text-[#DB0000] font-semibold" // Emergency: Red color
@@ -134,6 +136,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
 
         {/* แสดงสถานะ */}
         <p
+          id="notification-status"
           className={`font-semibold ${
             notification.notification_successed
               ? "text-gray-400"
@@ -151,7 +154,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
             ? "กำลังดำเนินการ"
             : "รอการตอบรับ"}
         </p>
-        <p className="text-gray-500 text-sm text-right">
+        <p className="text-gray-500 text-sm text-right" id="notification-date">
           {notification.notification_createdate
             ? formatDateToThai(notification.notification_createdate)
             : "ไม่ระบุเวลา"}
@@ -160,11 +163,15 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
 
         <div>
           {/* ปุ่มแสดงเป็นข้อความแทน */}
-          <div className="flex justify-between space-x-3 mt-2">
+          <div
+            id="notification-actions"
+            className="flex justify-between space-x-3 mt-2"
+          >
             {/* แสดงปุ่ม "รับทราบ" ตลอดเวลา */}
             {!notification.notification_successed &&
               !notification.notification_accepted && (
                 <button
+                  id={`btn-acknowledge-${notification.notification_id}`}
                   onClick={() => handleTabClick(notification)}
                   className="text-[#007FCF] font-semibold hover:text-[#7cb1d0] cursor-pointer"
                 >
@@ -176,6 +183,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
             {!notification.notification_successed &&
               notification.notification_accepted !== false && (
                 <button
+                  id={`btn-complete-${notification.notification_id}`}
                   onClick={handleCompleteClick}
                   className="text-[#22c265] font-semibold hover:text-[#7bdebf] animate-jump1 cursor-pointer"
                 >
@@ -184,7 +192,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
               )}
 
             {/* เวลาที่ผ่านไปของการแจ้งเตือน */}
-            <p className="text-gray-500 text-right">
+            <p id="elapsed-time" className="text-gray-500 text-right">
               {getTimeElapsed(
                 new Date(notification.notification_createdate ?? new Date())
               )}
@@ -210,7 +218,10 @@ const NotificationList: React.FC<NotificationListProps> = ({
   notificationsWithAccepted,
 }) => {
   return (
-    <div className="p-4 space-y-4 overflow-auto flex-1">
+    <div
+      id="notification-list-wrapper"
+      className="p-4 space-y-4 overflow-auto flex-1"
+    >
       {notifications.map((noti) => (
         <NotificationCard
           key={noti.notification_id}

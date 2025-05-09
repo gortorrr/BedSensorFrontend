@@ -120,9 +120,16 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
   };
 
   return (
-    <div className="h-full flex flex-col z-20 border-2 border-[#2E5361] rounded-3xl">
-      <div className="flex justify-between items-center h-25 text-[#2E5361] p-4 rounded-3xl">
+    <div
+      id="notification-emer-container"
+      className="h-full flex flex-col z-20 border-2 border-[#2E5361] rounded-3xl"
+    >
+      <div
+        id="notification-emer-header"
+        className="flex justify-between items-center h-25 text-[#2E5361] p-4 rounded-3xl"
+      >
         <h3
+          id="notification-emer-title"
           className="text-3xl font-semibold flex-grow text-center"
           style={{ textShadow: "2px 2px 5px rgba(0,0,0,0.3)" }}
         >
@@ -130,12 +137,14 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
         </h3>
         {selectedAlertType === "แจ้งเตือนฉุกเฉิน" && (
           <img
-            src="src\assets\alarm.png"
+            id="emergency-alert-icon"
+            src="src/assets/alarm.png"
             alt="Alarm"
             className="w-8 h-8 mr-4"
           />
         )}
         <button
+          id="close-emer-alert-button"
           onClick={onClose}
           className="text-[#2E5361] text-xl hover:text-gray-300 absolute top-3 right-3 cursor-pointer"
           aria-label="Close alert"
@@ -145,7 +154,12 @@ export default function EmergencyAlert({ onClose }: EmergencyAlertProps) {
       </div>
 
       {notifications.length === 0 && notificationsWithAccepted.length === 0 ? (
-        <p className="text-gray-500 text-center mt-5">ไม่มีการแจ้งเตือน</p>
+        <p
+          id="no-emer-alert-message"
+          className="text-gray-500 text-center mt-5"
+        >
+          ไม่มีการแจ้งเตือน
+        </p>
       ) : (
         <>
           <NotificationList
