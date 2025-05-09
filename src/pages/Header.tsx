@@ -100,37 +100,53 @@ export default function Header({
   return (
     <>
       {/* Header */}
-      <header className="sticky top-0 z-20 bg-[#2E5361] text-white flex items-center justify-between px-6 py-5 shadow-md ">
-        <div className="flex items-center space-x-3">
+      <header
+        id="main-header"
+        className="sticky top-0 z-20 bg-[#2E5361] text-white flex items-center justify-between px-6 py-5 shadow-md "
+      >
+        <div id="header-status-group" className="flex items-center space-x-3">
           {/* เปลี่ยนสถานะ Online / Offline */}
           <div
+            id="status-indicator"
             className={`w-3 h-3 rounded-full ${
               isOnline ? "bg-green-500" : "bg-red-500"
             }`}
           />
-          <span className="text-lg font-semibold">
+          <span id="status-text" className="text-lg font-semibold">
             {isOnline ? "Online" : "Offline"}
           </span>
-          <span className="text-[#95BAC3] text-lg font-semibold">
+          <span
+            id="hospital-name"
+            className="text-[#95BAC3] text-lg font-semibold"
+          >
             โรงพยาบาลมหาวิทยาลัยบูรพา
           </span>
         </div>
 
-        <div className="flex items-center space-x-4">
-          <div className="text-sm text-right">{formatDate(time)}</div>
+        <div id="header-actions" className="flex items-center space-x-4">
+          <div id="header-time" className="text-sm text-right">
+            {formatDate(time)}
+          </div>
 
           {/* SOS Button */}
           <button
+            id="btn-sos-alert"
             className="relative cursor-pointer hover:scale-105 transition-transform hover:opacity-110 flex items-center justify-center p-2 rounded-full"
             title="SOS Alert"
             onClick={toggleSosAlert}
           >
-            <span className="bg-red-700 text-xs text-white px-3 py-2 rounded-full shadow-md transform transition-all">
+            <span
+              id="sos-label"
+              className="bg-red-700 text-xs text-white px-3 py-2 rounded-full shadow-md transform transition-all"
+            >
               SOS
             </span>
             {/* ✅ แสดงตัวเลขแจ้งเตือนเมื่อ > 0 */}
             {notificationCountSos > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+              <span
+                id="sos-badge"
+                className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full"
+              >
                 {notificationCountSos}
               </span>
             )}{" "}
@@ -139,15 +155,22 @@ export default function Header({
           {/* ไอคอนแจ้งเตือน */}
           {/* ปุ่มแจ้งเตือน Emergency */}
           <button
+            id="btn-emergency-alert"
             className="relative cursor-pointer hover:scale-125 transition-transform transform hover:shadow-sm hover:bg-[#5E8892] hover:text-white p-2 rounded-full"
             title="Emergency"
             onClick={toggleEmergencyAlert}
           >
-            <Bell className="relative w-6 h-6 text-yellow-500 fill-yellow-500 transition-all drop-shadow-lg" />
+            <Bell
+              id="bell-icon"
+              className="relative w-6 h-6 text-yellow-500 fill-yellow-500 transition-all drop-shadow-lg"
+            />
 
             {/* ✅ แสดงตัวเลขแจ้งเตือนเมื่อ > 0 */}
             {notificationCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+              <span
+                id="emergency-badge"
+                className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full"
+              >
                 {notificationCount}
               </span>
             )}
