@@ -41,7 +41,7 @@ const menus: MenuItem[] = [
     name: "จัดการ",
     icon: GrSettingsOption,
     submenus: [
-      { name: "เซนเซอร์", link: "/", icon: MdOutlineSensors },
+      { name: "เซนเซอร์", link: "/sensor-management", icon: MdOutlineSensors },
       { name: "ผู้ป่วย", link: "/", icon: FaUserInjured },
       { name: "ผู้ใช้งานระบบ", link: "/", icon: FaUserCog },
       { name: "อาคาร", link: "/", icon: RiHospitalFill },
