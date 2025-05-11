@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Sensor } from "../types/sensor";
 import { mdiMagnify, mdiPlus } from "@mdi/js";
 import Icon from "@mdi/react";
+import AddSensorDialog from "../components/Sensor/AddSensorDialog";
 
 const sensors: Sensor[] = [
   {
@@ -90,6 +91,7 @@ const sensors: Sensor[] = [
 
 const SensorManagement: React.FC = () => {
   const [search, setSearch] = useState("");
+   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const filteredSensors = sensors.filter((sensor) => {
     const keyword = search.toLowerCase();
@@ -123,13 +125,19 @@ const SensorManagement: React.FC = () => {
           />
         </div>
         <button
-          id="btnAddSensor"
-          className={`flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer "animate-jump" : ""
-          }`}
-        >
-          <Icon path={mdiPlus} size={1} />
-          <span>เพิ่มเซ็นเซอร์</span>
-        </button>
+        id="btnAddSensor"
+        className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer"
+        onClick={() => setIsDialogOpen(true)}
+      >
+        <Icon path={mdiPlus} size={1} />
+        <span>เพิ่มเซ็นเซอร์</span>
+      </button>
+
+      {/* Dialog เพิ่มเซ็นเซอร์ */}
+      <AddSensorDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+      />
       </div>
       <table className="w-full border-collapse border border-gray-200">
         <thead>
