@@ -165,7 +165,7 @@ const SettingNoti: React.FC = () => {
   // );
 
   return (
-    <div className="p-4 bg-[#e7f0f3] min-h-screen ">
+    <div className="p-6 bg-[#e7f0f3] min-h-screen ">
       <h2 className="text-3xl font-bold text-[#2E5361] mb-4">
         ตั้งค่าการแจ้งเตือน
       </h2>

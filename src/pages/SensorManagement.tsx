@@ -90,6 +90,7 @@ const sensors: Sensor[] = [
 
 const SensorManagement: React.FC = () => {
   const [search, setSearch] = useState("");
+   const [isClicked, setIsClicked] = useState(false); // State สำหรับจัดการการคลิกปุ่ม
 
   const filteredSensors = sensors.filter((sensor) => {
     const keyword = search.toLowerCase();
@@ -100,14 +101,22 @@ const SensorManagement: React.FC = () => {
     );
   });
 
+  const handleAddPatientClick = () => {
+    setIsClicked(true); // เมื่อคลิกให้ตั้งค่า isClicked เป็น true
+    // รีเซ็ตการคลิกหลังจากอนิเมชันเสร็จ
+    setTimeout(() => {
+      setIsClicked(false); // รีเซ็ต state หลังจาก 1 วินาที
+    }, 150);
+  };
+
   return (
-    <div className="p-6">
+    <div className="p-6 bg-[#e7f0f3] min-h-screen">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-semibold">จัดการเซ็นเซอร์</h1>
+        <h1 className="text-3xl font-bold text-[#2E5361] mb-4">จัดการเซ็นเซอร์</h1>
       </div>
-      <div className="flex space-x-4 justify-between mb-4">
+      <div className="flex space-x-4 justify-between mb-8">
         {/* ช่องค้นหา + ไอคอนค้นหา */}
-        <div className="relative flex-auto pl-4 ">
+        <div className="relative flex-auto ">
           <input
             id="searchSensor"
             type="text"
@@ -124,54 +133,56 @@ const SensorManagement: React.FC = () => {
         </div>
         <button
           id="btnAddSensor"
-          className={`flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer "animate-jump" : ""
+          className={`flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer ${
+            isClicked ? "animate-jump" : ""
           }`}
+          onClick={handleAddPatientClick} // เรียกใช้ handleAddPatientClick เมื่อคลิก
         >
           <Icon path={mdiPlus} size={1} />
           <span>เพิ่มเซ็นเซอร์</span>
         </button>
       </div>
-      <table className="w-full border-collapse border border-gray-200">
-        <thead>
-          <tr className="bg-gray-100 text-left">
-            <th className="border p-2">ลำดับ</th>
-            <th className="border p-2">Mac Sensor I</th>
-            <th className="border p-2">Mac Sensor II</th>
-            <th className="border p-2">อาคาร</th>
-            <th className="border p-2">ห้อง</th>
-            <th className="border p-2">หมายเลขเตียง</th>
-            <th className="border p-2">ประเภทเซ็นเซอร์</th>
-            <th className="border p-2">สถานะ</th>
-            <th className="border p-2 text-center"></th>
+      <table className="w-full border-collapse shadow-md">
+        <thead className="bg-[#B7D6DE] h-16 py-4 font-bold">
+          <tr className="bg-[#B7D6DE]">
+            <th className="p-2">ลำดับ</th>
+            <th className="p-2">Mac Sensor I</th>
+            <th className="p-2">Mac Sensor II</th>
+            <th className="p-2">อาคาร</th>
+            <th className="p-2">ห้อง</th>
+            <th className="p-2">หมายเลขเตียง</th>
+            <th className="p-2">ประเภทเซ็นเซอร์</th>
+            <th className="p-2 text-left">สถานะ</th>
+            <th className="p-2 text-center"></th>
           </tr>
         </thead>
         <tbody>
           {filteredSensors.map((sensor, index) => (
-            <tr key={sensor.sensor_id} className="hover:bg-gray-50">
-              <td className="border p-2">{index + 1}</td>
-              <td className="border p-2">{sensor.sensor_mac_i}</td>
-              <td className="border p-2">{sensor.sensor_mac_ii}</td>
-              <td className="border p-2">
+            <tr key={sensor.sensor_id} className="bg-gradient-to-r from-white via-gray-100 to-white shadow-md even:bg-gradient-to-r even:from-[#A1B5BC] even:via-[#D1DFE5] even:to-[#e4ecef]">
+              <td className="p-2 h-16 py-4 text-center">{index + 1}</td>
+              <td className="p-2 h-16 py-4  text-center">{sensor.sensor_mac_i}</td>
+              <td className="p-2 h-16 py-4  text-center">{sensor.sensor_mac_ii}</td>
+              <td className="p-2 h-16 py-4  text-center">
                 {sensor.bed?.room?.floor?.building?.building_name}
               </td>
-              <td className="border p-2">{sensor.bed?.room?.room_name}</td>
-              <td className="border p-2">{sensor.bed?.bed_name}</td>
+              <td className="p-2 h-16 py-4 text-center">{sensor.bed?.room?.room_name}</td>
+              <td className="p-2 h-16 py-4 text-center">{sensor.bed?.bed_name}</td>
 
-              <td className="border p-2">{sensor.sensor_type}</td>
-              <td className="border p-2">
+              <td className="p-2 h-16 py-4 text-center">{sensor.sensor_type}</td>
+              <td className="p-2 h-16 py-4 text-left">
                 <span
                   className={
-                    sensor.sensor_status ? "text-green-600" : "text-red-600"
+                    sensor.sensor_status ? "text-green-600 font-bold" : "text-red-600 font-bold"
                   }
                 >
                   {sensor.sensor_status ? "Active" : "Inactive"}
                 </span>
               </td>
-              <td className="border p-2 text-center">
-                <button className="text-blue-600 hover:underline mx-1">
+              <td className="p-2 h-16 py-4 text-center">
+                <button className="mx-1 cursor-pointer text-xl">
                   🖊️
                 </button>
-                <button className="text-red-600 hover:underline mx-1">
+                <button className="mx-1 cursor-pointer text-xl">
                   🗑️
                 </button>
               </td>
