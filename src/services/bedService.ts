@@ -84,4 +84,9 @@ export const bedService = {
       throw error; // หากเกิดข้อผิดพลาดให้โยนข้อผิดพลาดออกไป
     }
   },
+
+  async getLocations() {
+    const res = await http.get("/buildings");
+    return res.data;
+  },
 };

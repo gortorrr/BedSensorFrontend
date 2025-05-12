@@ -3,7 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "../pages/Home.tsx";
 import BedConfig from "../pages/BedConfig.tsx";
 import SettingNoti from "../pages/SettingNoti.tsx";
-import SensorManagement from "../pages/SensorManagement.tsx";
+import SensorManagement from "../pages/Managements/SensorManagement.tsx";
 import Login from "../pages/Login.tsx";
 // import EmergencyAlert from "../pages/EmergencyAlert.tsx";
 // import { useNotificationStore } from "../store/notificationStore.ts"; // Import ตัวแจ้งเตือนฉุกเฉิน

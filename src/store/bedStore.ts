@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { Bed, BedSaveConfig } from "../types/bed";
 import { bedService } from "../services/bedService";
+import { Building } from "../types/building";
 
 interface BedStore {
   loading: boolean;
@@ -14,6 +15,7 @@ interface BedStore {
   saveRemoveShowSensorId: (bed_id: number, sensor_id: number) => Promise<void>;
   saveBedConfig: (bed_id: number, bed: BedSaveConfig) => Promise<void>;
   saveUpdatedBedConfig: (bed_id: number, bed: Bed) => Promise<void>;
+  getLocations: () => Promise<Building[]>;
   // removePatientFromBed: (bed_id: number, patient_id: number) => Promise<void>;
 }
 
@@ -60,6 +62,10 @@ export const useBedStore = create<BedStore>((set) => ({
       console.error(error);
       set({ error: "Failed to update bed", loading: false });
     }
+  },
+  getLocations: async () => {
+    const data = bedService.getLocations();
+    return data;
   },
 
   // removePatientFromBed: async (bed_id: number, patient_id: number) => {

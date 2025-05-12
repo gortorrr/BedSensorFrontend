@@ -28,4 +28,12 @@ export const sensorService = {
       throw error; // หากเกิดข้อผิดพลาดให้โยนข้อผิดพลาดออกไป
     }
   },
+  async getSensors() {
+    const res = await http.get("/sensors");
+    return res;
+  },
+  async addSensor(sensor: Sensor) {
+    const res = await http.post("/sensors", sensor);
+    return res;
+  },
 };

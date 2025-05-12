@@ -7,6 +7,8 @@ interface SensorStore {
   loadAllSensorFree: () => Promise<void>;
   saveSensorConfig: (sensor_id: number, sensor: Sensor) => Promise<void>;
   sensorsFree: Sensor[];
+  getSensors: () => Promise<Sensor[]>;
+  addSensor: (sensor: Sensor) => Promise<void>;
 }
 
 export const useSensorStore = create<SensorStore>((set) => ({
@@ -21,5 +23,12 @@ export const useSensorStore = create<SensorStore>((set) => ({
   },
   saveSensorConfig: async (sensor_id: number, sensor: Sensor) => {
     sensorService.saveSensorConfig(sensor_id, sensor);
+  },
+  getSensors: async () => {
+    const data = await sensorService.getSensors();
+    return data.data;
+  },
+  addSensor: async (sensor: Sensor) => {
+    await sensorService.addSensor(sensor);
   },
 }));
