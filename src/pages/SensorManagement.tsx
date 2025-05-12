@@ -4,6 +4,7 @@ import { Sensor } from "../types/sensor";
 import { mdiMagnify, mdiPlus } from "@mdi/js";
 import Icon from "@mdi/react";
 import AddSensorDialog from "../components/Sensor/AddSensorDialog";
+import EditSensorDialog from "../components/Sensor/EditSensorDialog";
 
 const sensors: Sensor[] = [
   {
@@ -93,6 +94,8 @@ const SensorManagement: React.FC = () => {
   const [search, setSearch] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isClicked, setIsClicked] = useState(false); // State สำหรับจัดการการคลิกปุ่ม
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [selectedSensor, setSelectedSensor] = useState<Sensor | null>(null);
 
   const filteredSensors = sensors.filter((sensor) => {
     const keyword = search.toLowerCase();
@@ -103,13 +106,18 @@ const SensorManagement: React.FC = () => {
     );
   });
 
-  const handleAddPatientClick = () => {
+  const handleAddSensorClick = () => {
     setIsClicked(true); // เมื่อคลิกให้ตั้งค่า isClicked เป็น true
     // รีเซ็ตการคลิกหลังจากอนิเมชันเสร็จ
     setIsDialogOpen(true);
     setTimeout(() => {
       setIsClicked(false); // รีเซ็ต state หลังจาก 1 วินาที
     }, 150);
+  };
+
+  const handleEditSensorClick = (sensor: Sensor) => {
+    setSelectedSensor(sensor);
+    setIsEditDialogOpen(true);
   };
 
   return (
@@ -147,12 +155,11 @@ const SensorManagement: React.FC = () => {
           className={`flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer ${
             isClicked ? "animate-jump" : ""
           }`}
-          onClick={handleAddPatientClick}
+          onClick={handleAddSensorClick}
         >
           <Icon path={mdiPlus} size={1} />
           <span>เพิ่มเซ็นเซอร์</span>
         </button>
-
       </div>
       <table className="w-full border-collapse shadow-md">
         <thead className="bg-[#B7D6DE] h-16 py-4 font-bold">
@@ -206,13 +213,23 @@ const SensorManagement: React.FC = () => {
                 </span>
               </td>
               <td className="p-2 h-16 py-4 text-center">
-                <button className="mx-1 cursor-pointer text-xl">🖊️</button>
+                <button
+                  className="mx-1 cursor-pointer text-xl"
+                  onClick={() => handleEditSensorClick(sensor)}
+                >
+                  🖊️
+                </button>
                 <button className="mx-1 cursor-pointer text-xl">🗑️</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      <EditSensorDialog
+        isOpen={isEditDialogOpen}
+        onClose={() => setIsEditDialogOpen(false)}
+        sensor={selectedSensor}
+      />
     </div>
   );
 };
