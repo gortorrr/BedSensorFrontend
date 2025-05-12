@@ -78,24 +78,26 @@ const EditSensorDialog: React.FC<EditSensorDialogProps> = ({
           </h2>
 
           <div className="grid grid-cols-2 gap-4 ">
-            <InputField label="Mac Sensor I" value={form.mac1} onChange={(v) => handleChange("mac1", v)} />
-            <InputField label="Mac Sensor II" value={form.mac2} onChange={(v) => handleChange("mac2", v)} />
-            <SelectField label="อาคาร" options={buildingOptions} value={form.building} onChange={(v) => handleChange("building", v)} />
-            <SelectField label="ชั้น" options={floorOptions} value={form.floor} onChange={(v) => handleChange("floor", v)} />
-            <SelectField label="ห้อง" options={roomOptions} value={form.room} onChange={(v) => handleChange("room", v)} />
-            <InputField label="หมายเลขเตียง" value={form.bedNumber} onChange={(v) => handleChange("bedNumber", v)} />
-            <SelectField label="ประเภทเซ็นเซอร์" options={sensorTypeOptions} value={form.sensorType} onChange={(v) => handleChange("sensorType", v)} />
-            <SelectField label="สถานะ" options={["Active", "Inactive"]} value={form.status} onChange={(v) => handleChange("status", v)} />
+            <InputField id="mac1" label="Mac Sensor I" value={form.mac1} onChange={(v) => handleChange("mac1", v)} />
+            <InputField id="mac2" label="Mac Sensor II" value={form.mac2} onChange={(v) => handleChange("mac2", v)} />
+            <SelectField id="building" label="อาคาร" options={buildingOptions} value={form.building} onChange={(v) => handleChange("building", v)} />
+            <SelectField id="floor" label="ชั้น" options={floorOptions} value={form.floor} onChange={(v) => handleChange("floor", v)} />
+            <SelectField id="room" label="ห้อง" options={roomOptions} value={form.room} onChange={(v) => handleChange("room", v)} />
+            <InputField id="bedNumber" label="หมายเลขเตียง" value={form.bedNumber} onChange={(v) => handleChange("bedNumber", v)} />
+            <SelectField id="sensorType" label="ประเภทเซ็นเซอร์" options={sensorTypeOptions} value={form.sensorType} onChange={(v) => handleChange("sensorType", v)} />
+            <SelectField id="status" label="สถานะ" options={["Active", "Inactive"]} value={form.status} onChange={(v) => handleChange("status", v)} />
           </div>
 
           <div className="flex justify-end gap-4 mt-6">
             <button
+              id="btnCancel"
               onClick={handleClose}
               className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400 cursor-pointer"
             >
               ยกเลิก
             </button>
             <button
+              id="btnSave"
               className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] cursor-pointer"
             >
               บันทึก
@@ -109,10 +111,12 @@ const EditSensorDialog: React.FC<EditSensorDialogProps> = ({
 
 // Reusable input field
 const InputField = ({
+  id,
   label,
   value,
   onChange,
 }: {
+  id: string;
   label: string;
   value: string;
   onChange: (v: string) => void;
@@ -120,6 +124,7 @@ const InputField = ({
   <div>
     <label className="block mb-1 text-sm text-gray-700">{label}</label>
     <input
+      id={id}
       type="text"
       value={value}
       onChange={(e) => onChange(e.target.value)}
@@ -130,11 +135,13 @@ const InputField = ({
 
 // Reusable select field
 const SelectField = ({
+  id,
   label,
   options,
   value,
   onChange,
 }: {
+  id: string;
   label: string;
   options: string[];
   value: string;
@@ -143,6 +150,7 @@ const SelectField = ({
   <div>
     <label className="block mb-1 text-sm text-gray-700">{label}</label>
     <select
+      id={id}
       value={value}
       onChange={(e) => onChange(e.target.value)}
       className="p-2 border border-gray-300 rounded-md w-full h-11 text-black cursor-pointer"

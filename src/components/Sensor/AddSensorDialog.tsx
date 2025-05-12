@@ -68,6 +68,7 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
                 Mac Sensor I
               </label>
               <input
+                id="mac1"
                 type="text"
                 value={form.mac1}
                 onChange={(e) => handleChange("mac1", e.target.value)}
@@ -81,6 +82,7 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
                 Mac Sensor II
               </label>
               <input
+                id="mac2"
                 type="text"
                 value={form.mac2}
                 onChange={(e) => handleChange("mac2", e.target.value)}
@@ -92,6 +94,7 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
             <div>
               <label className="block mb-1 text-sm text-gray-700">อาคาร</label>
               <select
+                id="building"
                 value={form.building}
                 onChange={(e) => handleChange("building", e.target.value)}
                 className="p-2 border border-gray-300 rounded-md w-full h-11 text-gray-400 cursor-pointer"
@@ -108,6 +111,7 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
             <div>
               <label className="block mb-1 text-sm text-gray-700">ชั้น</label>
               <select
+                id="floor"
                 value={form.floor}
                 onChange={(e) => handleChange("floor", e.target.value)}
                 className="p-2 border border-gray-300 rounded-md w-full h-11 text-gray-400 cursor-pointer"
@@ -124,6 +128,7 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
             <div>
               <label className="block mb-1 text-sm text-gray-700">ห้อง</label>
               <select
+                id="room"
                 value={form.room}
                 onChange={(e) => handleChange("room", e.target.value)}
                 className="p-2 border border-gray-300 rounded-md w-full h-11 text-gray-400 cursor-pointer"
@@ -142,6 +147,7 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
                 หมายเลขเตียง
               </label>
               <input
+                id="bedNumber"
                 type="text"
                 value={form.bedNumber}
                 onChange={(e) => handleChange("bedNumber", e.target.value)}
@@ -155,6 +161,7 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
                 ประเภทเซ็นเซอร์
               </label>
               <select
+                id="sensorType"
                 value={form.sensorType}
                 onChange={(e) => handleChange("sensorType", e.target.value)}
                 className="p-2 border border-gray-300 rounded-md w-full h-11 text-gray-400 cursor-pointer"
@@ -171,6 +178,7 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
             <div>
               <label className="block mb-1 text-sm text-gray-700">สถานะ</label>
               <select
+                id="status"
                 value={form.status}
                 onChange={(e) => handleChange("status", e.target.value)}
                 className="p-2 border border-gray-300 rounded-md w-full h-11 text-gray-400 cursor-pointer"
@@ -188,12 +196,15 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
 
           <div className="flex justify-end gap-4 mt-6">
             <button
+              id="btnCancel"
               onClick={handleClose}
               className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400 cursor-pointer"
             >
               ยกเลิก
             </button>
-            <button className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] cursor-pointer">
+            <button 
+              id="btnSave"
+              className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] cursor-pointer">
               บันทึก
             </button>
           </div>

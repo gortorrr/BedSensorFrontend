@@ -214,12 +214,15 @@ const SensorManagement: React.FC = () => {
               </td>
               <td className="p-2 h-16 py-4 text-center">
                 <button
+                  id="edit"
                   className="mx-1 cursor-pointer text-xl"
                   onClick={() => handleEditSensorClick(sensor)}
                 >
                   🖊️
                 </button>
-                <button className="mx-1 cursor-pointer text-xl">🗑️</button>
+                <button
+                  id="delete"
+                  className="mx-1 cursor-pointer text-xl">🗑️</button>
               </td>
             </tr>
           ))}
