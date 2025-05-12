@@ -91,11 +91,8 @@ const sensors: Sensor[] = [
 
 const SensorManagement: React.FC = () => {
   const [search, setSearch] = useState("");
-<<<<<<< HEAD
-   const [isDialogOpen, setIsDialogOpen] = useState(false);
-=======
-   const [isClicked, setIsClicked] = useState(false); // State สำหรับจัดการการคลิกปุ่ม
->>>>>>> 6e1dc1a2a29de782b85a9546442036536f35c726
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isClicked, setIsClicked] = useState(false); // State สำหรับจัดการการคลิกปุ่ม
 
   const filteredSensors = sensors.filter((sensor) => {
     const keyword = search.toLowerCase();
@@ -109,6 +106,7 @@ const SensorManagement: React.FC = () => {
   const handleAddPatientClick = () => {
     setIsClicked(true); // เมื่อคลิกให้ตั้งค่า isClicked เป็น true
     // รีเซ็ตการคลิกหลังจากอนิเมชันเสร็จ
+    setIsDialogOpen(true);
     setTimeout(() => {
       setIsClicked(false); // รีเซ็ต state หลังจาก 1 วินาที
     }, 150);
@@ -117,7 +115,9 @@ const SensorManagement: React.FC = () => {
   return (
     <div className="p-6 bg-[#e7f0f3] min-h-screen">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-3xl font-bold text-[#2E5361] mb-4">จัดการเซ็นเซอร์</h1>
+        <h1 className="text-3xl font-bold text-[#2E5361] mb-4">
+          จัดการเซ็นเซอร์
+        </h1>
       </div>
       <div className="flex space-x-4 justify-between mb-8">
         {/* ช่องค้นหา + ไอคอนค้นหา */}
@@ -136,32 +136,23 @@ const SensorManagement: React.FC = () => {
             className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
           />
         </div>
-        <button
-<<<<<<< HEAD
-        id="btnAddSensor"
-        className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer"
-        onClick={() => setIsDialogOpen(true)}
-      >
-        <Icon path={mdiPlus} size={1} />
-        <span>เพิ่มเซ็นเซอร์</span>
-      </button>
+        {/* Dialog เพิ่มเซ็นเซอร์ */}
+        <AddSensorDialog
+          isOpen={isDialogOpen}
+          onClose={() => setIsDialogOpen(false)}
+        />
 
-      {/* Dialog เพิ่มเซ็นเซอร์ */}
-      <AddSensorDialog
-        isOpen={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
-      />
-=======
+        <button
           id="btnAddSensor"
           className={`flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer ${
             isClicked ? "animate-jump" : ""
           }`}
-          onClick={handleAddPatientClick} // เรียกใช้ handleAddPatientClick เมื่อคลิก
+          onClick={handleAddPatientClick}
         >
           <Icon path={mdiPlus} size={1} />
           <span>เพิ่มเซ็นเซอร์</span>
         </button>
->>>>>>> 6e1dc1a2a29de782b85a9546442036536f35c726
+
       </div>
       <table className="w-full border-collapse shadow-md">
         <thead className="bg-[#B7D6DE] h-16 py-4 font-bold">
@@ -179,33 +170,44 @@ const SensorManagement: React.FC = () => {
         </thead>
         <tbody>
           {filteredSensors.map((sensor, index) => (
-            <tr key={sensor.sensor_id} className="bg-gradient-to-r from-white via-gray-100 to-white shadow-md even:bg-gradient-to-r even:from-[#A1B5BC] even:via-[#D1DFE5] even:to-[#e4ecef]">
+            <tr
+              key={sensor.sensor_id}
+              className="bg-gradient-to-r from-white via-gray-100 to-white shadow-md even:bg-gradient-to-r even:from-[#A1B5BC] even:via-[#D1DFE5] even:to-[#e4ecef]"
+            >
               <td className="p-2 h-16 py-4 text-center">{index + 1}</td>
-              <td className="p-2 h-16 py-4  text-center">{sensor.sensor_mac_i}</td>
-              <td className="p-2 h-16 py-4  text-center">{sensor.sensor_mac_ii}</td>
+              <td className="p-2 h-16 py-4  text-center">
+                {sensor.sensor_mac_i}
+              </td>
+              <td className="p-2 h-16 py-4  text-center">
+                {sensor.sensor_mac_ii}
+              </td>
               <td className="p-2 h-16 py-4  text-center">
                 {sensor.bed?.room?.floor?.building?.building_name}
               </td>
-              <td className="p-2 h-16 py-4 text-center">{sensor.bed?.room?.room_name}</td>
-              <td className="p-2 h-16 py-4 text-center">{sensor.bed?.bed_name}</td>
+              <td className="p-2 h-16 py-4 text-center">
+                {sensor.bed?.room?.room_name}
+              </td>
+              <td className="p-2 h-16 py-4 text-center">
+                {sensor.bed?.bed_name}
+              </td>
 
-              <td className="p-2 h-16 py-4 text-center">{sensor.sensor_type}</td>
+              <td className="p-2 h-16 py-4 text-center">
+                {sensor.sensor_type}
+              </td>
               <td className="p-2 h-16 py-4 text-left">
                 <span
                   className={
-                    sensor.sensor_status ? "text-green-600 font-bold" : "text-red-600 font-bold"
+                    sensor.sensor_status
+                      ? "text-green-600 font-bold"
+                      : "text-red-600 font-bold"
                   }
                 >
                   {sensor.sensor_status ? "Active" : "Inactive"}
                 </span>
               </td>
               <td className="p-2 h-16 py-4 text-center">
-                <button className="mx-1 cursor-pointer text-xl">
-                  🖊️
-                </button>
-                <button className="mx-1 cursor-pointer text-xl">
-                  🗑️
-                </button>
+                <button className="mx-1 cursor-pointer text-xl">🖊️</button>
+                <button className="mx-1 cursor-pointer text-xl">🗑️</button>
               </td>
             </tr>
           ))}
