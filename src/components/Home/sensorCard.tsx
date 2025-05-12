@@ -42,39 +42,40 @@ const SensorCard: React.FC<Props> = ({
   useEffect(() => {
     setSelectedSensor(sensor);
     setIsHovered(false);
-  
+
     const fetchSensorData = async () => {
       if (!sensor?.sensor_id) return;
-  
+
       try {
         // โหลดข้อมูลจาก API ก่อน
-        const updatedSensor = await sensorStore.loadValueSensor(sensor.sensor_id);
+        const updatedSensor = await sensorStore.loadValueSensor(
+          sensor.sensor_id
+        );
         setSelectedSensor(updatedSensor);
       } catch (error) {
         console.error("Error fetching sensor data:", error);
       }
     };
-  
+
     fetchSensorData(); // โหลดข้อมูลจาก API ครั้งแรก
   }, [sensor, sensorStore]); // 🚀 เช็คว่า sensor หรือ sensorStore เปลี่ยนแปลง
-  
+
   useEffect(() => {
     if (!sensor?.sensor_id) return;
-  
+
     // WebSocket callback function
     const handleMessage = (updatedSensor: Sensor) => {
       setSelectedSensor(updatedSensor);
     };
-  
+
     // เชื่อมต่อ WebSocket เมื่อ sensor เปลี่ยนแปลง
     sensorWebSocketService.connect(sensor.sensor_id, handleMessage);
-  
+
     return () => {
       // cleanup เมื่อ component ถูก unmount หรือ sensor เปลี่ยน
       sensorWebSocketService.disconnect(sensor.sensor_id);
     };
   }, [sensor]); // ใช้ sensor เป็น dependency เพื่อเชื่อมต่อ WebSocket ใหม่เมื่อ sensor เปลี่ยน
-  
 
   const toggleDialog = () => {
     if (!patient || selectedSensor) return;

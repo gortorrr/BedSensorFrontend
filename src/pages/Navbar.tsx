@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { HiMenu } from "react-icons/hi";
 import { GoHome } from "react-icons/go";
 import {
@@ -53,6 +53,7 @@ const menus: MenuItem[] = [
 const Navbar: React.FC<NavbarProps> = ({ setUser, setIsOnline, user }) => {
   const [open, setOpen] = useState(true);
   const [expanded, setExpanded] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = () => {
     const userData = {
@@ -62,6 +63,9 @@ const Navbar: React.FC<NavbarProps> = ({ setUser, setIsOnline, user }) => {
     };
     setUser(userData);
     setIsOnline(true);
+
+    //navigation to login
+    navigate("/login");
   };
 
   const handleLogout = () => {
