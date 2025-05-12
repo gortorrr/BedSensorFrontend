@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import ReactDOM from 'react-dom';
 
 interface AddSensorDialogProps {
   isOpen: boolean;
@@ -39,7 +40,8 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
 
   if (!isOpen) return null;
 
-  return (
+  //ReactDOM.createPortal ทำให้ backdrop-blur แผ่เต็มทั้งหน้าจอ
+  return ReactDOM.createPortal(
     <AnimatePresence>
       <motion.div
         initial={{ opacity: 0 }}
@@ -69,7 +71,8 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
                 type="text"
                 value={form.mac1}
                 onChange={(e) => handleChange("mac1", e.target.value)}
-                className="p-2 border border-gray-300 rounded-md w-full"
+                placeholder="กรุณากรอก Mac Sensor I"
+                className="p-2 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
               />
             </div>
 
@@ -81,7 +84,8 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
                 type="text"
                 value={form.mac2}
                 onChange={(e) => handleChange("mac2", e.target.value)}
-                className="p-2 border border-gray-300 rounded-md w-full"
+                placeholder="กรุณากรอก Mac Sensor II"
+                className="p-2 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
               />
             </div>
 
@@ -90,11 +94,11 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
               <select
                 value={form.building}
                 onChange={(e) => handleChange("building", e.target.value)}
-                className="p-2 border border-gray-300 rounded-md w-full"
+                className="p-2 border border-gray-300 rounded-md w-full h-11 text-gray-400 cursor-pointer"
               >
-                <option value="" disabled hidden></option>
+                <option value="" disabled hidden className="text-gray-400">กรุณาเลือกอาคาร</option>
                 {buildingOptions.map((b) => (
-                  <option key={b} value={b}>
+                  <option key={b} value={b} className="text-black">
                     {b}
                   </option>
                 ))}
@@ -106,11 +110,11 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
               <select
                 value={form.floor}
                 onChange={(e) => handleChange("floor", e.target.value)}
-                className="p-2 border border-gray-300 rounded-md w-full"
+                className="p-2 border border-gray-300 rounded-md w-full h-11 text-gray-400 cursor-pointer"
               >
-                <option value="" disabled hidden></option>
+                <option value="" disabled hidden className="text-gray-400">กรุณาเลือกชั้น</option>
                 {floorOptions.map((f) => (
-                  <option key={f} value={f}>
+                  <option key={f} value={f} className="text-black">
                     {f}
                   </option>
                 ))}
@@ -122,11 +126,11 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
               <select
                 value={form.room}
                 onChange={(e) => handleChange("room", e.target.value)}
-                className="p-2 border border-gray-300 rounded-md w-full"
+                className="p-2 border border-gray-300 rounded-md w-full h-11 text-gray-400 cursor-pointer"
               >
-                <option value="" disabled hidden></option>
+                <option value="" disabled hidden className="text-gray-400">กรุณาเลือกห้อง</option>
                 {roomOptions.map((r) => (
-                  <option key={r} value={r}>
+                  <option key={r} value={r} className="text-black">
                     {r}
                   </option>
                 ))}
@@ -141,7 +145,8 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
                 type="text"
                 value={form.bedNumber}
                 onChange={(e) => handleChange("bedNumber", e.target.value)}
-                className="p-2 border border-gray-300 rounded-md w-full"
+                placeholder="กรุณากรอกหมายเลขเตียง"
+                className="p-2 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
               />
             </div>
 
@@ -152,11 +157,11 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
               <select
                 value={form.sensorType}
                 onChange={(e) => handleChange("sensorType", e.target.value)}
-                className="p-2 border border-gray-300 rounded-md w-full"
+                className="p-2 border border-gray-300 rounded-md w-full h-11 text-gray-400 cursor-pointer"
               >
-                <option value="" disabled hidden></option>
+                <option value="" disabled hidden className="text-gray-400">กรุณาเลือกประเภทเซ็นเซอร์</option>
                 {sensorTypeOptions.map((type) => (
-                  <option key={type} value={type}>
+                  <option key={type} value={type} className="text-black">
                     {type}
                   </option>
                 ))}
@@ -168,9 +173,9 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
               <select
                 value={form.status}
                 onChange={(e) => handleChange("status", e.target.value)}
-                className="p-2 border border-gray-300 rounded-md w-full text-black"
+                className="p-2 border border-gray-300 rounded-md w-full h-11 text-gray-400 cursor-pointer"
               >
-                <option value="" disabled hidden></option>
+                <option value="" disabled hidden className="text-gray-400">กรุณาเลือกสถานะ</option>
                 <option value="Active" className="text-green-600">
                   Active
                 </option>
@@ -184,17 +189,18 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
           <div className="flex justify-end gap-4 mt-6">
             <button
               onClick={handleClose}
-              className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400"
+              className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400 cursor-pointer"
             >
               ยกเลิก
             </button>
-            <button className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892]">
+            <button className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] cursor-pointer">
               บันทึก
             </button>
           </div>
         </div>
       </motion.div>
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 };
 

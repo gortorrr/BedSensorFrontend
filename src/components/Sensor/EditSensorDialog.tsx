@@ -77,7 +77,7 @@ const EditSensorDialog: React.FC<EditSensorDialogProps> = ({
             แก้ไขข้อมูลเซ็นเซอร์
           </h2>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 ">
             <InputField label="Mac Sensor I" value={form.mac1} onChange={(v) => handleChange("mac1", v)} />
             <InputField label="Mac Sensor II" value={form.mac2} onChange={(v) => handleChange("mac2", v)} />
             <SelectField label="อาคาร" options={buildingOptions} value={form.building} onChange={(v) => handleChange("building", v)} />
@@ -91,12 +91,12 @@ const EditSensorDialog: React.FC<EditSensorDialogProps> = ({
           <div className="flex justify-end gap-4 mt-6">
             <button
               onClick={handleClose}
-              className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400"
+              className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400 cursor-pointer"
             >
               ยกเลิก
             </button>
             <button
-              className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892]"
+              className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] cursor-pointer"
             >
               บันทึก
             </button>
@@ -123,7 +123,7 @@ const InputField = ({
       type="text"
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="p-2 border border-gray-300 rounded-md w-full"
+      className="p-2 border border-gray-300 rounded-md w-full h-11"
     />
   </div>
 );
@@ -145,7 +145,7 @@ const SelectField = ({
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="p-2 border border-gray-300 rounded-md w-full text-black"
+      className="p-2 border border-gray-300 rounded-md w-full h-11 text-black cursor-pointer"
     >
       <option value="" disabled hidden></option>
       {options.map((opt) => (
