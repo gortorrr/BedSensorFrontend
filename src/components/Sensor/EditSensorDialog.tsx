@@ -49,7 +49,7 @@ const EditSensorDialog: React.FC<EditSensorDialogProps> = ({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-40 bg-black bg-opacity-20 backdrop-blur-sm"
+        className="fixed inset-0 z-40 bg-transparent bg-opacity-20 backdrop-blur-sm"
         onClick={handleClose}
       />
       <motion.div
@@ -66,16 +66,19 @@ const EditSensorDialog: React.FC<EditSensorDialogProps> = ({
 
           <div className="grid grid-cols-2 gap-4">
             <InputField
+              id="mac1"
               label="Mac Sensor I"
               value={form.sensor_mac_i || ""}
               onChange={(v) => handleChange("sensor_mac_i", v)}
             />
             <InputField
+              id="mac2"
               label="Mac Sensor II"
               value={form.sensor_mac_ii || ""}
               onChange={(v) => handleChange("sensor_mac_ii", v)}
             />
             <SelectField
+              id="building"
               label="อาคาร"
               options={buildingOptions.map((b) => ({ label: b, value: b }))}
               value={form.bed?.room.floor.building.building_name || ""}
@@ -83,6 +86,7 @@ const EditSensorDialog: React.FC<EditSensorDialogProps> = ({
             />
 
             <SelectField
+              id="floor"
               label="ชั้น"
               options={floorOptions.map((f) => ({ label: f, value: f }))}
               value={form.bed?.room.floor.floor_name || ""}
@@ -90,24 +94,28 @@ const EditSensorDialog: React.FC<EditSensorDialogProps> = ({
             />
 
             <SelectField
+              id="room"
               label="ห้อง"
               options={roomOptions.map((r) => ({ label: r, value: r }))}
               value={form.bed?.room.room_name || ""}
               onChange={(v) => handleChange("room", v)}
             />
             <InputField
+              id="bedNumber"
               label="หมายเลขเตียง"
               value={form.bed?.bed_name || ""}
               onChange={(v) => handleChange("bed", v)}
             />
 
             <SelectField
+              id="sensorType"
               label="ประเภทเซ็นเซอร์"
               options={sensorTypeOptions.map((s) => ({ label: s, value: s }))}
               value={form.sensor_type || ""}
               onChange={(v) => handleChange("sensor_type", v)}
             />
             <SelectField
+              id="status"
               label="สถานะ"
               options={statusOptions}
               value={form.sensor_status}
@@ -117,13 +125,15 @@ const EditSensorDialog: React.FC<EditSensorDialogProps> = ({
 
           <div className="flex justify-end gap-4 mt-6">
             <button
+              id="btnCancel"
               onClick={handleClose}
-              className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400"
+              className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400 cursor-pointer"
             >
               ยกเลิก
             </button>
             <button
-              className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892]"
+              id="btnSave"
+              className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] cursor-pointer"
               onClick={() => {
                 // TODO: ส่ง form กลับ backend
                 console.log("ส่งข้อมูล", form);
@@ -140,10 +150,12 @@ const EditSensorDialog: React.FC<EditSensorDialogProps> = ({
 
 // 📦 Input Field
 const InputField = ({
+  id,
   label,
   value,
   onChange,
 }: {
+  id: string;
   label: string;
   value: string;
   onChange: (v: string) => void;
@@ -151,6 +163,7 @@ const InputField = ({
   <div>
     <label className="block mb-1 text-sm text-gray-700">{label}</label>
     <input
+      id={id}
       type="text"
       value={value}
       onChange={(e) => onChange(e.target.value)}
@@ -161,11 +174,13 @@ const InputField = ({
 
 // 📦 Select Field
 const SelectField = ({
+  id,
   label,
   options,
   value,
   onChange,
 }: {
+  id: string;
   label: string;
   options: { label: string; value: string }[];  // เปลี่ยนจาก boolean เป็น string
   value: string | undefined;
@@ -174,9 +189,10 @@ const SelectField = ({
   <div>
     <label className="block mb-1 text-sm text-gray-700">{label}</label>
     <select
+      id={id}
       value={value || ""}
       onChange={(e) => onChange(e.target.value)}
-      className="p-2 border border-gray-300 rounded-md w-full text-black"
+      className="p-2 border border-gray-300 rounded-md w-full text-black cursor-pointer"
     >
       <option value="" disabled hidden>
         เลือก

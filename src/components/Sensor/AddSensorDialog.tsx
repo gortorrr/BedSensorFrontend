@@ -73,7 +73,7 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
                 value={form.mac1}
                 onChange={(e) => handleChange("mac1", e.target.value)}
                 placeholder="กรุณากรอก Mac Sensor I"
-                className="p-2 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
+                className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
               />
             </div>
 
@@ -87,7 +87,7 @@ const AddSensorDialog: React.FC<AddSensorDialogProps> = ({
                 value={form.mac2}
                 onChange={(e) => handleChange("mac2", e.target.value)}
                 placeholder="กรุณากรอก Mac Sensor II"
-                className="p-2 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
+                className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
               />
             </div>
 
