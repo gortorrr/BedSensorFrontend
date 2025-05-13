@@ -195,13 +195,13 @@ const SensorDialog: React.FC<SensorDialogProps> = ({
             {/* Sensor Name */}
             <div>
               <label className="block mb-1 text-sm text-gray-700">
-                ชื่อเซนเซอร์
+                ชื่อเซ็นเซอร์
               </label>
               <input
                 id="sensor_name"
                 type="text"
                 value={sensorData.sensor_name}
-                placeholder="กรุณากรอกชื่อเซนเซอร์"
+                placeholder="กรุณากรอกชื่อเซ็นเซอร์"
                 onChange={(e) =>
                   setSensorData({ ...sensorData, sensor_name: e.target.value })
                 }
@@ -216,7 +216,7 @@ const SensorDialog: React.FC<SensorDialogProps> = ({
                 id="sensor_unit"
                 type="text"
                 value={sensorData.sensor_unit}
-                placeholder="กรุณากรอกหน่วยของเซนเซอร์"
+                placeholder="กรุณากรอกหน่วยของเซ็นเซอร์"
                 onChange={(e) =>
                   setSensorData({ ...sensorData, sensor_unit: e.target.value })
                 }
@@ -231,9 +231,11 @@ const SensorDialog: React.FC<SensorDialogProps> = ({
                 id="building"
                 value={selectedBuilding}
                 onChange={(e) => setSelectedBuilding(e.target.value)}
-                className="p-2 border border-gray-300 rounded-md w-full h-11 text-gray-400 cursor-pointer"
+                className={`p-2 border border-gray-300 rounded-md w-full h-11 cursor-pointer 
+                            ${selectedBuilding ? 'text-black' : 'text-gray-400'
+                          }`}
               >
-                <option value="" disabled hidden className="text-gray-400">
+                <option value="" disabled hidden>
                   กรุณาเลือกอาคาร
                 </option>
                 {buildingOptions.map((b) => (
@@ -251,9 +253,11 @@ const SensorDialog: React.FC<SensorDialogProps> = ({
                 id="floor"
                 value={selectedFloor}
                 onChange={handleFloorChange}
-                className="p-2 border border-gray-300 rounded-md w-full h-11 text-gray-400 cursor-pointer"
+                className={`p-2 border border-gray-300 rounded-md w-full h-11 cursor-pointer
+                           ${selectedFloor ? 'text-black' : 'text-gray-400'
+                          }`}
               >
-                <option value="" disabled hidden className="text-gray-400">
+                <option value="" disabled hidden>
                   กรุณาเลือกชั้น
                 </option>
                 {floorOptions.map((f) => (
@@ -271,10 +275,12 @@ const SensorDialog: React.FC<SensorDialogProps> = ({
                 id="room"
                 value={selectedRoom}
                 onChange={handleRoomChange}
-                className="p-2 border border-gray-300 rounded-md w-full h-11 text-gray-400 cursor-pointer"
+                className={`p-2 border border-gray-300 rounded-md w-full h-11 cursor-pointer 
+                            ${selectedRoom ? 'text-black' : 'text-gray-400'
+                          }`}
                 disabled={selectedFloor === ""}
               >
-                <option value="" disabled hidden className="text-gray-400">
+                <option value="" disabled hidden>
                   กรุณาเลือกห้อง
                 </option>
                 {roomOptions.map((r) => (
@@ -317,12 +323,14 @@ const SensorDialog: React.FC<SensorDialogProps> = ({
               <select
                 id="sensorType"
                 value={sensorData.sensor_type}
-                className="p-2 border border-gray-300 rounded-md w-full h-11 text-gray-400 cursor-pointer"
+                className={`p-2 border border-gray-300 rounded-md w-full h-11 cursor-pointer ${
+                            sensorData.sensor_type ? 'text-black' : 'text-gray-400'
+                          }`}
                 onChange={(e) =>
                   setSensorData({ ...sensorData, sensor_type: e.target.value })
                 }
               >
-                <option value="" disabled hidden className="text-gray-400">
+                <option value="" disabled hidden>
                   กรุณาเลือกประเภทเซ็นเซอร์
                 </option>
                 {sensorTypeOptions.map((type) => (
@@ -339,7 +347,8 @@ const SensorDialog: React.FC<SensorDialogProps> = ({
               <select
                 id="status"
                 value={sensorData.sensor_status ? "Active" : "Inactive"} // เลือกค่า Active หรือ Inactive ตามสถานะ
-                className="p-2 border border-gray-300 rounded-md w-full h-11 text-gray-400 cursor-pointer"
+                className={`p-2 border border-gray-300 rounded-md w-full h-11 cursor-pointer 
+                  ${sensorData.sensor_status ? "text-green-600" : "text-red-600"}`}
                 onChange={(e) => {
                   const status = e.target.value === "Active"; // ถ้าเลือก Active จะเป็น true
                   setSensorData({

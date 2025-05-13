@@ -178,7 +178,7 @@ const SensorManagement: React.FC = () => {
             <th className="p-2">หมายเลขเตียง</th>
             <th className="p-2">ประเภทเซ็นเซอร์</th>
             <th className="p-2">หน่วย</th>
-            <th className="p-2 text-left">สถานะ</th>
+            <th className="p-2 pl-6 text-left">สถานะ</th>
             <th className="p-2 text-center"></th>
           </tr>
         </thead>
@@ -212,7 +212,7 @@ const SensorManagement: React.FC = () => {
               <td className="p-2 h-16 py-4 text-center">
                 {sensor.sensor_unit}
               </td>
-              <td className="p-2 h-16 py-4 text-left">
+              <td className="p-2 pl-6 h-16 py-4 text-left">
                 <span
                   className={
                     sensor.sensor_status
@@ -244,8 +244,9 @@ const SensorManagement: React.FC = () => {
       <div className="flex justify-end mt-4">
         <div className="flex items-center gap-2">
           <button
+            id="currentPage"
             onClick={() => changePage(1)}
-            className="px-3 py-1 bg-[#95BAC3] rounded-xl hover:bg-[#5E8892] text-white"
+            className="px-3 py-1 bg-[#95BAC3] rounded-xl hover:bg-[#5E8892] text-white cursor-pointer"
             disabled={currentPage === 1}
           >
             &laquo; หน้าแรก
@@ -253,12 +254,13 @@ const SensorManagement: React.FC = () => {
 
           {getPageNumbers().map((pageNum) => (
             <button
+              id="pageNum"
               key={pageNum}
               onClick={() => changePage(pageNum)}
-              className={`px-3 py-1 rounded-xl ${
+              className={`px-3 py-1 rounded-xl cursor-pointer ${
                 currentPage === pageNum
-                  ? "bg-[#5E8892] text-white"
-                  : "bg-[#95BAC3] text-white"
+                  ? "bg-[#5E8892] text-white shadow-lg"
+                  : "bg-white text-black inset-shadow"
               } hover:bg-[#5E8892]`}
             >
               {pageNum}
@@ -266,8 +268,9 @@ const SensorManagement: React.FC = () => {
           ))}
 
           <button
+            id="lastPage"
             onClick={() => changePage(totalPages)}
-            className="px-3 py-1 bg-[#95BAC3] rounded-xl hover:bg-[#5E8892] text-white"
+            className="px-3 py-1 bg-[#95BAC3] rounded-xl hover:bg-[#5E8892] text-white cursor-pointer"
             disabled={currentPage === totalPages}
           >
             หน้าสุดท้าย &raquo;
