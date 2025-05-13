@@ -48,6 +48,7 @@ const SensorManagement: React.FC = () => {
       sensor_type: "",
       sensor_status: false,
       history_value_sensor: [],
+      bed_id: null,
       bed: {
         room: {
           floor: {

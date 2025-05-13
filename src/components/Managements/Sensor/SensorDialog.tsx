@@ -24,6 +24,7 @@ const SensorDialog: React.FC<SensorDialogProps> = ({
     if (isOpen) {
       setSensorData(initialSensorData);
     }
+    console.log(initialSensorData);
   }, [isOpen]);
 
   const handleClose = () => {
@@ -200,7 +201,7 @@ const SensorDialog: React.FC<SensorDialogProps> = ({
           </div>
           <div className="flex items-center justify-between mt-6">
             <div>
-              {initialSensorData.sensor_id !== 0 || undefined ? (
+              {initialSensorData.bed_id !== null ? (
                 <label className="block mb-1 text-sm text-gray-600 ">
                   สถานที่ติดตั้ง :{" "}
                   {initialSensorData.bed?.room?.floor?.building?.building_name}{" "}
