@@ -18,7 +18,7 @@ const Login: React.FC = () => {
       >
         {/* โลโก้ */}
         <div className="mb-4">
-          <img src="/src/assets/BuuLogo2.png" alt="Logo" className="h-35 mx-auto" />
+          <img src="/src/assets/BuuLogo2.png" id="logo" alt="Logo" className="h-35 mx-auto" />
         </div>
 
         {/* ชื่อผู้ใช้ */}
@@ -26,6 +26,7 @@ const Login: React.FC = () => {
           ชื่อผู้ใช้งาน
         </label>
         <input
+          id="username"
           type="text"
           placeholder="กรุณากรอกชื่อผู้ใช้งาน"
           className="w-full mb-6 h-14 px-3 py-2 pr-10 rounded-md focus:outline-none focus:ring-3 focus:ring-[#B7D6DE]"
@@ -41,6 +42,7 @@ const Login: React.FC = () => {
           รหัสผ่าน
         </label>
         <input
+          id="pass"
           type="password"
           placeholder="กรุณากรอกรหัสผ่าน"
           className="w-full mb-8 h-14 px-3 py-2 pr-10  rounded-md focus:outline-none focus:ring-3 focus:ring-[#B7D6DE]"
@@ -60,6 +62,7 @@ const Login: React.FC = () => {
         {/* ปุ่มเข้าสู่ระบบ */}
         <br />
         <button
+          id="btnOk"
           className="w-4/5 py-2 h-14 bg-[#A5D9D0] text-gray-800 font-medium text-xl transition-colors rounded-md hover:bg-[#9DDBC1] duration-300 hover:scale-105 active:scale-95 cursor-pointer"
           onClick={login}
         >
