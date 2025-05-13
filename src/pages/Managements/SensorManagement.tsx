@@ -9,7 +9,7 @@ import { useSensorStore } from "../../store/sensorStore";
 const SensorManagement: React.FC = () => {
   const [search, setSearch] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isClicked, setIsClicked] = useState(false);
+  const [isClicked] = useState(false);
   const [sensors, setSensors] = useState<Sensor[]>([]);
   const [initialSensorData, setInitialSensorData] = useState<Sensor>({
     sensor_id: 0,
@@ -31,13 +31,13 @@ const SensorManagement: React.FC = () => {
     );
   });
 
+  const fetchSensors = async () => {
+    const data = await sensorStore.getSensors();
+    setSensors(data);
+    // console.log(data);
+  };
   // ดึงข้อมูล sensor เมื่อโหลดหน้า
   useEffect(() => {
-    const fetchSensors = async () => {
-      const data = await sensorStore.getSensors();
-      setSensors(data);
-      // console.log(data);
-    };
     fetchSensors();
   }, []);
 
@@ -114,12 +114,6 @@ const SensorManagement: React.FC = () => {
     }
 
     return pages;
-  };
-
-  // เปิด dialog แก้ไข sensor
-  const handleEditSensorClick = (sensor: Sensor) => {
-    // TODO: ใส่ logic เปิด dialog แก้ไข (ยังไม่ได้ implement)
-    console.log("Edit sensor", sensor);
   };
 
   return (
