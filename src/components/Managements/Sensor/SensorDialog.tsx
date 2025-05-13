@@ -18,7 +18,7 @@ const SensorDialog: React.FC<SensorDialogProps> = ({
   const [sensorData, setSensorData] = useState<Sensor>(initialSensorData);
   const sensorStore = useSensorStore();
 
-  const sensorTypeOptions = ["bed_ensor", "heart_rate", "spo2", "respiration"];
+  const sensorTypeOptions = ["bed_sensor", "heart_rate", "spo2", "respiration"];
 
   useEffect(() => {
     if (isOpen) {
