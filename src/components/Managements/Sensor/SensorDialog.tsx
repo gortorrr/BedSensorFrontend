@@ -40,6 +40,9 @@ const SensorDialog: React.FC<SensorDialogProps> = ({
 
   const saveSensor = () => {
     if (initialSensorData.sensor_id == 0) {
+      if (!sensorData.sensor_unit) {
+        sensorData.sensor_unit = "";
+      }
       sensorStore.addSensor(sensorData);
       handleClose();
       window.location.reload();
