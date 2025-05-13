@@ -5,10 +5,12 @@ import { mdiMagnify, mdiPlus } from "@mdi/js";
 import Icon from "@mdi/react";
 import SensorDialog from "../../components/Managements/Sensor/SensorDialog";
 import { useSensorStore } from "../../store/sensorStore";
+import DeleteSensorDialog from "../../components/Managements/Sensor/DeleteSensorDialog";
 
 const SensorManagement: React.FC = () => {
   const [search, setSearch] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isClicked] = useState(false);
   const [sensors, setSensors] = useState<Sensor[]>([]);
   const [initialSensorData, setInitialSensorData] = useState<Sensor>({
@@ -71,6 +73,10 @@ const SensorManagement: React.FC = () => {
   const openDialogForEdit = (sensor: Sensor) => {
     setInitialSensorData(sensor);
     setIsDialogOpen(true);
+  };
+
+  const openDeleteDialog = () => {
+    setIsDeleteDialogOpen(true);
   };
 
   // pagination state และ config
@@ -226,7 +232,11 @@ const SensorManagement: React.FC = () => {
                 >
                   🖊️
                 </button>
-                <button id="delete" className="mx-1 cursor-pointer text-xl">
+                <button
+                  id="delete"
+                  onClick={openDeleteDialog}
+                  className="mx-1 cursor-pointer text-xl"
+                >
                   🗑️
                 </button>
               </td>
@@ -272,6 +282,10 @@ const SensorManagement: React.FC = () => {
           </button>
         </div>
       </div>
+      <DeleteSensorDialog
+        isOpen={isDeleteDialogOpen}
+        onCancel={() => setIsDeleteDialogOpen(false)}
+      />
     </div>
   );
 };
