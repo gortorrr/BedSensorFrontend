@@ -46,14 +46,41 @@ const PatientManagement: React.FC = () => {
   const [search, setSearch] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [selectedPatient, setSelectedPatient] = useState<Patient>({
+    patient_id: 0,
+    patient_name: "",
+    patient_age: 0,
+    patient_gender: "",
+    patient_dob: "",
+    patient_disease: "",
+    patient_status: "",
+    patient_date_in: "",
+    patient_bloodtype: "",
+  });
 
   const filteredPatients = mockPatients.filter((p) =>
     p.patient_name.toLowerCase().includes(search.toLowerCase())
   );
 
   function openAddForm(): void {
+    setSelectedPatient({
+      patient_id: 0,
+      patient_name: "",
+      patient_age: 0,
+      patient_gender: "",
+      patient_dob: "",
+      patient_disease: "",
+      patient_status: "",
+      patient_date_in: "",
+      patient_bloodtype: "",
+    });
     setIsFormOpen(true);
   }
+
+  const openEditForm = (patient: Patient): void => {
+    setSelectedPatient(patient);
+    setIsFormOpen(true);
+  };
 
   const openDeleteDialog = () => {
     setIsDeleteDialogOpen(true);
@@ -102,8 +129,6 @@ const PatientManagement: React.FC = () => {
     return pages;
   };
 
-
-
   return (
     <div className="p-6 bg-[#e7f0f3] min-h-screen">
       <div className="flex justify-between items-center mb-4">
@@ -130,6 +155,7 @@ const PatientManagement: React.FC = () => {
         <PatientDialog
           isOpen={isFormOpen}
           onClose={() => setIsFormOpen(false)}
+          initialPatientData={selectedPatient}
         />
 
         <button
@@ -183,10 +209,9 @@ const PatientManagement: React.FC = () => {
                   <button id="detail" className="mx-1 cursor-pointer text-xl">
                     📄
                   </button>
-                  <button
-                    id="edit"
-                    className="mx-1 cursor-pointer text-xl"
-                  >
+                  <button id="edit" 
+                  onClick={() => openEditForm(p)}
+                  className="mx-1 cursor-pointer text-xl">
                     🖊️
                   </button>
                   <button
