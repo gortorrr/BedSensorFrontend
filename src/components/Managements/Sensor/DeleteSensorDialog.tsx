@@ -17,23 +17,23 @@ const DeleteSensorDialog: React.FC<DeleteSensorDialogProps> = ({
   const sensorStore = useSensorStore();
   const [sensorData, setSensorData] = useState<Sensor>(initialSensorData);
   useEffect(() => {
-      if (isOpen) {
-        setSensorData(initialSensorData);
-      }
-      console.log(initialSensorData);
-    }, [isOpen]);
-  
-    const handleCancel = () => {
-      const clearSensorData: Sensor = {
-        sensor_id: 0,
-        sensor_type: "",
-        sensor_status: false,
-        history_value_sensor: [],
-      };
-      setSensorData(clearSensorData);
-      onCancel();
+    if (isOpen) {
+      setSensorData(initialSensorData);
+    }
+    console.log(initialSensorData);
+  }, [isOpen]);
+
+  const handleCancel = () => {
+    const clearSensorData: Sensor = {
+      sensor_id: 0,
+      sensor_type: "",
+      sensor_status: false,
+      history_value_sensor: [],
     };
-    const saveDeleteSensor = () => {
+    setSensorData(clearSensorData);
+    onCancel();
+  };
+  const saveDeleteSensor = () => {
     if (initialSensorData.sensor_id > 0) {
       sensorStore.deleteSensor(sensorData.sensor_id);
       handleCancel();
@@ -44,9 +44,9 @@ const DeleteSensorDialog: React.FC<DeleteSensorDialogProps> = ({
     }
   };
   if (!isOpen) return null;
-  
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+    <div className="fixed inset-0 bg-opacity-0 flex justify-center items-center z-50 transition-transform bg-transparent backdrop-blur-sm">
       <div className="bg-white rounded-xl p-6 shadow-xl w-80 text-center">
         <h2 className="text-xl font-semibold mb-2 text-gray-800">
           ยืนยันการลบข้อมูล

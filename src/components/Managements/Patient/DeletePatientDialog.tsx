@@ -13,7 +13,7 @@ const DeletePatientDialog: React.FC<DeletePatientDialogProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+    <div className="fixed inset-0 bg-opacity-40 flex justify-center items-center z-50">
       <div className="bg-white rounded-xl p-6 shadow-xl w-80 text-center">
         <h2 className="text-xl font-semibold mb-2 text-gray-800">
           ยืนยันการลบข้อมูล
