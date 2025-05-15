@@ -75,7 +75,8 @@ const SensorManagement: React.FC = () => {
     setIsDialogOpen(true);
   };
 
-  const openDeleteDialog = () => {
+  const openDeleteDialog = (sensor: Sensor) => {
+    setInitialSensorData(sensor);
     setIsDeleteDialogOpen(true);
   };
 
@@ -234,7 +235,7 @@ const SensorManagement: React.FC = () => {
                 </button>
                 <button
                   id="delete"
-                  onClick={openDeleteDialog}
+                  onClick={() =>openDeleteDialog(sensor)}
                   className="mx-1 cursor-pointer text-xl"
                 >
                   🗑️
@@ -285,6 +286,7 @@ const SensorManagement: React.FC = () => {
       <DeleteSensorDialog
         isOpen={isDeleteDialogOpen}
         onCancel={() => setIsDeleteDialogOpen(false)}
+        initialSensorData={initialSensorData}
       />
     </div>
   );
