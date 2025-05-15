@@ -7,7 +7,7 @@ import DeletePatientDialog from "../../components/Managements/Patient/DeletePati
 
 const mockPatients: Patient[] = [
   {
-    patient_id: 1,
+    patient_id: 123,
     patient_name: "สมชาย ใจดี",
     patient_age: 65,
     patient_gender: "ชาย",
@@ -18,7 +18,7 @@ const mockPatients: Patient[] = [
     patient_bloodtype: "O",
   },
   {
-    patient_id: 2,
+    patient_id: 246,
     patient_name: "มณี ศรีสวย",
     patient_age: 54,
     patient_gender: "หญิง",
@@ -29,7 +29,7 @@ const mockPatients: Patient[] = [
     patient_bloodtype: "A",
   },
   {
-    patient_id: 3,
+    patient_id: 321,
     patient_name: "สมปอง แสนดี",
     patient_age: 70,
     patient_gender: "ชาย",
@@ -130,29 +130,41 @@ const PatientManagement: React.FC = () => {
       <table className="w-full border-collapse shadow-md">
         <thead className="bg-[#B7D6DE] h-16 font-bold text-center">
           <tr>
+            <th className="p-2">ลำดับ</th>
             <th className="p-2">รหัสผู้ป่วย</th>
             <th className="p-2">ชื่อ-นามสกุล</th>
             <th className="p-2">อายุ</th>
             <th className="p-2">เพศ</th>
+            <th className="p-2">หมู่เลือด</th>
             <th className="p-2">โรคประจำตัว</th>
             <th className="p-2">สถานะ</th>
             <th className="p-2">วันที่เข้าโรงพยาบาล</th>
+            <th className="p-2">อาคาร</th>
+            <th className="p-2">ห้อง</th>
+            <th className="p-2">หมายเลขเตียง</th>
             <th className="p-2"></th>
           </tr>
         </thead>
         <tbody>
-          {paginatedPatients.map((p) => (
+          {paginatedPatients.map((p,index) => (
             <tr
               key={p.patient_id}
               className="text-center bg-gradient-to-r from-white via-gray-100 to-white shadow-md even:bg-gradient-to-r even:from-[#A1B5BC] even:via-[#D1DFE5] even:to-[#e4ecef]"
             >
+              <td className="p-2 h-16 py-4 text-center">
+                {(currentPage - 1) * itemsPerPage + index + 1}
+              </td>
               <td className="p-2 h-16">{p.patient_id}</td>
               <td className="p-2 h-16">{p.patient_name}</td>
               <td className="p-2 h-16">{p.patient_age}</td>
               <td className="p-2 h-16">{p.patient_gender}</td>
+              <td className="p-2 h-16">{p.patient_bloodtype}</td>
               <td className="p-2 h-16">{p.patient_disease}</td>
               <td className="p-2 h-16">{p.patient_status}</td>
               <td className="p-2 h-16">{p.patient_date_in}</td>
+              <td className="p-2 h-16">{}</td>
+              <td className="p-2 h-16">{}</td>
+              <td className="p-2 h-16">{}</td>
               <td className="flex justify-center gap-2">
                 <td className="p-2 h-16 py-4 text-center">
                   <button id="detail" className="mx-1 cursor-pointer text-xl">
