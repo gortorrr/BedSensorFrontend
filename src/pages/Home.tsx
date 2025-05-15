@@ -6,12 +6,13 @@ import Icon from "@mdi/react";
 import { mdiMagnify, mdiPlus } from "@mdi/js";
 import { Bed } from "../types/bed";
 import { useNotificationStore } from "../store/notificationStore";
+import { useNavigate } from "react-router-dom";
 
 const Home: React.FC = () => {
   const { beds, loadBeds } = useBedStore();
   const [search, setSearch] = useState("");
   const [isClicked, setIsClicked] = useState(false); // State สำหรับจัดการการคลิกปุ่ม
-
+  const navigate = useNavigate();
   useEffect(() => {
     // const timer = setTimeout(() => {
     loadBeds();
@@ -52,6 +53,7 @@ const Home: React.FC = () => {
     setTimeout(() => {
       setIsClicked(false); // รีเซ็ต state หลังจาก 1 วินาที
     }, 150);
+    navigate("/add-patient-home");
   };
 
   return (
