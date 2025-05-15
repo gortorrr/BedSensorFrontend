@@ -4,6 +4,7 @@ import Icon from "@mdi/react";
 import { mdiMagnify, mdiPlus } from "@mdi/js";
 import { Patient } from "../../types/patient";
 import DeletePatientDialog from "../../components/Managements/Patient/DeletePatientDialog";
+import PatientDialog from "../../components/Managements/Patient/PatientDialog";
 
 const mockPatients: Patient[] = [
   {
@@ -43,11 +44,16 @@ const mockPatients: Patient[] = [
 
 const PatientManagement: React.FC = () => {
   const [search, setSearch] = useState("");
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const filteredPatients = mockPatients.filter((p) =>
     p.patient_name.toLowerCase().includes(search.toLowerCase())
   );
+
+  function openAddForm(): void {
+    setIsFormOpen(true);
+  }
 
   const openDeleteDialog = () => {
     setIsDeleteDialogOpen(true);
@@ -96,6 +102,8 @@ const PatientManagement: React.FC = () => {
     return pages;
   };
 
+
+
   return (
     <div className="p-6 bg-[#e7f0f3] min-h-screen">
       <div className="flex justify-between items-center mb-4">
@@ -119,9 +127,16 @@ const PatientManagement: React.FC = () => {
           />
         </div>
 
-        <button 
+        <PatientDialog
+          isOpen={isFormOpen}
+          onClose={() => setIsFormOpen(false)}
+        />
+
+        <button
           id="btnAddPatient"
-          className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer">
+          className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer"
+          onClick={openAddForm}
+        >
           <Icon path={mdiPlus} size={1} />
           <span>เพิ่มผู้ป่วย</span>
         </button>
@@ -146,7 +161,7 @@ const PatientManagement: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {paginatedPatients.map((p,index) => (
+          {paginatedPatients.map((p, index) => (
             <tr
               key={p.patient_id}
               className="text-center bg-gradient-to-r from-white via-gray-100 to-white shadow-md even:bg-gradient-to-r even:from-[#A1B5BC] even:via-[#D1DFE5] even:to-[#e4ecef]"
@@ -170,7 +185,10 @@ const PatientManagement: React.FC = () => {
                   <button id="detail" className="mx-1 cursor-pointer text-xl">
                     📄
                   </button>
-                  <button id="edit" className="mx-1 cursor-pointer text-xl">
+                  <button
+                    id="edit"
+                    className="mx-1 cursor-pointer text-xl"
+                  >
                     🖊️
                   </button>
                   <button
@@ -224,6 +242,7 @@ const PatientManagement: React.FC = () => {
           </button>
         </div>
       </div>
+
       <DeletePatientDialog
         isOpen={isDeleteDialogOpen}
         onCancel={() => setIsDeleteDialogOpen(false)}
