@@ -8,7 +8,7 @@ import PatientDialog from "../../components/Managements/Patient/PatientDialog";
 
 const mockPatients: Patient[] = [
   {
-    patient_id: 123,
+    patient_id: 1,
     patient_name: "สมชาย ใจดี",
     patient_age: 65,
     patient_gender: "ชาย",
@@ -19,7 +19,7 @@ const mockPatients: Patient[] = [
     patient_bloodtype: "O",
   },
   {
-    patient_id: 246,
+    patient_id: 2,
     patient_name: "มณี ศรีสวย",
     patient_age: 54,
     patient_gender: "หญิง",
@@ -30,7 +30,7 @@ const mockPatients: Patient[] = [
     patient_bloodtype: "A",
   },
   {
-    patient_id: 321,
+    patient_id: 3,
     patient_name: "สมปอง แสนดี",
     patient_age: 70,
     patient_gender: "ชาย",
@@ -145,7 +145,6 @@ const PatientManagement: React.FC = () => {
       <table className="w-full border-collapse shadow-md">
         <thead className="bg-[#B7D6DE] h-16 font-bold text-center">
           <tr>
-            <th className="p-2">ลำดับ</th>
             <th className="p-2">รหัสผู้ป่วย</th>
             <th className="p-2">ชื่อ-นามสกุล</th>
             <th className="p-2">อายุ</th>
@@ -169,7 +168,6 @@ const PatientManagement: React.FC = () => {
               <td className="p-2 h-16 py-4 text-center">
                 {(currentPage - 1) * itemsPerPage + index + 1}
               </td>
-              <td className="p-2 h-16">{p.patient_id}</td>
               <td className="p-2 h-16">{p.patient_name}</td>
               <td className="p-2 h-16">{p.patient_age}</td>
               <td className="p-2 h-16">{p.patient_gender}</td>
