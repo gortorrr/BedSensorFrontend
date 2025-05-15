@@ -9,6 +9,7 @@ interface SensorStore {
   sensorsFree: Sensor[];
   getSensors: () => Promise<Sensor[]>;
   addSensor: (sensor: Sensor) => Promise<void>;
+  deleteSensor: (sensor: number) => Promise<void>;
 }
 
 export const useSensorStore = create<SensorStore>((set) => ({
@@ -30,5 +31,8 @@ export const useSensorStore = create<SensorStore>((set) => ({
   },
   addSensor: async (sensor: Sensor) => {
     await sensorService.addSensor(sensor);
+  },
+  deleteSensor: async (sensor_id:number) => {
+    await sensorService.deleteSensor(sensor_id);
   },
 }));
