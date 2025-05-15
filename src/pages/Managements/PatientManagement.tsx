@@ -105,11 +105,12 @@ const PatientManagement: React.FC = () => {
       <div className="flex justify-between mb-6">
         <div className="relative flex-auto mr-4">
           <input
+            id="searchPatient"
             type="text"
             placeholder="ค้นหาชื่อผู้ป่วย"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="input input-bordered border-2 border-gray-400 rounded-lg p-2 pr-10 bg-white w-full"
+            className="input input-bordered border-2 border-gray-400 rounded-lg p-2 pr-10 bg-white w-full inset-shadow"
           />
           <Icon
             path={mdiMagnify}
@@ -118,7 +119,9 @@ const PatientManagement: React.FC = () => {
           />
         </div>
 
-        <button className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md">
+        <button 
+          id="btnAddPatient"
+          className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer">
           <Icon path={mdiPlus} size={1} />
           <span>เพิ่มผู้ป่วย</span>
         </button>
@@ -141,15 +144,15 @@ const PatientManagement: React.FC = () => {
           {paginatedPatients.map((p) => (
             <tr
               key={p.patient_id}
-              className="bg-white even:bg-[#D1DFE5] h-16 text-center"
+              className="text-center bg-gradient-to-r from-white via-gray-100 to-white shadow-md even:bg-gradient-to-r even:from-[#A1B5BC] even:via-[#D1DFE5] even:to-[#e4ecef]"
             >
-              <td>{p.patient_id}</td>
-              <td>{p.patient_name}</td>
-              <td>{p.patient_age}</td>
-              <td>{p.patient_gender}</td>
-              <td>{p.patient_disease}</td>
-              <td>{p.patient_status}</td>
-              <td>{p.patient_date_in}</td>
+              <td className="p-2 h-16">{p.patient_id}</td>
+              <td className="p-2 h-16">{p.patient_name}</td>
+              <td className="p-2 h-16">{p.patient_age}</td>
+              <td className="p-2 h-16">{p.patient_gender}</td>
+              <td className="p-2 h-16">{p.patient_disease}</td>
+              <td className="p-2 h-16">{p.patient_status}</td>
+              <td className="p-2 h-16">{p.patient_date_in}</td>
               <td className="flex justify-center gap-2">
                 <td className="p-2 h-16 py-4 text-center">
                   <button id="detail" className="mx-1 cursor-pointer text-xl">
@@ -176,8 +179,9 @@ const PatientManagement: React.FC = () => {
       <div className="flex justify-end mt-6">
         <div className="flex items-center gap-2">
           <button
+            id="currentPage"
             onClick={() => changePage(1)}
-            className="px-3 py-1 bg-[#95BAC3] rounded-xl hover:bg-[#5E8892] text-white"
+            className="px-3 py-1 bg-[#95BAC3] rounded-xl hover:bg-[#5E8892] text-white cursor-pointer"
             disabled={currentPage === 1}
           >
             &laquo; หน้าแรก
@@ -185,9 +189,10 @@ const PatientManagement: React.FC = () => {
 
           {getPageNumbers().map((pageNum) => (
             <button
+              id="pageNum"
               key={pageNum}
               onClick={() => changePage(pageNum)}
-              className={`px-3 py-1 rounded-xl ${
+              className={`px-3 py-1 rounded-xl cursor-pointer ${
                 currentPage === pageNum
                   ? "bg-[#5E8892] text-white shadow-lg"
                   : "bg-white text-black inset-shadow"
@@ -198,8 +203,9 @@ const PatientManagement: React.FC = () => {
           ))}
 
           <button
+            id="lastPage"
             onClick={() => changePage(totalPages)}
-            className="px-3 py-1 bg-[#95BAC3] rounded-xl hover:bg-[#5E8892] text-white"
+            className="px-3 py-1 bg-[#95BAC3] rounded-xl hover:bg-[#5E8892] text-white cursor-pointer"
             disabled={currentPage === totalPages}
           >
             หน้าสุดท้าย &raquo;
