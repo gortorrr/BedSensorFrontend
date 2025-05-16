@@ -125,8 +125,8 @@ const PatientManagement: React.FC = () => {
         <h1 className="text-3xl font-bold text-[#2E5361]">ข้อมูลผู้ป่วย</h1>
       </div>
 
-      <div className="flex justify-between mb-6">
-        <div className="relative flex-auto mr-4">
+      <div className="flex space-x-4 justify-between mb-8">
+        <div className="relative flex-auto">
           <input
             id="searchPatient"
             type="text"

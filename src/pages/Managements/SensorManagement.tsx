@@ -127,7 +127,7 @@ const SensorManagement: React.FC = () => {
   return (
     <div className="p-6 bg-[#e7f0f3] min-h-screen ">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-3xl font-bold text-[#2E5361] mb-4">
+        <h1 className="text-3xl font-bold text-[#2E5361]">
           จัดการเซ็นเซอร์
         </h1>
       </div>
