@@ -1,90 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Bed } from "../types/bed";
-
-const mockBeds: Bed[] = [
-  {
-    bed_id: 1,
-    bed_name: "41",
-    bed_activated: true,
-    room: {
-      room_id: 1,
-      room_name: "RM041",
-      floor: {
-        floor_id: 4,
-        floor_name: "4",
-        building: {
-          building_id: 1,
-          building_name: "อาคารผู้ป่วยใน",
-        },
-      },
-    },
-    patient: undefined,
-    sensors: [],
-  },
-  {
-    bed_id: 2,
-    bed_name: "42",
-    bed_activated: true,
-    room: {
-      room_id: 2,
-      room_name: "RM042",
-      floor: {
-        floor_id: 4,
-        floor_name: "4",
-        building: {
-          building_id: 1,
-          building_name: "อาคารผู้ป่วยใน",
-        },
-      },
-    },
-    patient: undefined,
-    sensors: [],
-  },
-  {
-    bed_id: 3,
-    bed_name: "46",
-    bed_activated: true,
-    room: {
-      room_id: 3,
-      room_name: "RM043",
-      floor: {
-        floor_id: 4,
-        floor_name: "4",
-        building: {
-          building_id: 1,
-          building_name: "อาคารผู้ป่วยใน",
-        },
-      },
-    },
-    patient: undefined,
-    sensors: [],
-  },
-  {
-    bed_id: 4,
-    bed_name: "52",
-    bed_activated: true,
-    room: {
-      room_id: 4,
-      room_name: "RM052",
-      floor: {
-        floor_id: 5,
-        floor_name: "5",
-        building: {
-          building_id: 1,
-          building_name: "อาคารผู้ป่วยใน",
-        },
-      },
-    },
-    patient: undefined,
-    sensors: [],
-  },
-];
+import { useBedStore } from "../store/bedStore";
+import { useNavigate } from "react-router-dom";
 
 const AddPatientHome: React.FC = () => {
   const [selectedBuilding, setSelectedBuilding] = useState("");
   const [selectedFloor, setSelectedFloor] = useState("");
+  const [bedsData, setBedsData] = useState<Bed[]>([]);
+  const bedStore = useBedStore();
+  const navigate = useNavigate();
 
-  const filteredBeds = mockBeds.filter((bed) => {
+  useEffect(() => {
+    const fetchBedsFreeData = async () => {
+      const res = await bedStore.getBedsFree();
+      setBedsData(res);
+    };
+    fetchBedsFreeData();
+  }, []);
+
+  const filteredBeds = bedsData.filter((bed) => {
     return (
       (selectedBuilding === "" ||
         bed.room.floor.building.building_name === selectedBuilding) &&
@@ -148,7 +82,10 @@ const AddPatientHome: React.FC = () => {
               <td>{bed.room.room_name}</td>
               <td>{bed.bed_name}</td>
               <td>
-                <button className="bg-[#95BAC3] text-white px-4 py-1 rounded-md hover:bg-[#5E8892] shadow-md transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110">
+                <button
+                  className="bg-[#95BAC3] text-white px-4 py-1 rounded-md hover:bg-[#5E8892] shadow-md transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
+                  onClick={() => navigate(`/bed-config/${bed.bed_id}`)}
+                >
                   เลือก
                 </button>
               </td>
@@ -158,7 +95,10 @@ const AddPatientHome: React.FC = () => {
       </table>
 
       <div className="mt-6 text-right">
-        <button className="bg-[#95BAC3] text-white px-6 py-2 rounded-xl hover:bg-[#5E8892] shadow-lg transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110">
+        <button
+          className="bg-[#95BAC3] text-white px-6 py-2 rounded-xl hover:bg-[#5E8892] shadow-lg transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
+          onClick={() => navigate(-1)}
+        >
           ยกเลิก
         </button>
       </div>

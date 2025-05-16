@@ -8,7 +8,7 @@ import { FaUser } from "react-icons/fa";
 import { usePatientStore } from "../../store/patientStore";
 
 interface Props {
-  patient_config: Patient | undefined;
+  patient_config: Patient | undefined | null;
   onPatientSelect: (patient: Patient | undefined) => void;
 }
 
@@ -26,9 +26,9 @@ const PatientWindow: React.FC<Props> = ({
   onPatientSelect,
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedPatient, setSelectedPatient] = useState<Patient | undefined>(
-    patient_config
-  );
+  const [selectedPatient, setSelectedPatient] = useState<
+    Patient | undefined | null
+  >(patient_config);
   const { loadPatientsWait, patients, removePatient } = usePatientStore();
 
   useEffect(() => {
@@ -71,7 +71,7 @@ const PatientWindow: React.FC<Props> = ({
           <button
             className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] mt-8 transition-transform duration-300 hover:scale-110"
             onClick={openDialog}
-             id="btnAddPatient"
+            id="btnAddPatient"
           >
             <PlusCircle size={24} />
             <span className="text-lg cursor-pointer">เพิ่มผู้ป่วย</span>

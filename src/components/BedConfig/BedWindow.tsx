@@ -4,7 +4,7 @@ import { FaBed } from "react-icons/fa"; // ไอคอนเตียง
 import BuuLogo from "../../assets/BuuLogo.png";
 
 interface Props {
-  bed_config: Bed | undefined;
+  bed_config: Bed | undefined | null;
 }
 
 const BedWindow: React.FC<Props> = ({ bed_config }) => {
@@ -80,8 +80,10 @@ const BedWindow: React.FC<Props> = ({ bed_config }) => {
             </div>
           </div>
 
-          <img src={BuuLogo} alt="Logo"
-          className="absolute right-20 bottom-10 w-50 h-50 pointer-events-none z-0"
+          <img
+            src={BuuLogo}
+            alt="Logo"
+            className="absolute right-20 bottom-10 w-50 h-50 pointer-events-none z-0"
           />
         </div>
       )}
