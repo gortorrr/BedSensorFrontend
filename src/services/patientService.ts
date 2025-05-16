@@ -25,13 +25,18 @@ export const patientService = {
   },
 
   // Function to edit patient details
-  async editPatient(patient_id: number, patient: Patient): Promise<Patient[]> {
+  async editPatient(patient_id: number, patient: Patient): Promise<Patient> {
     try {
-      const response = await http.patch(`patients/${patient_id}`, patient);
+      const response = await http.patch(`patients/edit/${patient_id}`, patient);
       return response.data;
     } catch (error) {
       console.error("Error editing patient:", error);
       throw error;
     }
+  },
+
+  async deletePatient(patient_id: number) {
+    const res = await http.delete(`patients/${patient_id}`);
+    return res.data;
   },
 };

@@ -84,7 +84,7 @@ const Home: React.FC = () => {
 
         <button
           id="btnAddPatient"
-          className={`flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer ${
+          className={`flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110 ${
             isClicked ? "animate-jump" : ""
           }`}
           onClick={handleAddPatientClick} // เรียกใช้ handleAddPatientClick เมื่อคลิก

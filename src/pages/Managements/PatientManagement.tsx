@@ -4,6 +4,8 @@ import Icon from "@mdi/react";
 import { mdiMagnify, mdiPlus } from "@mdi/js";
 import { Patient } from "../../types/patient";
 import DeletePatientDialog from "../../components/Managements/Patient/DeletePatientDialog";
+import PatientDialog from "../../components/Managements/Patient/PatientDialog";
+import { usePatientStore } from "../../store/patientStore";
 
 const mockPatients: Patient[] = [
   {
@@ -43,14 +45,55 @@ const mockPatients: Patient[] = [
 
 const PatientManagement: React.FC = () => {
   const [search, setSearch] = useState("");
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [selectedPatient, setSelectedPatient] = useState<Patient>({
+    patient_id: 0,
+    patient_name: "",
+    patient_age: 0,
+    patient_gender: "",
+    patient_dob: "",
+    patient_disease: "",
+    patient_status: "",
+    patient_date_in: "",
+    patient_bloodtype: "",
+  });
+
+  const patientStore = usePatientStore();
 
   const filteredPatients = mockPatients.filter((p) =>
     p.patient_name.toLowerCase().includes(search.toLowerCase())
   );
 
-  const openDeleteDialog = () => {
+  function openAddForm(): void {
+    setSelectedPatient({
+      patient_id: 0,
+      patient_name: "",
+      patient_age: 0,
+      patient_gender: "",
+      patient_dob: "",
+      patient_disease: "",
+      patient_status: "",
+      patient_date_in: "",
+      patient_bloodtype: "",
+    });
+    setIsFormOpen(true);
+  }
+
+  const openEditForm = (patient: Patient): void => {
+    setSelectedPatient(patient);
+    setIsFormOpen(true);
+  };
+
+  const [patientIdDeleteTarget, setPatientIdDeleteTarget] = useState<number>(0);
+  const openDeleteDialog = (patient_id: number) => {
     setIsDeleteDialogOpen(true);
+    setPatientIdDeleteTarget(patient_id);
+  };
+  const handleDeletePatient = (patient_id: number) => {
+    patientStore.deletePatient(patient_id);
+    setIsDeleteDialogOpen(false);
+    window.location.reload();
   };
 
   // pagination state และ config
@@ -119,9 +162,17 @@ const PatientManagement: React.FC = () => {
           />
         </div>
 
-        <button 
+        <PatientDialog
+          isOpen={isFormOpen}
+          onClose={() => setIsFormOpen(false)}
+          initialPatientData={selectedPatient}
+        />
+
+        <button
           id="btnAddPatient"
-          className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer">
+          className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer"
+          onClick={openAddForm}
+        >
           <Icon path={mdiPlus} size={1} />
           <span>เพิ่มผู้ป่วย</span>
         </button>
@@ -134,36 +185,50 @@ const PatientManagement: React.FC = () => {
             <th className="p-2">ชื่อ-นามสกุล</th>
             <th className="p-2">อายุ</th>
             <th className="p-2">เพศ</th>
+            <th className="p-2">หมู่เลือด</th>
             <th className="p-2">โรคประจำตัว</th>
             <th className="p-2">สถานะ</th>
             <th className="p-2">วันที่เข้าโรงพยาบาล</th>
+            <th className="p-2">อาคาร</th>
+            <th className="p-2">ห้อง</th>
+            <th className="p-2">หมายเลขเตียง</th>
             <th className="p-2"></th>
           </tr>
         </thead>
         <tbody>
-          {paginatedPatients.map((p) => (
+          {paginatedPatients.map((p, index) => (
             <tr
               key={p.patient_id}
               className="text-center bg-gradient-to-r from-white via-gray-100 to-white shadow-md even:bg-gradient-to-r even:from-[#A1B5BC] even:via-[#D1DFE5] even:to-[#e4ecef]"
             >
-              <td className="p-2 h-16">{p.patient_id}</td>
+              <td className="p-2 h-16 py-4 text-center">
+                {(currentPage - 1) * itemsPerPage + index + 1}
+              </td>
               <td className="p-2 h-16">{p.patient_name}</td>
               <td className="p-2 h-16">{p.patient_age}</td>
               <td className="p-2 h-16">{p.patient_gender}</td>
+              <td className="p-2 h-16">{p.patient_bloodtype}</td>
               <td className="p-2 h-16">{p.patient_disease}</td>
               <td className="p-2 h-16">{p.patient_status}</td>
               <td className="p-2 h-16">{p.patient_date_in}</td>
+              <td className="p-2 h-16">{}</td>
+              <td className="p-2 h-16">{}</td>
+              <td className="p-2 h-16">{}</td>
               <td className="flex justify-center gap-2">
                 <td className="p-2 h-16 py-4 text-center">
                   <button id="detail" className="mx-1 cursor-pointer text-xl">
                     📄
                   </button>
-                  <button id="edit" className="mx-1 cursor-pointer text-xl">
+                  <button
+                    id="edit"
+                    onClick={() => openEditForm(p)}
+                    className="mx-1 cursor-pointer text-xl"
+                  >
                     🖊️
                   </button>
                   <button
                     id="delete"
-                    onClick={openDeleteDialog}
+                    onClick={() => openDeleteDialog(p.patient_id ?? 0)}
                     className="mx-1 cursor-pointer text-xl"
                   >
                     🗑️
@@ -212,9 +277,11 @@ const PatientManagement: React.FC = () => {
           </button>
         </div>
       </div>
+
       <DeletePatientDialog
         isOpen={isDeleteDialogOpen}
         onCancel={() => setIsDeleteDialogOpen(false)}
+        onConfirm={() => handleDeletePatient(patientIdDeleteTarget)}
       />
     </div>
   );

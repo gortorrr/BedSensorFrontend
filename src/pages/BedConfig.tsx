@@ -29,26 +29,24 @@ const BedConfig: React.FC = () => {
   };
 
   useEffect(() => {
-    // console.log("🛏️ bed_id from URL:", bed_id);
-    // console.log("📦 bedStore.beds:", bedStore.beds);
+    const fetchBed = async () => {
+      if (bed_id) {
+        const bedIdNumber = parseInt(bed_id);
 
-    if (bed_id) {
-      const bedIdNumber = parseInt(bed_id);
-      // console.log("🔍 Searching for bed with ID:", bedIdNumber);
+        const foundBed = await bedStore.getBed(bedIdNumber);
 
-      const foundBed = bedStore.beds.find(
-        (item) => item.bed_id === bedIdNumber
-      );
-
-      if (foundBed) {
-        // console.log("✅ Found bed:", foundBed);
-        setPatient(foundBed.patient);
-        setSensor(foundBed.sensors);
-        setBed(foundBed);
-      } else {
-        // console.warn("⚠️ No bed found with ID:", bedIdNumber);
+        if (foundBed) {
+          console.log("✅ Found bed:", foundBed);
+          setPatient(foundBed.patient);
+          setSensor(foundBed.sensors);
+          setBed(foundBed);
+        } else {
+          // console.warn("⚠️ No bed found with ID:", bedIdNumber);
+        }
       }
-    }
+    };
+
+    fetchBed();
   }, [bed_id, bedStore]);
 
   useEffect(() => {
@@ -127,7 +125,7 @@ const BedConfig: React.FC = () => {
   };
 
   const handleCancel = () => {
-    navigate("/");
+    navigate(-1);
   };
 
   return (
@@ -150,11 +148,11 @@ const BedConfig: React.FC = () => {
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-4">
           <div className="p-2">
-            <BedWindow bed_config={bed ?? undefined} />
+            <BedWindow bed_config={bed ?? undefined ?? null} />
           </div>
           <div className="p-2">
             <PatientWindow
-              patient_config={patient ?? undefined}
+              patient_config={patient ?? undefined ?? null}
               onPatientSelect={handlePatientSelect}
             />
           </div>

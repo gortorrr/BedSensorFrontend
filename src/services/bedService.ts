@@ -89,4 +89,12 @@ export const bedService = {
     const res = await http.get("/buildings");
     return res.data;
   },
+  async getBedsFree() {
+    const res = await http.get("/beds/free/all");
+    return res.data;
+  },
+  async getBed(bed_id: number) {
+    const res = await http.get(`/beds/${bed_id}`);
+    return res.data;
+  },
 };

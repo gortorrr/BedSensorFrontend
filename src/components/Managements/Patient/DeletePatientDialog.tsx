@@ -2,13 +2,14 @@ import React from "react";
 
 interface DeletePatientDialogProps {
   isOpen: boolean;
-  //onConfirm: () => void;
+  onConfirm: () => void;
   onCancel: () => void;
 }
 
 const DeletePatientDialog: React.FC<DeletePatientDialogProps> = ({
   isOpen,
   onCancel,
+  onConfirm,
 }) => {
   if (!isOpen) return null;
 
@@ -19,11 +20,11 @@ const DeletePatientDialog: React.FC<DeletePatientDialogProps> = ({
           ยืนยันการลบข้อมูล
         </h2>
         <p className="text-lg text-gray-600 mb-6">
-          คุณต้องการลบเซ็นเซอร์นี้หรือไม่?
+          คุณต้องการลบผู้ป่วยคนนี้หรือไม่?
         </p>
         <div className="flex justify-around">
           <button
-            //onClick={onConfirm}
+            onClick={onConfirm}
             className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] cursor-pointer"
           >
             ยืนยัน

@@ -6,6 +6,7 @@ interface PatientStore {
   patients: Patient[];
   loadPatientsWait: () => Promise<void>;
   removePatient: (patientId: number | undefined) => void; // Adjusted to number | undefined
+  deletePatient: (patient_id: number) => void;
 }
 
 export const usePatientStore = create<PatientStore>((set) => ({
@@ -20,5 +21,9 @@ export const usePatientStore = create<PatientStore>((set) => ({
         (patient) => patient.patient_id !== patientId
       ),
     }));
+  },
+  deletePatient: async (patient_id: number) => {
+    const res = await patientService.deletePatient(patient_id);
+    console.log("deleted target", res);
   },
 }));
