@@ -5,6 +5,7 @@ import { mdiMagnify, mdiPlus } from "@mdi/js";
 import { Patient } from "../../types/patient";
 import DeletePatientDialog from "../../components/Managements/Patient/DeletePatientDialog";
 import PatientDialog from "../../components/Managements/Patient/PatientDialog";
+import { usePatientStore } from "../../store/patientStore";
 
 const mockPatients: Patient[] = [
   {
@@ -58,6 +59,8 @@ const PatientManagement: React.FC = () => {
     patient_bloodtype: "",
   });
 
+  const patientStore = usePatientStore();
+
   const filteredPatients = mockPatients.filter((p) =>
     p.patient_name.toLowerCase().includes(search.toLowerCase())
   );
@@ -82,8 +85,15 @@ const PatientManagement: React.FC = () => {
     setIsFormOpen(true);
   };
 
-  const openDeleteDialog = () => {
+  const [patientIdDeleteTarget, setPatientIdDeleteTarget] = useState<number>(0);
+  const openDeleteDialog = (patient_id: number) => {
     setIsDeleteDialogOpen(true);
+    setPatientIdDeleteTarget(patient_id);
+  };
+  const handleDeletePatient = (patient_id: number) => {
+    patientStore.deletePatient(patient_id);
+    setIsDeleteDialogOpen(false);
+    window.location.reload();
   };
 
   // pagination state และ config
@@ -209,14 +219,16 @@ const PatientManagement: React.FC = () => {
                   <button id="detail" className="mx-1 cursor-pointer text-xl">
                     📄
                   </button>
-                  <button id="edit" 
-                  onClick={() => openEditForm(p)}
-                  className="mx-1 cursor-pointer text-xl">
+                  <button
+                    id="edit"
+                    onClick={() => openEditForm(p)}
+                    className="mx-1 cursor-pointer text-xl"
+                  >
                     🖊️
                   </button>
                   <button
                     id="delete"
-                    onClick={openDeleteDialog}
+                    onClick={() => openDeleteDialog(p.patient_id ?? 0)}
                     className="mx-1 cursor-pointer text-xl"
                   >
                     🗑️
@@ -269,6 +281,7 @@ const PatientManagement: React.FC = () => {
       <DeletePatientDialog
         isOpen={isDeleteDialogOpen}
         onCancel={() => setIsDeleteDialogOpen(false)}
+        onConfirm={() => handleDeletePatient(patientIdDeleteTarget)}
       />
     </div>
   );

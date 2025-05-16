@@ -11,4 +11,8 @@ export const patientService = {
       throw error;
     }
   },
+  async deletePatient(patient_id: number) {
+    const res = await http.delete(`patients/${patient_id}`);
+    return res.data;
+  },
 };
