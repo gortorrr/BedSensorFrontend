@@ -1,5 +1,5 @@
 // src/pages/PatientManagement.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Icon from "@mdi/react";
 import { mdiMagnify, mdiPlus } from "@mdi/js";
 import { Patient } from "../../types/patient";
@@ -7,46 +7,12 @@ import DeletePatientDialog from "../../components/Managements/Patient/DeletePati
 import PatientDialog from "../../components/Managements/Patient/PatientDialog";
 import { usePatientStore } from "../../store/patientStore";
 
-const mockPatients: Patient[] = [
-  {
-    patient_id: 1,
-    patient_name: "สมชาย ใจดี",
-    patient_age: 65,
-    patient_gender: "ชาย",
-    patient_dob: "1960-04-12",
-    patient_disease: "เบาหวาน",
-    patient_status: "รักษาอยู่",
-    patient_date_in: "2025-05-01",
-    patient_bloodtype: "O",
-  },
-  {
-    patient_id: 2,
-    patient_name: "มณี ศรีสวย",
-    patient_age: 54,
-    patient_gender: "หญิง",
-    patient_dob: "1971-10-03",
-    patient_disease: "ความดัน",
-    patient_status: "พักฟื้น",
-    patient_date_in: "2025-04-25",
-    patient_bloodtype: "A",
-  },
-  {
-    patient_id: 3,
-    patient_name: "สมปอง แสนดี",
-    patient_age: 70,
-    patient_gender: "ชาย",
-    patient_dob: "1955-06-20",
-    patient_disease: "หัวใจ",
-    patient_status: "รอดูอาการ",
-    patient_date_in: "2025-05-10",
-    patient_bloodtype: "B",
-  },
-];
-
 const PatientManagement: React.FC = () => {
   const [search, setSearch] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const patientStore = usePatientStore()
+  const [patientData, setpatientData] = useState<Patient[]>([]);
   const [selectedPatient, setSelectedPatient] = useState<Patient>({
     patient_id: 0,
     patient_name: "",
@@ -59,9 +25,7 @@ const PatientManagement: React.FC = () => {
     patient_bloodtype: "",
   });
 
-  const patientStore = usePatientStore();
-
-  const filteredPatients = mockPatients.filter((p) =>
+  const filteredPatients = patientData.filter((p) =>
     p.patient_name.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -80,6 +44,14 @@ const PatientManagement: React.FC = () => {
     setIsFormOpen(true);
   }
 
+  useEffect(() => {
+      const fetchPatientData = async () => {
+        const res = await patientStore.getPatients();
+        setpatientData(res);
+      };
+      fetchPatientData();
+    }, []);
+    
   const openEditForm = (patient: Patient): void => {
     setSelectedPatient(patient);
     setIsFormOpen(true);

@@ -5,6 +5,7 @@ import { patientService } from "../services/patientService";
 interface PatientStore {
   patients: Patient[];
   loadPatientsWait: () => Promise<void>;
+  getPatients: () => Promise<Patient[]>;
   removePatient: (patientId: number | undefined) => void; // Adjusted to number | undefined
   deletePatient: (patient_id: number) => void;
 }
@@ -25,5 +26,9 @@ export const usePatientStore = create<PatientStore>((set) => ({
   deletePatient: async (patient_id: number) => {
     const res = await patientService.deletePatient(patient_id);
     console.log("deleted target", res);
+  },
+   getPatients: async () => {
+    const res = await patientService.getPatients();
+    return res as Patient[]
   },
 }));
