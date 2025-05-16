@@ -3,10 +3,12 @@ import React, { useState } from "react";
 import Icon from "@mdi/react";
 import { mdiMagnify, mdiAccountPlus } from "@mdi/js";
 import { User } from "../../types/user";
+import DeleteUserDialog from "../../components/Managements/User/DeleteUserDialog";
 
 const UserManagement: React.FC = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const itemsPerPage = 10;
 
   const userData: User[] = [
@@ -33,6 +35,14 @@ const UserManagement: React.FC = () => {
     },
     // เพิ่ม mock data ตามต้องการเพื่อให้เห็น pagination
   ];
+
+  const openDeleteDialog = () => {
+    setDeleteDialogOpen(true);
+  };
+
+  const closeDeleteDialog = () => {
+    setDeleteDialogOpen(false);
+  };
 
   const filteredUsers = userData.filter((user) =>
     user.user_name.toLowerCase().includes(search.toLowerCase())
@@ -130,7 +140,10 @@ const UserManagement: React.FC = () => {
                 <button className="w-7 h-7 transform hover:scale-110 transition">
                   <img src="/src/assets/edit.png" alt="edit" />
                 </button>
-                <button className="w-7 h-7 transform hover:scale-110 transition">
+                <button
+                  onClick={() => openDeleteDialog()}
+                  className="w-7 h-7 transform hover:scale-110 transition"
+                >
                   <img src="/src/assets/delete.png" alt="delete" />
                 </button>
               </td>
@@ -172,6 +185,10 @@ const UserManagement: React.FC = () => {
             หน้าสุดท้าย &raquo;
           </button>
         </div>
+        <DeleteUserDialog
+          isOpen={deleteDialogOpen}
+          onCancel={closeDeleteDialog}
+        />
       </div>
     </div>
   );

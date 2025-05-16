@@ -35,7 +35,7 @@ const DeleteUserDialog: React.FC<DeleteUserDialogProps> = ({
           ยืนยันการลบข้อมูล
         </h2>
         <p className="text-lg text-gray-600 mb-6">
-          คุณต้องการลบผู้ป่วยคนนี้หรือไม่?
+          คุณต้องการลบผู้ใช้งานหรือไม่?
         </p>
         <div className="flex justify-around">
           <button
