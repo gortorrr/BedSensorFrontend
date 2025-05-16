@@ -43,7 +43,7 @@ const menus: MenuItem[] = [
     submenus: [
       { name: "เซนเซอร์", link: "/sensor-management", icon: MdOutlineSensors },
       { name: "ผู้ป่วย", link: "/patient-management", icon: FaUserInjured },
-      { name: "ผู้ใช้งานระบบ", link: "/", icon: FaUserCog },
+      { name: "ผู้ใช้งานระบบ", link: "/user-management", icon: FaUserCog },
       { name: "จัดการสถานที่", link: "/bed-management", icon: RiHospitalFill },
       { name: "ประวัติการแจ้งเตือน", link: "/", icon: VscBellDot },
     ],
