@@ -13,12 +13,24 @@ export const patientService = {
     }
   },
 
+  // Function to load all patients with full details
   async getPatients(): Promise<Patient[]> {
     try {
       const response = await http.get("patients/all/full_details");
       return response.data;
     } catch (error) {
       console.error("Error loading patients:", error);
+      throw error;
+    }
+  },
+
+  // Function to edit patient details
+  async editPatient(patient_id: number, patient: Patient): Promise<Patient[]> {
+    try {
+      const response = await http.patch(`patients/${patient_id}`, patient);
+      return response.data;
+    } catch (error) {
+      console.error("Error editing patient:", error);
       throw error;
     }
   },
