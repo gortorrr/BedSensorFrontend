@@ -222,13 +222,13 @@ const SensorDialog: React.FC<SensorDialogProps> = ({
               <button
                 id="btnCancel"
                 onClick={handleClose}
-                className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400 cursor-pointer"
+                className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400 cursor-pointer transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
               >
                 ยกเลิก
               </button>
               <button
                 id="btnSave"
-                className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] cursor-pointer"
+                className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] cursor-pointer transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
                 onClick={saveSensor}
               >
                 บันทึก
