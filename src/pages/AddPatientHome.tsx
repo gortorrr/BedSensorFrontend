@@ -6,7 +6,7 @@ const mockBeds: Bed[] = [
     bed_id: 1,
     bed_name: "41",
     bed_activated: true,
-     room: {
+    room: {
       room_id: 1,
       room_name: "RM041",
       floor: {
@@ -25,7 +25,7 @@ const mockBeds: Bed[] = [
     bed_id: 2,
     bed_name: "42",
     bed_activated: true,
-     room: {
+    room: {
       room_id: 2,
       room_name: "RM042",
       floor: {
@@ -44,7 +44,7 @@ const mockBeds: Bed[] = [
     bed_id: 3,
     bed_name: "46",
     bed_activated: true,
-     room: {
+    room: {
       room_id: 3,
       room_name: "RM043",
       floor: {
@@ -63,7 +63,7 @@ const mockBeds: Bed[] = [
     bed_id: 4,
     bed_name: "52",
     bed_activated: true,
-     room: {
+    room: {
       room_id: 4,
       room_name: "RM052",
       floor: {
@@ -86,14 +86,17 @@ const AddPatientHome: React.FC = () => {
 
   const filteredBeds = mockBeds.filter((bed) => {
     return (
-      (selectedBuilding === "" || bed.room.floor.building.building_name === selectedBuilding) &&
+      (selectedBuilding === "" ||
+        bed.room.floor.building.building_name === selectedBuilding) &&
       (selectedFloor === "" || bed.room.floor.floor_name === selectedFloor)
     );
   });
 
   return (
     <div className="p-6 bg-[#e7f0f3] min-h-screen">
-      <h1 className="text-3xl font-bold text-[#2E5361] mb-6">รายการเตียงผู้ป่วย</h1>
+      <h1 className="text-3xl font-bold text-[#2E5361] mb-6">
+        รายการเตียงผู้ป่วย
+      </h1>
 
       <div className="flex gap-4 mb-6">
         <div className="flex flex-col">
@@ -125,7 +128,7 @@ const AddPatientHome: React.FC = () => {
       </div>
 
       <table className="w-full border-collapse">
-        <thead className="bg-[#95BAC3] text-white h-12 text-center">
+        <thead className="bg-[#95BAC3] text-black h-12 text-center">
           <tr>
             <th className="p-2">อาคาร</th>
             <th className="p-2">ชั้น</th>
@@ -145,7 +148,7 @@ const AddPatientHome: React.FC = () => {
               <td>{bed.room.room_name}</td>
               <td>{bed.bed_name}</td>
               <td>
-                <button className="bg-[#95BAC3] text-white px-4 py-1 rounded-md hover:bg-[#5E8892] shadow-md">
+                <button className="bg-[#95BAC3] text-white px-4 py-1 rounded-md hover:bg-[#5E8892] shadow-md transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110">
                   เลือก
                 </button>
               </td>
@@ -155,7 +158,7 @@ const AddPatientHome: React.FC = () => {
       </table>
 
       <div className="mt-6 text-right">
-        <button className="bg-[#95BAC3] text-white px-6 py-2 rounded-xl hover:bg-[#5E8892] shadow-lg">
+        <button className="bg-[#95BAC3] text-white px-6 py-2 rounded-xl hover:bg-[#5E8892] shadow-lg transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110">
           ยกเลิก
         </button>
       </div>
