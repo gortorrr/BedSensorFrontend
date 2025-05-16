@@ -225,20 +225,20 @@ const SensorManagement: React.FC = () => {
                   {sensor.sensor_status ? "Active" : "Inactive"}
                 </span>
               </td>
-              <td className="p-2 h-16 py-4 text-center">
+              <td className="p-2 h-16 py-4 text-center flex justify-center gap-2">
                 <button
                   id="edit"
-                  className="mx-1 cursor-pointer text-xl transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
+                  className="mx-1 cursor-pointer w-7 h-7 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
                   onClick={() => openDialogForEdit(sensor)}
                 >
-                  🖊️
+                  <img src="/src/assets/edit.png" alt="edit" />
                 </button>
                 <button
                   id="delete"
                   onClick={() => openDeleteDialog(sensor)}
-                  className="mx-1 cursor-pointer text-xl transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
+                  className="mx-1 cursor-pointer w-7 h-7 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
                 >
-                  🗑️
+                  <img src="/src/assets/delete.png" alt="delete" />
                 </button>
               </td>
             </tr>

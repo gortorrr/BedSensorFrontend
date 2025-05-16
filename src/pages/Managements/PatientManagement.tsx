@@ -203,22 +203,24 @@ const PatientManagement: React.FC = () => {
         <td className="p-2 h-16">{bedInfo?.bed_name ?? "-"}</td>
 
         <td className="p-2 h-16 py-4 text-center flex justify-center gap-2">
-          <button id="detail" className="mx-1 cursor-pointer text-xl">
-            📄
+          <button 
+            id="detail" 
+            className="mx-1 cursor-pointer w-7 h-7 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110">
+            <img src="/src/assets/review.png" alt="review" />
           </button>
           <button
             id="edit"
             onClick={() => openEditForm(p)}
-            className="mx-1 cursor-pointer text-xl"
+            className="mx-1 cursor-pointer w-7 h-7 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
           >
-            🖊️
+            <img src="/src/assets/edit.png" alt="edit" />
           </button>
           <button
             id="delete"
             onClick={() => openDeleteDialog(p.patient_id ?? 0)}
-            className="mx-1 cursor-pointer text-xl"
+            className="mx-1 cursor-pointer w-7 h-7 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
           >
-            🗑️
+            <img src="/src/assets/delete.png" alt="delete" />
           </button>
         </td>
       </tr>

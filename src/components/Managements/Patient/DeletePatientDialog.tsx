@@ -1,4 +1,5 @@
 import React from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface DeletePatientDialogProps {
   isOpen: boolean;
@@ -14,7 +15,21 @@ const DeletePatientDialog: React.FC<DeletePatientDialogProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-opacity-40 flex justify-center items-center z-50">
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-40 bg-transparent backdrop-blur-sm"
+        onClick={onCancel}
+      />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9, y: 50 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: 50 }}
+        transition={{ type: "spring", stiffness: 500, damping: 25 }}
+        className="fixed inset-0 z-50 flex justify-center items-center"
+      >
       <div className="bg-white rounded-xl p-6 shadow-xl w-80 text-center">
         <h2 className="text-xl font-semibold mb-2 text-gray-800">
           ยืนยันการลบข้อมูล
@@ -37,7 +52,8 @@ const DeletePatientDialog: React.FC<DeletePatientDialogProps> = ({
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
+    </AnimatePresence>
   );
 };
 
