@@ -60,7 +60,7 @@ const PatientDialog: React.FC<PatientDialogProps> = ({
           )}
 
           <div className="grid grid-cols-2 gap-4">
-            <div>
+            {/* <div>
               <label className="block mb-1 text-sm text-gray-700">
                 รหัสผู้ป่วย
               </label>
@@ -76,7 +76,7 @@ const PatientDialog: React.FC<PatientDialogProps> = ({
                 placeholder="กรุณากรอกรหัสผู้ป่วย"
                 className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
               />
-            </div>
+            </div> */}
 
             <div>
               <label className="block mb-1 text-sm text-gray-700">
