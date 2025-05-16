@@ -159,7 +159,7 @@ const SensorManagement: React.FC = () => {
 
         <button
           id="btnAddSensor"
-          className={`flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer ${
+          className={`flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md transform transition-transform duration-200 hover:-translate-y-1 hover:scale-105 cursor-pointer ${
             isClicked ? "animate-jump" : ""
           }`}
           onClick={openDialogForAdd}
@@ -228,15 +228,15 @@ const SensorManagement: React.FC = () => {
               <td className="p-2 h-16 py-4 text-center">
                 <button
                   id="edit"
-                  className="mx-1 cursor-pointer text-xl"
+                  className="mx-1 cursor-pointer text-xl transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
                   onClick={() => openDialogForEdit(sensor)}
                 >
                   🖊️
                 </button>
                 <button
                   id="delete"
-                  onClick={() =>openDeleteDialog(sensor)}
-                  className="mx-1 cursor-pointer text-xl"
+                  onClick={() => openDeleteDialog(sensor)}
+                  className="mx-1 cursor-pointer text-xl transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
                 >
                   🗑️
                 </button>
