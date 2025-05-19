@@ -39,4 +39,14 @@ export const patientService = {
     const res = await http.delete(`patients/${patient_id}`);
     return res.data;
   },
+
+  async addPatient(patient: Patient): Promise<Patient> {
+    try {
+      const response = await http.post("patients", patient);
+      return response.data;
+    } catch (error) {
+      console.error("Error adding patient:", error);
+      throw error;
+    }
+  },
 };
