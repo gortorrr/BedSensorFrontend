@@ -1,7 +1,8 @@
 // src/pages/UserManagement.tsx
 import React, { useState } from "react";
 import Icon from "@mdi/react";
-import { mdiMagnify, mdiAccountPlus } from "@mdi/js";
+import { mdiMagnify } from "@mdi/js";
+// import { mdiMagnify, mdiAccountPlus } from "@mdi/js";
 import { User } from "../../types/user";
 import DeleteUserDialog from "../../components/Managements/User/DeleteUserDialog";
 
@@ -92,6 +93,7 @@ const UserManagement: React.FC = () => {
       <div className="flex space-x-4 justify-between mb-6">
         <div className="relative flex-auto">
           <input
+            id="searchUser"
             type="text"
             placeholder="ค้นหาชื่อผู้ใช้งานระบบ"
             value={search}
@@ -108,8 +110,11 @@ const UserManagement: React.FC = () => {
           />
         </div>
 
-        <button className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer">
-          <Icon path={mdiAccountPlus} size={1} />
+        <button 
+          id="btnAddUser"
+          className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer">
+          {/* <Icon path={mdiAccountPlus} size={1} /> */}
+          <img src="/src/assets/btnManagement/AddUser.png" alt="abbUser" className="w-5" />
           <span>เพิ่มผู้ใช้งานระบบ</span>
         </button>
       </div>
@@ -137,10 +142,13 @@ const UserManagement: React.FC = () => {
               <td className="p-2 h-14">{user.user_name}</td>
               <td className="p-2 h-14">{user.user_position}</td>
               <td className="p-2 h-14 flex justify-center gap-2">
-                <button className="w-7 h-7 transform hover:scale-110 transition">
+                <button 
+                  id="edit"
+                  className="w-7 h-7 transform hover:scale-110 transition">
                   <img src="/src/assets/edit.png" alt="edit" />
                 </button>
                 <button
+                  id="delete"
                   onClick={() => openDeleteDialog()}
                   className="w-7 h-7 transform hover:scale-110 transition"
                 >
@@ -156,6 +164,7 @@ const UserManagement: React.FC = () => {
       <div className="flex justify-end mt-6">
         <div className="flex items-center gap-2">
           <button
+            id="currentPage"
             onClick={() => changePage(1)}
             className="px-3 py-1 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892]"
             disabled={currentPage === 1}
@@ -165,6 +174,7 @@ const UserManagement: React.FC = () => {
 
           {getPageNumbers().map((pageNum) => (
             <button
+              id="pageNum"
               key={pageNum}
               onClick={() => changePage(pageNum)}
               className={`px-3 py-1 rounded-xl cursor-pointer ${
@@ -178,6 +188,7 @@ const UserManagement: React.FC = () => {
           ))}
 
           <button
+            id="lastPage"
             onClick={() => changePage(totalPages)}
             className="px-3 py-1 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892]"
             disabled={currentPage === totalPages}

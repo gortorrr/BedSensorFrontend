@@ -1,7 +1,8 @@
 // src/pages/PatientManagement.tsx
 import React, { useEffect, useState } from "react";
 import Icon from "@mdi/react";
-import { mdiMagnify, mdiPlus } from "@mdi/js";
+// import { mdiMagnify, mdiPlus } from "@mdi/js";
+import { mdiMagnify } from "@mdi/js";
 import { Patient } from "../../types/patient";
 import DeletePatientDialog from "../../components/Managements/Patient/DeletePatientDialog";
 import PatientDialog from "../../components/Managements/Patient/PatientDialog";
@@ -18,6 +19,7 @@ const PatientManagement: React.FC = () => {
   const [patientData, setpatientData] = useState<Patient[]>([]);
   const bedStore = useBedStore();
   const [bedData, setBedData] = useState<Bed[]>([]);
+  const [isClicked] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState<Patient>({
     patient_id: 0,
     patient_name: "",
@@ -150,10 +152,13 @@ const PatientManagement: React.FC = () => {
 
         <button
           id="btnAddPatient"
-          className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer"
+          className={`flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md transform transition-transform duration-200 hover:-translate-y-1 hover:scale-105 cursor-pointer ${
+            isClicked ? "animate-jump" : ""
+          }`}
           onClick={openAddForm}
         >
-          <Icon path={mdiPlus} size={1} />
+          {/* <Icon path={mdiPlus} size={1} /> */}
+          <img src="/src/assets/btnManagement/AddUser.png" alt="abbPatient" className="w-5" />
           <span>เพิ่มผู้ป่วย</span>
         </button>
       </div>
@@ -187,13 +192,13 @@ const PatientManagement: React.FC = () => {
         <td className="p-2 h-16 py-4 text-center">
           {(currentPage - 1) * itemsPerPage + index + 1}
         </td>
-        <td className="p-2 h-16">{p.patient_name ?? "-"}</td>
-        <td className="p-2 h-16">{p.patient_age ?? "-"}</td>
-        <td className="p-2 h-16">{p.patient_gender ?? "-"}</td>
-        <td className="p-2 h-16">{p.patient_bloodtype ?? "-"}</td>
-        <td className="p-2 h-16">{p.patient_disease ?? "-"}</td>
-        <td className="p-2 h-16">{p.patient_status ?? "-"}</td>
-        <td className="p-2 h-16">{p.patient_date_in ?? "-"}</td>
+        <td className="p-2 h-16 py-4 text-center">{p.patient_name ?? "-"}</td>
+        <td className="p-2 h-16 py-4 text-center">{p.patient_age ?? "-"}</td>
+        <td className="p-2 h-16 py-4 text-center">{p.patient_gender ?? "-"}</td>
+        <td className="p-2 h-16 py-4 text-center">{p.patient_bloodtype ?? "-"}</td>
+        <td className="p-2 h-16 py-4 text-center">{p.patient_disease ?? "-"}</td>
+        <td className="p-2 h-16 py-4 text-center">{p.patient_status ?? "-"}</td>
+        <td className="p-2 h-16 py-4 text-center">{p.patient_date_in ?? "-"}</td>
 
         {/* ✅ เพิ่มข้อมูลอาคาร ห้อง เตียง */}
         <td className="p-2 h-16">

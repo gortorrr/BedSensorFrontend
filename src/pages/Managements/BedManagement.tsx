@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Icon from "@mdi/react";
-import { mdiMagnify, mdiPlus } from "@mdi/js";
+import { mdiMagnify } from "@mdi/js";
 import { Bed } from "../../types/bed";
 
 const BedManagement: React.FC = () => {
@@ -159,6 +159,7 @@ const BedManagement: React.FC = () => {
       <div className="flex space-x-4 justify-between mb-8">
         <div className="relative flex-auto">
           <input
+            id="searchBed"
             type="text"
             placeholder="ค้นหาเตียงผู้ป่วย"
             value={search}
@@ -175,9 +176,12 @@ const BedManagement: React.FC = () => {
           />
         </div>
 
-        <button className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer">
-          <Icon path={mdiPlus} size={1} />
-          <span>เพิ่มเตียง</span>
+        <button 
+          id="btnAddBed"
+          className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer">
+          {/* <Icon path={mdiPlus} size={1} /> */}
+          <img src="/src/assets/btnManagement/AddBed.png" alt="abbBed" className="w-7" />
+          <span>เพิ่มเตียงใหม่</span>
         </button>
       </div>
 
@@ -185,41 +189,61 @@ const BedManagement: React.FC = () => {
         <thead className="bg-[#B7D6DE] h-16 font-bold text-center">
           <tr>
             <th className="p-2">ลำดับ</th>
-            <th className="p-2">ชื่ออาคาร</th>
+            <th className="p-2">อาคาร</th>
             <th className="p-2">ชั้น</th>
-            <th className="p-2">ห้อง</th>
-            <th className="p-2">ชื่อเตียง</th>
-            <th className="p-2">สถานะการใช้งาน</th>
+            <th className="p-2 pl-12">ห้อง</th>
+            <th className="p-2">หมายเลขเตียง</th>
+            <th className="p-2 text-center">สถานะ</th>
+            <th className="p-2"></th>
           </tr>
         </thead>
         <tbody>
           {paginatedBeds.map((b, index) => (
-            <tr key={b.bed_id} className="text-center bg-white even:bg-[#edf3f6]">
-              <td className="p-2">
+            <tr key={b.bed_id} 
+                className="text-center bg-gradient-to-r from-white via-gray-100 to-white shadow-md even:bg-gradient-to-r even:from-[#A1B5BC] even:via-[#D1DFE5] even:to-[#e4ecef]">
+              <td className="p-2 h-16 py-4 text-center">
                 {(currentPage - 1) * itemsPerPage + index + 1}
               </td>
-              <td className="p-2">{b.room.floor.building.building_name}</td>
-              <td className="p-2">{b.room.floor.floor_name}</td>
-              <td className="p-2">{b.room.room_name}</td>
-              <td className="p-2">{b.bed_name}</td>
+              <td className="p-2 h-16 py-4 text-center">{b.room.floor.building.building_name}</td>
+              <td className="p-2 h-16 py-4 text-center">{b.room.floor.floor_name}</td>
+              <td className="p-2 h-16 py-4 pl-12 text-center">{b.room.room_name}</td>
+              <td className="p-2 h-16 py-4 text-center">{b.bed_name}</td>
               <td
-                className={`p-2 h-16 font-semibold ${
+                className={`p-2 h-16 py-4 text-center font-semibold ${
                   b.bed_activated ? "text-green-600" : "text-red-600"
                 }`}
               >
                 {b.bed_activated ? "Active" : "Inactive"}
               </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
 
+
+      <td className="p-2 h-16 py-4 pr-7 flex justify-end gap-2 text-right">
+        <button
+            id="edit"
+            // onClick={() => }
+            className="mx-1 cursor-pointer w-7 h-7 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
+          >
+            <img src="/src/assets/edit.png" alt="edit" />
+          </button>
+          <button
+            id="delete"
+            // onClick={() => }
+            className="mx-1 cursor-pointer w-7 h-7 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
+          >
+            <img src="/src/assets/delete.png" alt="delete" />
+          </button>
+      </td>
+    </tr>
+  ))}
+  </tbody>
+</table>
       {/* Pagination */}
       <div className="flex justify-end mt-6">
         <div className="flex items-center gap-2">
           <button
+            id="currentPage"
             onClick={() => changePage(1)}
-            className="px-3 py-1 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892]"
+            className="px-3 py-1 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] cursor-pointer"
             disabled={currentPage === 1}
           >
             &laquo; หน้าแรก
@@ -227,6 +251,7 @@ const BedManagement: React.FC = () => {
 
           {getPageNumbers().map((pageNum) => (
             <button
+              id="pageNum"
               key={pageNum}
               onClick={() => changePage(pageNum)}
               className={`px-3 py-1 rounded-xl cursor-pointer ${
@@ -240,8 +265,9 @@ const BedManagement: React.FC = () => {
           ))}
 
           <button
+            id="lastPage"
             onClick={() => changePage(totalPages)}
-            className="px-3 py-1 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892]"
+            className="px-3 py-1 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] cursor-pointer"
             disabled={currentPage === totalPages}
           >
             หน้าสุดท้าย &raquo;

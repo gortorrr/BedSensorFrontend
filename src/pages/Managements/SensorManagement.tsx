@@ -1,7 +1,7 @@
 // src/pages/SensorManagement.tsx
 import React, { useEffect, useState } from "react";
 import { Sensor } from "../../types/sensor";
-import { mdiMagnify, mdiPlus } from "@mdi/js";
+import { mdiMagnify  } from "@mdi/js";
 import Icon from "@mdi/react";
 import SensorDialog from "../../components/Managements/Sensor/SensorDialog";
 import { useSensorStore } from "../../store/sensorStore";
@@ -164,7 +164,8 @@ const SensorManagement: React.FC = () => {
           }`}
           onClick={openDialogForAdd}
         >
-          <Icon path={mdiPlus} size={1} />
+          {/* <Icon path={mdiPlus} size={1} /> */}
+          <img src="/src/assets/btnManagement/AddSensor.png" alt="abbSensor" className="w-7" />
           <span>เพิ่มเซ็นเซอร์</span>
         </button>
       </div>
@@ -180,7 +181,7 @@ const SensorManagement: React.FC = () => {
             <th className="p-2">หมายเลขเตียง</th>
             <th className="p-2">ประเภทเซ็นเซอร์</th>
             <th className="p-2">หน่วย</th>
-            <th className="p-2 pl-6 text-left">สถานะ</th>
+            <th className="p-2 text-center">สถานะ</th>
             <th className="p-2 text-center"></th>
           </tr>
         </thead>
@@ -214,7 +215,7 @@ const SensorManagement: React.FC = () => {
               <td className="p-2 h-16 py-4 text-center">
                 {sensor.sensor_unit}
               </td>
-              <td className="p-2 pl-6 h-16 py-4 text-left">
+              <td className="p-2 h-16 py-4 text-center">
                 <span
                   className={
                     sensor.sensor_status
