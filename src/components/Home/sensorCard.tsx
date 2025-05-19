@@ -146,28 +146,28 @@ const SensorCard: React.FC<Props> = ({
             <div className="relative w-full h-1/3">
               <h5
                 className="text-2xl font-bold text-center m-0 "
-                id="sensorValue"
+                
               >
                 {selectedSensor ? (
                   // ตรวจสอบชนิดของเซ็นเซอร์และจัดการตำแหน่ง
                   selectedSensor.sensor_name === "Heart Rate" ? (
-                    <div className="px-4">
+                    <div id="heartSensorValue" className="px-4">
                       {selectedSensor.history_value_sensor?.slice(-1)[0]
                         ?.history_value_sensor_value || "-"}
                     </div>
                   ) : selectedSensor.sensor_name === "SpO2 Sensor" ? (
-                    <div className="pr-4">
+                    <div id="spo2SensorValue" className="pr-4">
                       {selectedSensor.history_value_sensor?.slice(-1)[0]
                         ?.history_value_sensor_value || "-"}
                     </div>
                   ) : selectedSensor.sensor_name === "Respiration" ? (
-                    <div className="px-0.9">
+                    <div id="respiSensorValue" className="px-0.9">
                       {selectedSensor.history_value_sensor?.slice(-1)[0]
                         ?.history_value_sensor_value || "-"}
                     </div>
                   ) : (
                     // หากเป็นเซ็นเซอร์อื่นๆ
-                    <div className="px-4">
+                    <div id="noSensorValue" className="px-4">
                       {selectedSensor.history_value_sensor?.slice(-1)[0]
                         ?.history_value_sensor_value || "-"}
                     </div>
@@ -193,10 +193,10 @@ const SensorCard: React.FC<Props> = ({
         </>
       ) : (
         <div
-          id="addSensor"
+          
           className="flex items-center justify-center cursor-pointer pt-6 "
         >
-          <i className="bi bi-patch-plus-fill text-4xl text-[#2E5361] "></i>
+          <i id="addSensor" className="bi bi-patch-plus-fill text-4xl text-[#2E5361] "></i>
         </div>
       )}
       {isDialogOpen && patient && (
