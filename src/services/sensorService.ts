@@ -36,7 +36,12 @@ export const sensorService = {
     const res = await http.post("/sensors", sensor);
     return res;
   },
-  async deleteSensor(sensor_id:number) {
+  async deleteSensor(sensor_id: number) {
     await http.delete(`/sensors/${sensor_id}`);
+  },
+
+  async editSensor(sensor_id: number, sensor: Sensor) {
+    const res = await http.patch(`/sensors/edit/${sensor_id}`, sensor);
+    return res;
   },
 };
