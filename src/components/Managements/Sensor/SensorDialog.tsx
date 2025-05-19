@@ -47,7 +47,9 @@ const SensorDialog: React.FC<SensorDialogProps> = ({
       handleClose();
       window.location.reload();
     } else {
-      console.log("สำหรับ edit");
+      sensorStore.editSensor(sensorData.sensor_id, sensorData);
+      handleClose();
+      window.location.reload();
     }
   };
 
