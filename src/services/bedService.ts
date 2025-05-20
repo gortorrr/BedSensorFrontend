@@ -97,4 +97,8 @@ export const bedService = {
     const res = await http.get(`/beds/${bed_id}`);
     return res.data;
   },
+  async getBeds() {
+    const res = await http.get(`/beds`);
+    return res.data;
+  },
 };

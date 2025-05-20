@@ -18,6 +18,7 @@ interface BedStore {
   getLocations: () => Promise<Building[]>;
   getBedsFree: () => Promise<Bed[]>;
   getBed: (bed_id: number) => Promise<Bed>;
+  getBeds: () => Promise<Bed[]>;
   // removePatientFromBed: (bed_id: number, patient_id: number) => Promise<void>;
 }
 
@@ -75,6 +76,10 @@ export const useBedStore = create<BedStore>((set) => ({
   },
   getBed: async (bed_id: number) => {
     const data = bedService.getBed(bed_id);
+    return data;
+  },
+  getBeds: async () => {
+    const data = bedService.getBeds();
     return data;
   },
 

@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Icon from "@mdi/react";
 import { mdiMagnify } from "@mdi/js";
 import { Bed } from "../../types/bed";
 import DeleteBedDialog from "../../components/Managements/Bed/DeleteBedDialog";
+import { useBedStore } from "../../store/bedStore";
 
 const BedManagement: React.FC = () => {
   const [search, setSearch] = useState("");
@@ -10,100 +11,16 @@ const BedManagement: React.FC = () => {
   const itemsPerPage = 10;
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedBedId, setSelectedBedId] = useState<number | null>(null);
-
+  const bedStore = useBedStore();
   // mock data
-  const bedData: Bed[] = [
-    {
-      bed_id: 1,
-      bed_name: "5",
-      bed_activated: true,
-      room: {
-        room_id: 1,
-        room_name: "1610",
-        floor: {
-          floor_id: 1,
-          floor_name: "1",
-          building: {
-            building_id: 1,
-            building_name: "อาคารผู้ป่วยใน",
-          },
-        },
-      },
-      sensors: [],
-    },
-    {
-      bed_id: 2,
-      bed_name: "2",
-      bed_activated: true,
-      room: {
-        room_id: 2,
-        room_name: "1605",
-        floor: {
-          floor_id: 1,
-          floor_name: "1",
-          building: {
-            building_id: 1,
-            building_name: "อาคารผู้ป่วยใน",
-          },
-        },
-      },
-      sensors: [],
-    },
-    {
-      bed_id: 3,
-      bed_name: "4",
-      bed_activated: false,
-      room: {
-        room_id: 3,
-        room_name: "1606",
-        floor: {
-          floor_id: 1,
-          floor_name: "1",
-          building: {
-            building_id: 1,
-            building_name: "อาคารผู้ป่วยใน",
-          },
-        },
-      },
-      sensors: [],
-    },
-    {
-      bed_id: 4,
-      bed_name: "7",
-      bed_activated: true,
-      room: {
-        room_id: 4,
-        room_name: "1606",
-        floor: {
-          floor_id: 1,
-          floor_name: "1",
-          building: {
-            building_id: 1,
-            building_name: "อาคารผู้ป่วยใน",
-          },
-        },
-      },
-      sensors: [],
-    },
-    {
-      bed_id: 5,
-      bed_name: "10",
-      bed_activated: true,
-      room: {
-        room_id: 5,
-        room_name: "1607",
-        floor: {
-          floor_id: 1,
-          floor_name: "1",
-          building: {
-            building_id: 1,
-            building_name: "อาคารผู้ป่วยใน",
-          },
-        },
-      },
-      sensors: [],
-    },
-  ];
+  const [bedData,setBedData] = useState<Bed[]>([])
+    useEffect(() => {
+    const fetchAllData = async () => {
+      const resBeds = await bedStore.getBeds();
+      setBedData(resBeds);
+    };
+    fetchAllData();
+  }, []);
   const openDeleteDialog = (bedId: number) => {
     setSelectedBedId(bedId);
     setIsDeleteDialogOpen(true);
