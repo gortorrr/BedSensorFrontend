@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import Icon from "@mdi/react";
 import { mdiMagnify } from "@mdi/js";
 import { Bed } from "../../types/bed";
+import DeleteBedDialog from "../../components/Managements/Bed/DeleteBedDialog";
 
 const BedManagement: React.FC = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [selectedBedId, setSelectedBedId] = useState<number | null>(null);
 
   // mock data
   const bedData: Bed[] = [
@@ -101,6 +104,22 @@ const BedManagement: React.FC = () => {
       sensors: [],
     },
   ];
+  const openDeleteDialog = (bedId: number) => {
+    setSelectedBedId(bedId);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    // ทำลบเตียงตรงนี้ เช่น เรียก API หรือ filter ออกจาก array
+    console.log("Deleting bed with ID:", selectedBedId);
+    setIsDeleteDialogOpen(false);
+    setSelectedBedId(null);
+  };
+
+  const handleCancelDelete = () => {
+    setIsDeleteDialogOpen(false);
+    setSelectedBedId(null);
+  };
 
   const filteredBeds = bedData.filter((b) => {
     const query = search.toLowerCase();
@@ -227,7 +246,7 @@ const BedManagement: React.FC = () => {
           </button>
           <button
             id="delete"
-            // onClick={() => }
+             onClick={() => openDeleteDialog(b.bed_id)}
             className="mx-1 cursor-pointer w-7 h-7 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
           >
             <img src="/src/assets/delete.png" alt="delete" />
@@ -273,6 +292,11 @@ const BedManagement: React.FC = () => {
             หน้าสุดท้าย &raquo;
           </button>
         </div>
+        <DeleteBedDialog
+        isOpen={isDeleteDialogOpen}
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+        />
       </div>
     </div>
   );
