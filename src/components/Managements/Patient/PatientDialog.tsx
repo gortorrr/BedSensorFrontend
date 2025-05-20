@@ -174,7 +174,7 @@ const PatientDialog: React.FC<PatientDialogProps> = ({
               />
             </div>
 
-            <div className="col-span-2">
+            <div>
               <label className="block mb-1 text-sm text-gray-700">
                 โรคประจำตัว
               </label>
