@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
+import axios from "axios";
 import { Patient } from "../../../types/patient";
 
 interface PatientDialogProps {
@@ -15,16 +16,52 @@ const PatientDialog: React.FC<PatientDialogProps> = ({
   initialPatientData,
 }) => {
   const [patientData, setPatientData] = useState<Patient>(initialPatientData);
+  const [image, setImage] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
 
   useEffect(() => {
-    if (isOpen) {
-      setPatientData(initialPatientData);
+  if (isOpen) {
+    setPatientData(initialPatientData);
+    setImage(null);
+    console.log(initialPatientData.image_path)
+    if (initialPatientData.image_path) {
+      setPreview(`http://localhost:8000${initialPatientData.image_path}`);
+    } else {
+      setPreview(null);
     }
-    console.log(initialPatientData);
-  }, [isOpen]);
+  }
+}, [isOpen, initialPatientData]);
 
-  const handleClose = () => {
-    onClose();
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file);
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+
+    Object.entries(patientData).forEach(([key, value]) => {
+      formData.append(key, value as string);
+    });
+
+    if (image) {
+      formData.append("file", image);
+    }
+
+    try {
+      await axios.post(`http://localhost:8000/patients/${initialPatientData.patient_id}/upload_image`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      alert("บันทึกสำเร็จ");
+      onClose();
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+      alert("เกิดข้อผิดพลาดในการบันทึก");
+    }
   };
 
   if (!isOpen) return null;
@@ -49,49 +86,49 @@ const PatientDialog: React.FC<PatientDialogProps> = ({
         className="fixed inset-0 z-50 flex justify-center items-center"
       >
         <div className="bg-white p-6 rounded-lg shadow-lg w-[700px] max-h-[90vh] overflow-auto">
-          {initialPatientData.patient_id !== 0 || undefined ? (
-            <h2 className="text-2xl font-semibold mb-4 text-center">
-              แก้ไขข้อมูลผู้ป่วย
-            </h2>
-          ) : (
-            <h2 className="text-2xl font-semibold mb-4 text-center">
-              เพิ่มข้อมูลผู้ป่วย
-            </h2>
-          )}
+          <h2 className="text-2xl font-semibold mb-4 text-center">
+            {initialPatientData.patient_id !== 0
+              ? "แก้ไขข้อมูลผู้ป่วย"
+              : "เพิ่มข้อมูลผู้ป่วย"}
+          </h2>
 
-          <div className="grid grid-cols-2 gap-4">
-            {/* <div>
-              <label className="block mb-1 text-sm text-gray-700">
-                รหัสผู้ป่วย
-              </label>
+          {/* รูปภาพ */}
+          <div className="col-span-2 flex justify-center mb-4">
+            <label className="cursor-pointer relative w-32 h-32 rounded-md border border-gray-300 flex items-center justify-center overflow-hidden shadow-md hover:shadow-lg transition">
+              {preview ? (
+                <img src={preview} alt="preview" className="object-cover w-full h-full" />
+              ) : (
+                <img
+                  src="/default-user-icon.png"
+                  alt="default"
+                  className="w-12 h-12 opacity-50"
+                />
+              )}
               <input
-                type="number"
-                value={patientData.patient_id}
-                onChange={(e) =>
-                  setPatientData({
-                    ...patientData,
-                    patient_id: Number(e.target.value),
-                  })
-                }
-                placeholder="กรุณากรอกรหัสผู้ป่วย"
-                className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="absolute inset-0 opacity-0 cursor-pointer"
               />
-            </div> */}
+              {!preview && (
+                <div className="absolute bottom-1 right-1 bg-white rounded-full p-1 shadow">
+                  <span className="text-xl text-gray-600 font-bold">+</span>
+                </div>
+              )}
+            </label>
+          </div>
 
+          {/* ฟอร์มข้อมูล */}
+          <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block mb-1 text-sm text-gray-700">
-                ชื่อ-นามสกุล
-              </label>
+              <label className="block mb-1 text-sm text-gray-700">ชื่อ-นามสกุล</label>
               <input
                 type="text"
                 value={patientData.patient_name}
                 placeholder="กรุณากรอกชื่อ-นามสกุล"
                 className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
                 onChange={(e) =>
-                  setPatientData({
-                    ...patientData,
-                    patient_name: e.target.value,
-                  })
+                  setPatientData({ ...patientData, patient_name: e.target.value })
                 }
               />
             </div>
@@ -118,10 +155,7 @@ const PatientDialog: React.FC<PatientDialogProps> = ({
               <select
                 value={patientData.patient_gender}
                 onChange={(e) =>
-                  setPatientData({
-                    ...patientData,
-                    patient_gender: e.target.value,
-                  })
+                  setPatientData({ ...patientData, patient_gender: e.target.value })
                 }
                 className="p-2 border border-gray-300 rounded-md w-full h-11 cursor-pointer"
               >
@@ -134,16 +168,11 @@ const PatientDialog: React.FC<PatientDialogProps> = ({
             </div>
 
             <div>
-              <label className="block mb-1 text-sm text-gray-700">
-                หมู่เลือด
-              </label>
+              <label className="block mb-1 text-sm text-gray-700">หมู่เลือด</label>
               <select
                 value={patientData.patient_bloodtype}
                 onChange={(e) =>
-                  setPatientData({
-                    ...patientData,
-                    patient_bloodtype: e.target.value,
-                  })
+                  setPatientData({ ...patientData, patient_bloodtype: e.target.value })
                 }
                 className="p-2 border border-gray-300 rounded-md w-full h-11 cursor-pointer"
               >
@@ -158,34 +187,24 @@ const PatientDialog: React.FC<PatientDialogProps> = ({
             </div>
 
             <div>
-              <label className="block mb-1 text-sm text-gray-700">
-                วันเกิด
-              </label>
+              <label className="block mb-1 text-sm text-gray-700">วันเกิด</label>
               <input
                 type="date"
                 value={patientData.patient_dob}
                 onChange={(e) =>
-                  setPatientData({
-                    ...patientData,
-                    patient_dob: e.target.value,
-                  })
+                  setPatientData({ ...patientData, patient_dob: e.target.value })
                 }
                 className="p-2 border border-gray-300 rounded-md w-full h-11"
               />
             </div>
 
             <div>
-              <label className="block mb-1 text-sm text-gray-700">
-                โรคประจำตัว
-              </label>
+              <label className="block mb-1 text-sm text-gray-700">โรคประจำตัว</label>
               <input
                 type="text"
                 value={patientData.patient_disease}
                 onChange={(e) =>
-                  setPatientData({
-                    ...patientData,
-                    patient_disease: e.target.value,
-                  })
+                  setPatientData({ ...patientData, patient_disease: e.target.value })
                 }
                 placeholder="กรุณากรอกโรคประจำตัว"
                 className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
@@ -197,10 +216,7 @@ const PatientDialog: React.FC<PatientDialogProps> = ({
               <select
                 value={patientData.patient_status}
                 onChange={(e) =>
-                  setPatientData({
-                    ...patientData,
-                    patient_status: e.target.value,
-                  })
+                  setPatientData({ ...patientData, patient_status: e.target.value })
                 }
                 className="p-2 border border-gray-300 rounded-md w-full h-11 cursor-pointer"
               >
@@ -214,31 +230,30 @@ const PatientDialog: React.FC<PatientDialogProps> = ({
             </div>
 
             <div>
-              <label className="block mb-1 text-sm text-gray-700">
-                วันที่เข้ารักษา
-              </label>
+              <label className="block mb-1 text-sm text-gray-700">วันที่เข้ารักษา</label>
               <input
                 type="date"
                 value={patientData.patient_date_in}
                 onChange={(e) =>
-                  setPatientData({
-                    ...patientData,
-                    patient_date_in: e.target.value,
-                  })
+                  setPatientData({ ...patientData, patient_date_in: e.target.value })
                 }
                 className="p-2 border border-gray-300 rounded-md w-full h-11"
               />
             </div>
           </div>
 
+          {/* ปุ่ม */}
           <div className="flex justify-end gap-4 mt-6">
             <button
-              onClick={handleClose}
+              onClick={onClose}
               className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400"
             >
               ยกเลิก
             </button>
-            <button className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892]">
+            <button
+              onClick={handleSubmit}
+              className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892]"
+            >
               บันทึก
             </button>
           </div>

@@ -7,8 +7,8 @@ import { Patient } from "../../types/patient";
 import DeletePatientDialog from "../../components/Managements/Patient/DeletePatientDialog";
 import PatientDialog from "../../components/Managements/Patient/PatientDialog";
 import { usePatientStore } from "../../store/patientStore";
-import { useBedStore } from "../../store/bedStore"; // ปรับ path ตามจริง
 import { Bed } from "../../types/bed";
+import { bedService } from "../../services/bedService";
 
 
 const PatientManagement: React.FC = () => {
@@ -17,7 +17,6 @@ const PatientManagement: React.FC = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const patientStore = usePatientStore()
   const [patientData, setpatientData] = useState<Patient[]>([]);
-  const bedStore = useBedStore();
   const [bedData, setBedData] = useState<Bed[]>([]);
   const [isClicked] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState<Patient>({
@@ -56,7 +55,7 @@ const PatientManagement: React.FC = () => {
   const fetchAllData = async () => {
     const resPatients = await patientStore.getPatients();
     setpatientData(resPatients);
-    setBedData(bedStore.beds);
+    setBedData(await bedService.loadBedActivatedAll());
   };
   fetchAllData();
 }, []);

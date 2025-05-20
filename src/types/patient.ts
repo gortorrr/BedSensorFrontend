@@ -8,4 +8,5 @@ export interface Patient {
   patient_status?: string;
   patient_date_in?: string;
   patient_bloodtype?: string;
+  image_path?:string;
 }
