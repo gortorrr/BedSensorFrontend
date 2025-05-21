@@ -5,11 +5,14 @@ import { mdiMagnify } from "@mdi/js";
 // import { mdiMagnify, mdiAccountPlus } from "@mdi/js";
 import { User } from "../../types/user";
 import DeleteUserDialog from "../../components/Managements/User/DeleteUserDialog";
+import UserDialog from "../../components/Managements/User/UserDialog";
 
 const UserManagement: React.FC = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [userDialogOpen, setUserDialogOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const itemsPerPage = 10;
 
   const userData: User[] = [
@@ -36,6 +39,21 @@ const UserManagement: React.FC = () => {
     },
     // เพิ่ม mock data ตามต้องการเพื่อให้เห็น pagination
   ];
+
+  const openAddUserDialog = () => {
+    setSelectedUser(null); // สำหรับเพิ่มใหม่ ไม่ใส่ user
+    setUserDialogOpen(true);
+  };
+
+  const openEditUserDialog = (user: User) => {
+    setSelectedUser(user); // ใส่ข้อมูลเพื่อแก้ไข
+    setUserDialogOpen(true);
+  };
+
+  const closeUserDialog = () => {
+    setUserDialogOpen(false);
+    setSelectedUser(null);
+  };
 
   const openDeleteDialog = () => {
     setDeleteDialogOpen(true);
@@ -112,9 +130,10 @@ const UserManagement: React.FC = () => {
 
         <button 
           id="btnAddUser"
-          className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer">
-          {/* <Icon path={mdiAccountPlus} size={1} /> */}
-          <img src="/src/assets/btnManagement/AddUser.png" alt="abbUser" className="w-5" />
+          onClick={openAddUserDialog}
+          className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer"
+        >
+          <img src="/src/assets/btnManagement/AddUser.png" alt="addUser" className="w-5" />
           <span>เพิ่มผู้ใช้งานระบบ</span>
         </button>
       </div>
@@ -144,7 +163,9 @@ const UserManagement: React.FC = () => {
               <td className="p-2 h-14 flex justify-center gap-2">
                 <button 
                   id="edit"
-                  className="w-7 h-7 transform hover:scale-110 transition">
+                  onClick={() => openEditUserDialog(user)}
+                  className="w-7 h-7 transform hover:scale-110 transition"
+                >
                   <img src="/src/assets/edit.png" alt="edit" />
                 </button>
                 <button
@@ -199,6 +220,11 @@ const UserManagement: React.FC = () => {
         <DeleteUserDialog
           isOpen={deleteDialogOpen}
           onCancel={closeDeleteDialog}
+        />
+        <UserDialog
+          isOpen={userDialogOpen}
+          user={selectedUser}
+          onCancel={closeUserDialog}
         />
       </div>
     </div>
