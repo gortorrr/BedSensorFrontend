@@ -12,12 +12,18 @@ const UserManagement: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [userDialogOpen, setUserDialogOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedUser, setSelectedUser] = useState<User>({
+        user_id: 0,
+        user_name: '',
+        user_position: '',
+        user_username: '',
+        user_password: '',
+      });
   const itemsPerPage = 10;
 
   const userData: User[] = [
     {
-      user_id: 1,
+      user_id: 10,
       user_username: "User1",
       user_name: "เมษา ใจดี",
       user_position: "หัวหน้าพยาบาล",
@@ -41,7 +47,7 @@ const UserManagement: React.FC = () => {
   ];
 
   const openAddUserDialog = () => {
-    setSelectedUser(null); // สำหรับเพิ่มใหม่ ไม่ใส่ user
+     // สำหรับเพิ่มใหม่ ไม่ใส่ user
     setUserDialogOpen(true);
   };
 
@@ -52,10 +58,10 @@ const UserManagement: React.FC = () => {
 
   const closeUserDialog = () => {
     setUserDialogOpen(false);
-    setSelectedUser(null);
   };
 
-  const openDeleteDialog = () => {
+  const openDeleteDialog = (user:User) => {
+    setSelectedUser(user); 
     setDeleteDialogOpen(true);
   };
 
@@ -170,7 +176,7 @@ const UserManagement: React.FC = () => {
                 </button>
                 <button
                   id="delete"
-                  onClick={() => openDeleteDialog()}
+                  onClick={() => openDeleteDialog(user)}
                   className="w-7 h-7 transform hover:scale-110 transition"
                 >
                   <img src="/src/assets/delete.png" alt="delete" />
@@ -220,6 +226,7 @@ const UserManagement: React.FC = () => {
         <DeleteUserDialog
           isOpen={deleteDialogOpen}
           onCancel={closeDeleteDialog}
+          initialUserData={selectedUser}
         />
         <UserDialog
           isOpen={userDialogOpen}

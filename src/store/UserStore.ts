@@ -5,7 +5,7 @@ interface UserStore {
   deleteUser: (patient_id: number) => void;
 }
 
-export const usePatientStore = create<UserStore>(() => ({
+export const useUserStore = create<UserStore>(() => ({
   deleteUser: async (user_id: number) => {
     const res = await userService.deleteUser(user_id);
     console.log("deleted target", res);
