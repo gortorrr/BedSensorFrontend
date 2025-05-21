@@ -89,7 +89,7 @@ const BedConfig: React.FC = () => {
     if (bed) {
       const bedSaveConfig: BedSaveConfig = {
         bed_id: bed.bed_id,
-        patient_id: bed.patient_id ?? 0,
+        patient_id: bed.patient_id ?? null,
         sensors: bed.sensors.map((sensor) => ({
           sensor_id: sensor.sensor_id,
           bed_id: bed.bed_id,

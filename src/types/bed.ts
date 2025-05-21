@@ -15,6 +15,6 @@ export interface Bed {
 
 export interface BedSaveConfig {
   bed_id: number;
-  patient_id: number;
+  patient_id: number | null;
   sensors: { sensor_id: number; bed_id: number }[];
 }
