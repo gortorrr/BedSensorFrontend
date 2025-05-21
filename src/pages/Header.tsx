@@ -34,28 +34,28 @@ export default function Header({
   const notificationCount = emergencyDatas?.length || 0;
   const notificationCountSos = sosDatas?.length || 0;
 
-  // Watch for changes in emergencyDatas and sosDatas
-  useEffect(() => {
-    if (sosDatas.length > 0) {
-      // toggleSosAlert(); // Trigger SOS alert toggle
-      setIsSosAlertOpen(true);
-      setShowSosAlert(true);
-      setShowEmergencyAlert(false);
-      notificationStore.setSelectedAlertType("ต้องการความช่วยเหลือ");
-    }
-  }, [sosDatas.length]); // Dependency on sosDatas
+  // // Watch for changes in emergencyDatas and sosDatas
+  // useEffect(() => {
+  //   if (sosDatas.length > 0) {
+  //     // toggleSosAlert(); // Trigger SOS alert toggle
+  //     setIsSosAlertOpen(true);
+  //     setShowSosAlert(true);
+  //     setShowEmergencyAlert(false);
+  //     notificationStore.setSelectedAlertType("ต้องการความช่วยเหลือ");
+  //   }
+  // }, [sosDatas.length]); // Dependency on sosDatas
 
-  useEffect(() => {
-    if (emergencyDatas.length > 0) {
-      // ใช้ setTimeout เพื่อหน่วงเวลา 1 วินาที หลังจากการแจ้งเตือน SOS
-      setTimeout(() => {
-        setIsEmergencyAlertOpen(true);
-        setShowEmergencyAlert(true);
-        setShowSosAlert(false); // ปิด SOS ถ้า Emergency เปิด
-        notificationStore.setSelectedAlertType("แจ้งเตือนฉุกเฉิน"); // Trigger emergency alert toggle // Trigger emergency alert toggle
-      }, 3000); // หน่วงเวลา 3 วินาที
-    }
-  }, [emergencyDatas.length]); // Dependency on emergencyDatas
+  // useEffect(() => {
+  //   if (emergencyDatas.length > 0) {
+  //     // ใช้ setTimeout เพื่อหน่วงเวลา 1 วินาที หลังจากการแจ้งเตือน SOS
+  //     setTimeout(() => {
+  //       setIsEmergencyAlertOpen(true);
+  //       setShowEmergencyAlert(true);
+  //       setShowSosAlert(false); // ปิด SOS ถ้า Emergency เปิด
+  //       notificationStore.setSelectedAlertType("แจ้งเตือนฉุกเฉิน"); // Trigger emergency alert toggle // Trigger emergency alert toggle
+  //     }, 3000); // หน่วงเวลา 3 วินาที
+  //   }
+  // }, [emergencyDatas.length]); // Dependency on emergencyDatas
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);

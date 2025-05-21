@@ -125,7 +125,7 @@ const BedConfig: React.FC = () => {
   };
 
   const handleCancel = () => {
-    navigate(-1);
+    navigate("/");
   };
 
   return (
