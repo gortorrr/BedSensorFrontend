@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
 import axios from "axios";
 import { Patient } from "../../../types/patient";
+import AddUserIcon from "../../../assets/btnManagement/AddUser.png";
 
 interface PatientDialogProps {
   isOpen: boolean;
@@ -20,17 +21,17 @@ const PatientDialog: React.FC<PatientDialogProps> = ({
   const [preview, setPreview] = useState<string | null>(null);
 
   useEffect(() => {
-  if (isOpen) {
-    setPatientData(initialPatientData);
-    setImage(null);
-    console.log(initialPatientData.image_path)
-    if (initialPatientData.image_path) {
-      setPreview(`http://localhost:8000${initialPatientData.image_path}`);
-    } else {
-      setPreview(null);
+    if (isOpen) {
+      setPatientData(initialPatientData);
+      setImage(null);
+      console.log(initialPatientData.image_path);
+      if (initialPatientData.image_path) {
+        setPreview(`http://localhost:8000${initialPatientData.image_path}`);
+      } else {
+        setPreview(null);
+      }
     }
-  }
-}, [isOpen, initialPatientData]);
+  }, [isOpen, initialPatientData]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -52,9 +53,13 @@ const PatientDialog: React.FC<PatientDialogProps> = ({
     }
 
     try {
-      await axios.post(`http://localhost:8000/patients/${initialPatientData.patient_id}/upload_image`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      await axios.post(
+        `http://localhost:8000/patients/${initialPatientData.patient_id}/upload_image`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
       alert("บันทึกสำเร็จ");
       onClose();
       window.location.reload();
@@ -92,153 +97,177 @@ const PatientDialog: React.FC<PatientDialogProps> = ({
               : "เพิ่มข้อมูลผู้ป่วย"}
           </h2>
 
-          {/* รูปภาพ */}
-          <div className="col-span-2 flex justify-center mb-4">
-            <label className="cursor-pointer relative w-32 h-32 rounded-md border border-gray-300 flex items-center justify-center overflow-hidden shadow-md hover:shadow-lg transition">
-              {preview ? (
-                <img src={preview} alt="preview" className="object-cover w-full h-full" />
-              ) : (
-                <img
-                  src="/default-user-icon.png"
-                  alt="default"
-                  className="w-12 h-12 opacity-50"
+          {/* กล่องหลักที่รวมรูปและฟอร์มไว้แนวนอน */}
+          <div className="flex gap-6 mb-4">
+            {/* รูปผู้ป่วย */}
+            <div className="flex-shrink-0">
+              <label className="cursor-pointer relative w-32 h-32 rounded-md border border-gray-300 flex items-center justify-center overflow-hidden shadow-md hover:shadow-lg transition">
+                {preview ? (
+                  <img
+                    src={preview}
+                    alt="preview"
+                    className="object-cover w-full h-full"
+                  />
+                ) : (
+                  <img
+                    src={AddUserIcon}
+                    alt="default"
+                    className="w-20 h-23 opacity-50"
+                  />
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="absolute inset-0 opacity-0 cursor-pointer"
                 />
-              )}
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="absolute inset-0 opacity-0 cursor-pointer"
-              />
-              {!preview && (
-                <div className="absolute bottom-1 right-1 bg-white rounded-full p-1 shadow">
-                  <span className="text-xl text-gray-600 font-bold">+</span>
-                </div>
-              )}
-            </label>
-          </div>
-
-          {/* ฟอร์มข้อมูล */}
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block mb-1 text-sm text-gray-700">ชื่อ-นามสกุล</label>
-              <input
-                type="text"
-                value={patientData.patient_name}
-                placeholder="กรุณากรอกชื่อ-นามสกุล"
-                className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
-                onChange={(e) =>
-                  setPatientData({ ...patientData, patient_name: e.target.value })
-                }
-              />
+              </label>
             </div>
 
-            <div>
-              <label className="block mb-1 text-sm text-gray-700">อายุ</label>
-              <input
-                type="number"
-                min={1}
-                value={patientData.patient_age}
-                placeholder="กรุณากรอกอายุ"
-                className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
-                onChange={(e) =>
-                  setPatientData({
-                    ...patientData,
-                    patient_age: Number(e.target.value),
-                  })
-                }
-              />
-            </div>
+            {/* ฟอร์มผู้ป่วย */}
+            <div className="grid grid-cols-2 gap-4 flex-grow">
+              <div>
+                <label className="block mb-1 text-sm text-gray-700">
+                  รหัสผู้ป่วย
+                </label>
+                <input
+                  type="text"
+                  value={patientData.patient_id}
+                  className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 bg-gray-100"
+                  disabled
+                />
+              </div>
 
-            <div>
-              <label className="block mb-1 text-sm text-gray-700">เพศ</label>
-              <select
-                value={patientData.patient_gender}
-                onChange={(e) =>
-                  setPatientData({ ...patientData, patient_gender: e.target.value })
-                }
-                className="p-2 border border-gray-300 rounded-md w-full h-11 cursor-pointer"
-              >
-                <option value="" disabled hidden>
-                  กรุณาเลือกเพศ
-                </option>
-                <option value="ชาย">ชาย</option>
-                <option value="หญิง">หญิง</option>
-              </select>
-            </div>
+              <div>
+                <label className="block mb-1 text-sm text-gray-700">
+                  ชื่อ-นามสกุล
+                </label>
+                <input
+                  type="text"
+                  value={patientData.patient_name}
+                  placeholder="กรุณากรอกชื่อ-นามสกุล"
+                  className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
+                  onChange={(e) =>
+                    setPatientData({
+                      ...patientData,
+                      patient_name: e.target.value,
+                    })
+                  }
+                />
+              </div>
 
-            <div>
-              <label className="block mb-1 text-sm text-gray-700">หมู่เลือด</label>
-              <select
-                value={patientData.patient_bloodtype}
-                onChange={(e) =>
-                  setPatientData({ ...patientData, patient_bloodtype: e.target.value })
-                }
-                className="p-2 border border-gray-300 rounded-md w-full h-11 cursor-pointer"
-              >
-                <option value="" disabled hidden>
-                  กรุณาเลือกหมู่เลือด
-                </option>
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="AB">AB</option>
-                <option value="O">O</option>
-              </select>
-            </div>
+              <div>
+                <label className="block mb-1 text-sm text-gray-700">อายุ</label>
+                <input
+                  type="number"
+                  min={1}
+                  value={patientData.patient_age}
+                  placeholder="กรุณากรอกอายุ"
+                  className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
+                  onChange={(e) =>
+                    setPatientData({
+                      ...patientData,
+                      patient_age: Number(e.target.value),
+                    })
+                  }
+                />
+              </div>
 
-            <div>
-              <label className="block mb-1 text-sm text-gray-700">วันเกิด</label>
-              <input
-                type="date"
-                value={patientData.patient_dob}
-                onChange={(e) =>
-                  setPatientData({ ...patientData, patient_dob: e.target.value })
-                }
-                className="p-2 border border-gray-300 rounded-md w-full h-11"
-              />
-            </div>
+              <div>
+                <label className="block mb-1 text-sm text-gray-700">
+                  วันเกิด
+                </label>
+                <input
+                  type="date"
+                  value={patientData.patient_dob}
+                  onChange={(e) =>
+                    setPatientData({
+                      ...patientData,
+                      patient_dob: e.target.value,
+                    })
+                  }
+                  className="p-2 border border-gray-300 rounded-md w-full h-11"
+                />
+              </div>
 
-            <div>
-              <label className="block mb-1 text-sm text-gray-700">โรคประจำตัว</label>
-              <input
-                type="text"
-                value={patientData.patient_disease}
-                onChange={(e) =>
-                  setPatientData({ ...patientData, patient_disease: e.target.value })
-                }
-                placeholder="กรุณากรอกโรคประจำตัว"
-                className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
-              />
-            </div>
+              <div>
+                <label className="block mb-1 text-sm text-gray-700">เพศ</label>
+                <select
+                  value={patientData.patient_gender}
+                  onChange={(e) =>
+                    setPatientData({
+                      ...patientData,
+                      patient_gender: e.target.value,
+                    })
+                  }
+                  className="p-2 border border-gray-300 rounded-md w-full h-11 cursor-pointer"
+                >
+                  <option value="" disabled hidden>
+                    กรุณาเลือกเพศ
+                  </option>
+                  <option value="ชาย">ชาย</option>
+                  <option value="หญิง">หญิง</option>
+                </select>
+              </div>
 
-            <div>
-              <label className="block mb-1 text-sm text-gray-700">สถานะ</label>
-              <select
-                value={patientData.patient_status}
-                onChange={(e) =>
-                  setPatientData({ ...patientData, patient_status: e.target.value })
-                }
-                className="p-2 border border-gray-300 rounded-md w-full h-11 cursor-pointer"
-              >
-                <option value="" disabled hidden>
-                  กรุณาเลือกสถานะ
-                </option>
-                <option value="stable">คงที่</option>
-                <option value="recover">ฟื้นตัว</option>
-                <option value="crisis">วิกฤต</option>
-              </select>
-            </div>
+              <div>
+                <label className="block mb-1 text-sm text-gray-700">
+                  หมู่เลือด
+                </label>
+                <select
+                  value={patientData.patient_bloodtype}
+                  onChange={(e) =>
+                    setPatientData({
+                      ...patientData,
+                      patient_bloodtype: e.target.value,
+                    })
+                  }
+                  className="p-2 border border-gray-300 rounded-md w-full h-11 cursor-pointer"
+                >
+                  <option value="" disabled hidden>
+                    กรุณาเลือกหมู่เลือด
+                  </option>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="AB">AB</option>
+                  <option value="O">O</option>
+                </select>
+              </div>
 
-            <div>
-              <label className="block mb-1 text-sm text-gray-700">วันที่เข้ารักษา</label>
-              <input
-                type="date"
-                value={patientData.patient_date_in}
-                onChange={(e) =>
-                  setPatientData({ ...patientData, patient_date_in: e.target.value })
-                }
-                className="p-2 border border-gray-300 rounded-md w-full h-11"
-              />
+              <div>
+                <label className="block mb-1 text-sm text-gray-700">
+                  โรคประจำตัว
+                </label>
+                <input
+                  type="text"
+                  value={patientData.patient_disease}
+                  onChange={(e) =>
+                    setPatientData({
+                      ...patientData,
+                      patient_disease: e.target.value,
+                    })
+                  }
+                  placeholder="กรุณากรอกโรคประจำตัว"
+                  className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
+                />
+              </div>
+
+              <div>
+                <label className="block mb-1 text-sm text-gray-700">
+                  วันที่เข้ารักษา
+                </label>
+                <input
+                  type="date"
+                  value={patientData.patient_date_in}
+                  onChange={(e) =>
+                    setPatientData({
+                      ...patientData,
+                      patient_date_in: e.target.value,
+                    })
+                  }
+                  className="p-2 border border-gray-300 rounded-md w-full h-11"
+                />
+              </div>
             </div>
           </div>
 
