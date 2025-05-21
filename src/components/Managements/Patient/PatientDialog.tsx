@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
-import axios from "axios";
 import { Patient } from "../../../types/patient";
 import AddUserIcon from "../../../assets/btnManagement/AddUser.png";
+import { usePatientStore } from "../../../store/patientStore";
 
 interface PatientDialogProps {
   isOpen: boolean;
@@ -19,6 +19,15 @@ const PatientDialog: React.FC<PatientDialogProps> = ({
   const [patientData, setPatientData] = useState<Patient>(initialPatientData);
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const patientStore = usePatientStore();
+
+  const isFormValid =
+    (patientData.patient_name?.trim() ?? "") !== "" &&
+    (patientData.patient_age ?? 0) > 0 &&
+    (patientData.patient_dob?.trim() ?? "") !== "" &&
+    (patientData.patient_gender?.trim() ?? "") !== "" &&
+    (patientData.patient_bloodtype?.trim() ?? "") !== "" &&
+    (patientData.patient_date_in?.trim() ?? "") !== "";
 
   useEffect(() => {
     if (isOpen) {
@@ -42,31 +51,19 @@ const PatientDialog: React.FC<PatientDialogProps> = ({
   };
 
   const handleSubmit = async () => {
-    const formData = new FormData();
-
-    Object.entries(patientData).forEach(([key, value]) => {
-      formData.append(key, value as string);
-    });
-
-    if (image) {
-      formData.append("file", image);
+    if (initialPatientData.patient_id == 0) {
+      const data = await patientStore.addPatient(patientData);
+      initialPatientData.patient_id = data.patient_id;
+    } else {
+      await patientStore.editPatient(patientData);
     }
 
-    try {
-      await axios.post(
-        `http://localhost:8000/patients/${initialPatientData.patient_id}/upload_image`,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
-      alert("บันทึกสำเร็จ");
-      onClose();
-      window.location.reload();
-    } catch (err) {
-      console.error(err);
-      alert("เกิดข้อผิดพลาดในการบันทึก");
+    if (image && initialPatientData.patient_id) {
+      patientStore.addImageToPatient(image, initialPatientData.patient_id);
     }
+    alert("บันทึกสำเร็จ");
+    onClose();
+    window.location.reload();
   };
 
   if (!isOpen) return null;
@@ -270,6 +267,12 @@ const PatientDialog: React.FC<PatientDialogProps> = ({
               </div>
             </div>
           </div>
+          {!isFormValid && (
+            <div className="text-sm text-red-500 text-right mt-2">
+              *กรุณากรอกชื่อ-นามสกุล อายุ วันเกิด เพศ หมู่เลือด
+              และวันที่เข้ารักษาให้ครบถ้วน เพื่อดำเนินการต่อไป
+            </div>
+          )}
 
           {/* ปุ่ม */}
           <div className="flex justify-end gap-4 mt-6">
@@ -281,7 +284,13 @@ const PatientDialog: React.FC<PatientDialogProps> = ({
             </button>
             <button
               onClick={handleSubmit}
-              className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
+              disabled={!isFormValid}
+              className={`px-6 py-2 rounded-xl transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110
+    ${
+      isFormValid
+        ? "bg-[#95BAC3] text-white hover:bg-[#5E8892]"
+        : "bg-gray-300 text-gray-500 cursor-not-allowed"
+    }`}
             >
               บันทึก
             </button>

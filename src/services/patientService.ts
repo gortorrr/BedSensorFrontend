@@ -1,4 +1,3 @@
-import { ca } from "date-fns/locale";
 import { Patient } from "../types/patient";
 import http from "./http";
 
@@ -48,5 +47,12 @@ export const patientService = {
       console.error("Error adding patient:", error);
       throw error;
     }
+  },
+  async addImageToPatient(formData: FormData, patient_id: number) {
+    const res = await http.post(
+      `http://localhost:8000/patients/${patient_id}/upload_image`,
+      formData
+    );
+    return res.data;
   },
 };

@@ -8,6 +8,9 @@ interface PatientStore {
   getPatients: () => Promise<Patient[]>;
   removePatient: (patientId: number | undefined) => void; // Adjusted to number | undefined
   deletePatient: (patient_id: number) => void;
+  addImageToPatient: (image: File, patient_id: number) => void;
+  addPatient: (patient: Patient) => Promise<Patient>;
+  editPatient: (patient: Patient) => void;
 }
 
 export const usePatientStore = create<PatientStore>((set) => ({
@@ -27,8 +30,23 @@ export const usePatientStore = create<PatientStore>((set) => ({
     const res = await patientService.deletePatient(patient_id);
     console.log("deleted target", res);
   },
-   getPatients: async () => {
+  getPatients: async () => {
     const res = await patientService.getPatients();
-    return res as Patient[]
+    return res as Patient[];
+  },
+  addImageToPatient: async (image: File, patient_id: number) => {
+    const formData = new FormData();
+    if (image) {
+      formData.append("file", image);
+    }
+
+    await patientService.addImageToPatient(formData, patient_id);
+  },
+  addPatient: async (patient: Patient) => {
+    const data = await patientService.addPatient(patient);
+    return data;
+  },
+  editPatient: async (patient: Patient) => {
+    await patientService.editPatient(patient.patient_id ?? 0, patient);
   },
 }));

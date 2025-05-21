@@ -27,8 +27,6 @@ const BedManagement: React.FC = () => {
   };
 
   const handleConfirmDelete = () => {
-    // ทำลบเตียงตรงนี้ เช่น เรียก API หรือ filter ออกจาก array
-    // console.log("Deleting bed with ID:", selectedBedId);
     bedStore.deleteBed(selectedBedId ?? 0);
     setIsDeleteDialogOpen(false);
     setSelectedBedId(null);
