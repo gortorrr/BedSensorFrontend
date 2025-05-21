@@ -1,29 +1,87 @@
 import React, { useEffect, useState } from "react";
 import { Bed } from "../types/bed";
+import { Building } from "../types/building";
 import { useBedStore } from "../store/bedStore";
 import { useNavigate } from "react-router-dom";
 
 const AddPatientHome: React.FC = () => {
+  const [buildingOptions, setBuildingOptions] = useState<string[]>([]);
   const [selectedBuilding, setSelectedBuilding] = useState("");
+  const [floorOptions, setFloorOptions] = useState<string[]>([]);
   const [selectedFloor, setSelectedFloor] = useState("");
+  const [roomOptions, setRoomOptions] = useState<string[]>([]);
+  const [selectedRoom, setSelectedRoom] = useState("");
   const [bedsData, setBedsData] = useState<Bed[]>([]);
   const bedStore = useBedStore();
   const navigate = useNavigate();
+  const [$locations, setLocations] = useState<Building[]>([]);
 
   useEffect(() => {
     const fetchBedsFreeData = async () => {
       const res = await bedStore.getBedsFree();
       setBedsData(res);
     };
+    const fetchLocationsData = async () => {
+      const res = await bedStore.getLocations();
+      setLocations(res);
+    };
     fetchBedsFreeData();
+    fetchLocationsData();
   }, []);
 
+  // เมื่อข้อมูลสถานที่โหลดแล้วให้สร้างตัวเลือก "อาคาร"
+  useEffect(() => {
+    const buildings: string[] = [""];
+    $locations.forEach((item) => {
+      buildings.push(item.building_name);
+    });
+    setBuildingOptions(buildings);
+  }, [$locations]);
+
+  // เมื่อเลือกอาคารใหม่ รีเซ็ตชั้นและห้อง และสร้างตัวเลือก "ชั้น"
+  useEffect(() => {
+    setSelectedFloor("");
+    setSelectedRoom("");
+    const floors: string[] = [""];
+    $locations.forEach((item) => {
+      if (item.building_name === selectedBuilding) {
+        item.floor?.forEach((f) => {
+          floors.push(f.floor_name);
+        });
+      }
+    });
+    setFloorOptions(floors);
+  }, [selectedBuilding]);
+
+  // เมื่อเลือกชั้นใหม่ รีเซ็ตห้อง และสร้างตัวเลือก "ห้อง"
+  useEffect(() => {
+    setSelectedRoom("");
+    const rooms: string[] = [""];
+    $locations.forEach((item) => {
+      if (item.building_name === selectedBuilding) {
+        item.floor?.forEach((f) => {
+          if (f.floor_name === selectedFloor) {
+            f.room?.forEach((r) => {
+              rooms.push(r.room_name);
+            });
+          }
+        });
+      }
+    });
+    setRoomOptions(rooms);
+  }, [selectedFloor]);
+
+  // ฟิลเตอร์เตียงว่างตามอาคาร/ชั้น/ห้อง
   const filteredBeds = bedsData.filter((bed) => {
-    return (
-      (selectedBuilding === "" ||
-        bed.room.floor.building.building_name === selectedBuilding) &&
-      (selectedFloor === "" || bed.room.floor.floor_name === selectedFloor)
-    );
+    const matchBuilding =
+      selectedBuilding === "" ||
+      bed.room.floor.building.building_name === selectedBuilding;
+    const matchFloor =
+      selectedFloor === "" || bed.room.floor.floor_name === selectedFloor;
+    const matchRoom =
+      selectedRoom === "" || bed.room.room_name === selectedRoom;
+
+    return matchBuilding && matchFloor && matchRoom;
   });
 
   return (
@@ -41,8 +99,12 @@ const AddPatientHome: React.FC = () => {
             onChange={(e) => setSelectedBuilding(e.target.value)}
             className="border border-gray-400 rounded-lg p-2"
           >
-            <option value="">อาคาร</option>
-            <option value="อาคารผู้ป่วยใน">อาคารผู้ป่วยใน</option>
+            <option value="">เลือกอาคาร</option>
+            {buildingOptions.slice(1).map((option, index) => (
+              <option key={index} value={option}>
+                {option}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -53,10 +115,32 @@ const AddPatientHome: React.FC = () => {
             value={selectedFloor}
             onChange={(e) => setSelectedFloor(e.target.value)}
             className="border border-gray-400 rounded-lg p-2"
+            disabled={!selectedBuilding}
           >
-            <option value="">ชั้น</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
+            <option value="">เลือกชั้น</option>
+            {floorOptions.slice(1).map((option, index) => (
+              <option key={index} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="flex flex-col">
+          <label htmlFor="room">&nbsp;</label>
+          <select
+            id="room"
+            value={selectedRoom}
+            onChange={(e) => setSelectedRoom(e.target.value)}
+            className="border border-gray-400 rounded-lg p-2"
+            disabled={!selectedFloor}
+          >
+            <option value="">เลือกห้อง</option>
+            {roomOptions.slice(1).map((option, index) => (
+              <option key={index} value={option}>
+                {option}
+              </option>
+            ))}
           </select>
         </div>
       </div>
@@ -66,8 +150,8 @@ const AddPatientHome: React.FC = () => {
           <tr>
             <th className="p-2">อาคาร</th>
             <th className="p-2">ชั้น</th>
-            <th className="p-2">หมายเลขห้อง</th>
-            <th className="p-2">เตียง</th>
+            <th className="p-2">ห้อง</th>
+            <th className="p-2">หมายเลขเตียง</th>
             <th className="p-2">ดำเนินการ</th>
           </tr>
         </thead>
