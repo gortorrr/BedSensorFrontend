@@ -101,4 +101,8 @@ export const bedService = {
     const res = await http.get(`/beds`);
     return res.data;
   },
+  async deleteBed(bed_id: number) {
+    const res = await http.delete(`/beds/${bed_id}`);
+    return res.data;
+  },
 };

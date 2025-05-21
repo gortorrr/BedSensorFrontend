@@ -13,8 +13,8 @@ const BedManagement: React.FC = () => {
   const [selectedBedId, setSelectedBedId] = useState<number | null>(null);
   const bedStore = useBedStore();
   // mock data
-  const [bedData,setBedData] = useState<Bed[]>([])
-    useEffect(() => {
+  const [bedData, setBedData] = useState<Bed[]>([]);
+  useEffect(() => {
     const fetchAllData = async () => {
       const resBeds = await bedStore.getBeds();
       setBedData(resBeds);
@@ -28,9 +28,11 @@ const BedManagement: React.FC = () => {
 
   const handleConfirmDelete = () => {
     // ทำลบเตียงตรงนี้ เช่น เรียก API หรือ filter ออกจาก array
-    console.log("Deleting bed with ID:", selectedBedId);
+    // console.log("Deleting bed with ID:", selectedBedId);
+    bedStore.deleteBed(selectedBedId ?? 0);
     setIsDeleteDialogOpen(false);
     setSelectedBedId(null);
+    window.location.reload();
   };
 
   const handleCancelDelete = () => {
@@ -112,11 +114,16 @@ const BedManagement: React.FC = () => {
           />
         </div>
 
-        <button 
+        <button
           id="btnAddBed"
-          className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer">
+          className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer"
+        >
           {/* <Icon path={mdiPlus} size={1} /> */}
-          <img src="/src/assets/btnManagement/AddBed.png" alt="abbBed" className="w-7" />
+          <img
+            src="/src/assets/btnManagement/AddBed.png"
+            alt="abbBed"
+            className="w-7"
+          />
           <span>เพิ่มเตียงใหม่</span>
         </button>
       </div>
@@ -135,14 +142,22 @@ const BedManagement: React.FC = () => {
         </thead>
         <tbody>
           {paginatedBeds.map((b, index) => (
-            <tr key={b.bed_id} 
-                className="text-center bg-gradient-to-r from-white via-gray-100 to-white shadow-md even:bg-gradient-to-r even:from-[#A1B5BC] even:via-[#D1DFE5] even:to-[#e4ecef]">
+            <tr
+              key={b.bed_id}
+              className="text-center bg-gradient-to-r from-white via-gray-100 to-white shadow-md even:bg-gradient-to-r even:from-[#A1B5BC] even:via-[#D1DFE5] even:to-[#e4ecef]"
+            >
               <td className="p-2 h-16 py-4 text-center">
                 {(currentPage - 1) * itemsPerPage + index + 1}
               </td>
-              <td className="p-2 h-16 py-4 text-center">{b.room.floor.building.building_name}</td>
-              <td className="p-2 h-16 py-4 text-center">{b.room.floor.floor_name}</td>
-              <td className="p-2 h-16 py-4 pl-12 text-center">{b.room.room_name}</td>
+              <td className="p-2 h-16 py-4 text-center">
+                {b.room.floor.building.building_name}
+              </td>
+              <td className="p-2 h-16 py-4 text-center">
+                {b.room.floor.floor_name}
+              </td>
+              <td className="p-2 h-16 py-4 pl-12 text-center">
+                {b.room.room_name}
+              </td>
               <td className="p-2 h-16 py-4 text-center">{b.bed_name}</td>
               <td
                 className={`p-2 h-16 py-4 text-center font-semibold ${
@@ -152,27 +167,26 @@ const BedManagement: React.FC = () => {
                 {b.bed_activated ? "Active" : "Inactive"}
               </td>
 
-
-      <td className="p-2 h-16 py-4 pr-7 flex justify-end gap-2 text-right">
-        <button
-            id="edit"
-            // onClick={() => }
-            className="mx-1 cursor-pointer w-7 h-7 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
-          >
-            <img src="/src/assets/edit.png" alt="edit" />
-          </button>
-          <button
-            id="delete"
-             onClick={() => openDeleteDialog(b.bed_id)}
-            className="mx-1 cursor-pointer w-7 h-7 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
-          >
-            <img src="/src/assets/delete.png" alt="delete" />
-          </button>
-      </td>
-    </tr>
-  ))}
-  </tbody>
-</table>
+              <td className="p-2 h-16 py-4 pr-7 flex justify-end gap-2 text-right">
+                <button
+                  id="edit"
+                  // onClick={() => }
+                  className="mx-1 cursor-pointer w-7 h-7 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
+                >
+                  <img src="/src/assets/edit.png" alt="edit" />
+                </button>
+                <button
+                  id="delete"
+                  onClick={() => openDeleteDialog(b.bed_id)}
+                  className="mx-1 cursor-pointer w-7 h-7 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
+                >
+                  <img src="/src/assets/delete.png" alt="delete" />
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
       {/* Pagination */}
       <div className="flex justify-end mt-6">
         <div className="flex items-center gap-2">
@@ -210,9 +224,9 @@ const BedManagement: React.FC = () => {
           </button>
         </div>
         <DeleteBedDialog
-        isOpen={isDeleteDialogOpen}
-        onConfirm={handleConfirmDelete}
-        onCancel={handleCancelDelete}
+          isOpen={isDeleteDialogOpen}
+          onConfirm={handleConfirmDelete}
+          onCancel={handleCancelDelete}
         />
       </div>
     </div>
