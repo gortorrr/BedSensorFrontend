@@ -35,7 +35,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onCancel,user }) => {
         className="fixed inset-0 z-50 flex justify-center items-center"
       >
         <div
-          className="bg-white p-6 rounded-lg shadow-lg w-[700px] max-h-[90vh] overflow-auto"
+          className="bg-white p-6 rounded-lg shadow-lg max-w-fit max-h-[90vh] overflow-auto"
           onClick={(e) => e.stopPropagation()}
         >
           <h2 className="text-2xl font-semibold mb-4 text-center">
@@ -54,6 +54,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onCancel,user }) => {
                   className="w-20 h-23 opacity-50"
                 />
                 <input
+                  id="addImg"
                   type="file"
                   accept="image/*"
                   className="absolute inset-0 opacity-0 cursor-pointer"
@@ -62,16 +63,17 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onCancel,user }) => {
             </div>
 
             {/* ฟอร์มข้อมูลผู้ใช้ */}
-            <div className="grid grid-cols-2 gap-4 flex-grow">
+            <div className="flex flex-col gap-4 min-w-0 w-80">
               {/* Username */}
               <div>
                 <label className="block mb-1 text-sm text-gray-700">
                   Username
                 </label>
                 <input
+                  id="username"
                   type="text"
                   placeholder="กรุณากรอก Username"
-                  className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
+                  className="p-2 pl-3 border border-gray-300 rounded-md w-full  h-11 placeholder:text-gray-400"
                 />
               </div>
 
@@ -81,9 +83,10 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onCancel,user }) => {
                   รหัสผ่าน
                 </label>
                 <input
+                  id="pass"
                   type="password"
                   placeholder="กรุณากรอกรหัสผ่าน"
-                  className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
+                  className="p-2 pl-3 border border-gray-300 rounded-md w-full  h-11 placeholder:text-gray-400"
                 />
               </div>
 
@@ -93,9 +96,10 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onCancel,user }) => {
                   ชื่อผู้ใช้งาน
                 </label>
                 <input
+                  id="name"
                   type="text"
                   placeholder="กรุณากรอกชื่อผู้ใช้งาน"
-                  className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
+                  className="p-2 pl-3 border border-gray-300 rounded-md w-full  h-11 placeholder:text-gray-400"
                 />
               </div>
 
@@ -105,9 +109,10 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onCancel,user }) => {
                   ตำแหน่ง
                 </label>
                 <input
+                  id="position"
                   type="text"
                   placeholder="กรุณากรอกตำแหน่งงาน"
-                  className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
+                  className="p-2 pl-3 border border-gray-300 rounded-md w-full  h-11 placeholder:text-gray-400"
                 />
               </div>
             </div>
@@ -116,13 +121,15 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onCancel,user }) => {
           {/* ปุ่ม */}
           <div className="flex justify-end gap-4 mt-6">
             <button
+              id="btnCancel"
               onClick={onCancel}
-              className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
+              className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110 cursor-pointer"
             >
               ยกเลิก
             </button>
             <button
-              className="px-6 py-2 rounded-xl bg-[#95BAC3] text-white hover:bg-[#5E8892] transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
+              id="btnSave"
+              className="px-6 py-2 rounded-xl bg-[#95BAC3] text-white hover:bg-[#5E8892] transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110 cursor-pointer"
             >
               บันทึก
             </button>
