@@ -34,8 +34,7 @@ const BedDialog: React.FC<BedDialogProps> = ({
         console.log(bedData.bed_name);
         await bedStore.addBed(bedData);
       } else {
-        console.log("สำหรับ editbed")
-        // await bedStore.editBed(bedData.bed_id, bedData);
+        await bedStore.editBed(bedData.bed_id, bedData);
       }
       handleClose();
       window.location.reload(); // คุณสามารถเปลี่ยนเป็นการ refresh state แทน reload ก็ได้

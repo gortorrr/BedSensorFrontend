@@ -10,7 +10,7 @@ export interface Bed {
   patient?: Patient;
   patient_id?: number;
   sensors: Sensor[];
-  selectedShowSensorId?: number[];
+  selectedShowSensorId?: number[] | null;
 }
 
 export interface BedSaveConfig {
