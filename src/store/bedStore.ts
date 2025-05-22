@@ -20,6 +20,7 @@ interface BedStore {
   getBed: (bed_id: number) => Promise<Bed>;
   getBeds: () => Promise<Bed[]>;
   deleteBed: (bed_id: number) => Promise<void>;
+  addBed: (bed: Bed) => Promise<void>;
   // removePatientFromBed: (bed_id: number, patient_id: number) => Promise<void>;
 }
 
@@ -86,6 +87,9 @@ export const useBedStore = create<BedStore>((set) => ({
   deleteBed: async (bed_id: number) => {
     await bedService.deleteBed(bed_id);
   },
+  addBed: async (bed: Bed) => {
+      await bedService.addBed(bed);
+    },
 
   // removePatientFromBed: async (bed_id: number, patient_id: number) => {
   //   bedService.removePatientFromBed(bed_id, patient_id);

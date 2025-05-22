@@ -28,19 +28,21 @@ const BedDialog: React.FC<BedDialogProps> = ({
     onClose();
   };
 
-  // const saveBed = async () => {
-  //   try {
-  //     if (bedData.bed_id === 0) {
-  //       await bedStore.addBed(bedData);
-  //     } else {
-  //       await bedStore.editBed(bedData.bed_id, bedData);
-  //     }
-  //     handleClose();
-  //     window.location.reload(); // คุณสามารถเปลี่ยนเป็นการ refresh state แทน reload ก็ได้
-  //   } catch (err) {
-  //     console.error("❌ Failed to save bed:", err);
-  //   }
-  // };
+  const saveBed = async () => {
+    try {
+      if (!bedData.bed_id) {
+        console.log(bedData.bed_name);
+        await bedStore.addBed(bedData);
+      } else {
+        console.log("สำหรับ editbed")
+        // await bedStore.editBed(bedData.bed_id, bedData);
+      }
+      handleClose();
+      window.location.reload(); // คุณสามารถเปลี่ยนเป็นการ refresh state แทน reload ก็ได้
+    } catch (err) {
+      console.error("❌ Failed to save bed:", err);
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -104,7 +106,7 @@ const BedDialog: React.FC<BedDialogProps> = ({
               <input
                 id="floorName"
                 type="text"
-                value={bedData.room.floor.building.building_name}
+                value={bedData.room.floor.floor_name}
                 placeholder="กรุณากรอกชั้น"
                 onChange={(e) =>
                   setBedData({
@@ -130,7 +132,7 @@ const BedDialog: React.FC<BedDialogProps> = ({
               <input
                 id="roomName"
                 type="text"
-                value={bedData.room.floor.building.building_name}
+                value={bedData.room.room_name}
                 placeholder="กรุณากรอกชื่อห้อง"
                 onChange={(e) =>
                   setBedData({
