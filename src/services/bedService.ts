@@ -107,7 +107,7 @@ export const bedService = {
   },
   async addBed(bed: Bed): Promise<Bed> {
       try {
-        const response = await http.post("/beds", bed);
+        const response = await http.post("beds", bed);
         return response.data;
       } catch (error) {
         console.error("Error adding bed:", error);
