@@ -4,11 +4,14 @@ import { mdiMagnify } from "@mdi/js";
 import { Bed } from "../../types/bed";
 import DeleteBedDialog from "../../components/Managements/Bed/DeleteBedDialog";
 import { useBedStore } from "../../store/bedStore";
+import BedDialog from "../../components/Managements/Bed/BedDialog";
 
 const BedManagement: React.FC = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const [selectedBed, setSelectedBed] = useState<Bed | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedBedId, setSelectedBedId] = useState<number | null>(null);
   const bedStore = useBedStore();
@@ -24,6 +27,36 @@ const BedManagement: React.FC = () => {
   const openDeleteDialog = (bedId: number) => {
     setSelectedBedId(bedId);
     setIsDeleteDialogOpen(true);
+  };
+
+  const openEditDialog = (bed: Bed) => {
+    setSelectedBed(bed);
+    setIsEditDialogOpen(true);
+  };
+
+  const openAddDialog = () => {
+    setSelectedBed({
+      bed_id: 0,
+      bed_name: "",
+      bed_activated: false,
+      room: {
+        room_id: 0,
+        room_name: "",
+        floor: {
+          floor_id: 0,
+          floor_name: "",
+          building: {
+            building_id: 0,
+            building_name: "",
+          },
+        },
+      },
+      sensors: [], // ✅ ต้องใส่ตาม interface
+      patient: undefined,
+      patient_id: undefined,
+      selectedShowSensorId: [], // ถ้ามีใช้ใน UI
+    });
+    setIsEditDialogOpen(true);
   };
 
   const handleConfirmDelete = () => {
@@ -114,6 +147,7 @@ const BedManagement: React.FC = () => {
 
         <button
           id="btnAddBed"
+          onClick={openAddDialog}
           className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer"
         >
           {/* <Icon path={mdiPlus} size={1} /> */}
@@ -168,7 +202,7 @@ const BedManagement: React.FC = () => {
               <td className="p-2 h-16 py-4 pr-7 flex justify-end gap-2 text-right">
                 <button
                   id="edit"
-                  // onClick={() => }
+                  onClick={() => openEditDialog(b)}
                   className="mx-1 cursor-pointer w-7 h-7 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
                 >
                   <img src="/src/assets/edit.png" alt="edit" />
@@ -226,6 +260,16 @@ const BedManagement: React.FC = () => {
           onConfirm={handleConfirmDelete}
           onCancel={handleCancelDelete}
         />
+        {selectedBed && (
+          <BedDialog
+            isOpen={isEditDialogOpen}
+            onClose={() => {
+              setIsEditDialogOpen(false);
+              setSelectedBed(null);
+            }}
+            initialBedData={selectedBed}
+          />
+        )}
       </div>
     </div>
   );
