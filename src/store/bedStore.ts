@@ -93,7 +93,6 @@ export const useBedStore = create<BedStore>((set) => ({
     await bedService.addBed(bed);
   },
   editBed: async (bed_id: number, bed: Bed) => {
-    bed.selectedShowSensorId = null;
     await bedService.editBed(bed_id, bed);
   },
 
