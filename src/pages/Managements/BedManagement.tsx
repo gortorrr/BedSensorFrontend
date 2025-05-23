@@ -148,7 +148,7 @@ const BedManagement: React.FC = () => {
         <button
           id="btnAddBed"
           onClick={openAddDialog}
-          className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer"
+          className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
         >
           {/* <Icon path={mdiPlus} size={1} /> */}
           <img

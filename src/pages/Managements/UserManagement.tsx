@@ -125,7 +125,7 @@ const UserManagement: React.FC = () => {
         <button
           id="btnAddUser"
           onClick={openAddUserDialog}
-          className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer"
+          className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
         >
           <img
             src="/src/assets/btnManagement/AddUser.png"
@@ -158,18 +158,18 @@ const UserManagement: React.FC = () => {
               <td className="p-2 h-14">{user.user_username}</td>
               <td className="p-2 h-14">{user.user_name}</td>
               <td className="p-2 h-14">{user.user_position}</td>
-              <td className="p-2 h-14 flex justify-center gap-2">
+              <td className="p-2 h-16 py-4 pr-7 flex justify-end gap-2 text-right">
                 <button
                   id="edit"
                   onClick={() => openEditUserDialog(user)}
-                  className="w-7 h-7 transform hover:scale-110 transition"
+                  className="mx-1 cursor-pointer w-7 h-7 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
                 >
                   <img src="/src/assets/edit.png" alt="edit" />
                 </button>
                 <button
                   id="delete"
                   onClick={() => openDeleteDialog(user)}
-                  className="w-7 h-7 transform hover:scale-110 transition"
+                  className="mx-1 cursor-pointer w-7 h-7 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
                 >
                   <img src="/src/assets/delete.png" alt="delete" />
                 </button>
