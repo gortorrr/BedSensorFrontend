@@ -9,6 +9,7 @@ import PatientManagement from "../pages/Managements/PatientManagement.tsx";
 import AddPatientHome from "../pages/AddPatientHome.tsx";
 import BedManagement from "../pages/Managements/BedManagement.tsx";
 import UserManagement from "../pages/Managements/UserManagement.tsx";
+import NotificationHistory from "../pages/Managements/NotificationHistory.tsx";
 // import EmergencyAlert from "../pages/EmergencyAlert.tsx";
 // import { useNotificationStore } from "../store/notificationStore.ts"; // Import ตัวแจ้งเตือนฉุกเฉิน
 
@@ -28,6 +29,7 @@ const AppRouter: React.FC = () => {
         <Route path="/patient-management" element={<PatientManagement />} />
         <Route path="/bed-management" element={<BedManagement />} />
         <Route path="/user-management" element={<UserManagement />} />
+        <Route path="/noti-history" element={<NotificationHistory />} />
         <Route path="/add-patient-home" element={<AddPatientHome />} />
       </Routes>
 

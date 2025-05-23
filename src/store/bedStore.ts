@@ -20,6 +20,8 @@ interface BedStore {
   getBed: (bed_id: number) => Promise<Bed>;
   getBeds: () => Promise<Bed[]>;
   deleteBed: (bed_id: number) => Promise<void>;
+  addBed: (bed: Bed) => Promise<void>;
+  editBed: (bed_id: number, bed: Bed) => Promise<void>;
   // removePatientFromBed: (bed_id: number, patient_id: number) => Promise<void>;
 }
 
@@ -85,6 +87,13 @@ export const useBedStore = create<BedStore>((set) => ({
   },
   deleteBed: async (bed_id: number) => {
     await bedService.deleteBed(bed_id);
+  },
+  addBed: async (bed: Bed) => {
+    bed.selectedShowSensorId = null;
+    await bedService.addBed(bed);
+  },
+  editBed: async (bed_id: number, bed: Bed) => {
+    await bedService.editBed(bed_id, bed);
   },
 
   // removePatientFromBed: async (bed_id: number, patient_id: number) => {

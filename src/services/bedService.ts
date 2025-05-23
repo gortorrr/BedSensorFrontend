@@ -105,4 +105,23 @@ export const bedService = {
     const res = await http.delete(`/beds/${bed_id}`);
     return res.data;
   },
+  async addBed(bed: Bed): Promise<Bed> {
+    try {
+      const response = await http.post("beds", bed);
+      return response.data;
+    } catch (error) {
+      console.error("Error adding bed:", error);
+      throw error;
+    }
+  },
+
+  async editBed(bed_id: number, bed: Bed): Promise<Bed> {
+    try {
+      const response = await http.patch(`beds/edit/${bed_id}`, bed);
+      return response.data;
+    } catch (error) {
+      console.error("Error editing bed:", error);
+      throw error;
+    }
+  },
 };
