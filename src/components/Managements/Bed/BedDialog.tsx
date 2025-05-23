@@ -51,7 +51,7 @@ const BedDialog: React.FC<BedDialogProps> = ({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-40 bg-black bg-opacity-30 backdrop-blur-sm"
+        className="fixed inset-0 z-40 bg-opacity-30 backdrop-blur-sm"
         onClick={onClose}
       />
       <motion.div
@@ -189,7 +189,7 @@ const BedDialog: React.FC<BedDialogProps> = ({
             </div>
           </div>
 
-          <div className="flex items-center justify-between mt-6">
+          <div className="flex items-center justify-end mt-6">
             <div className="flex gap-4">
               <button
                 id="btnCancel"
