@@ -1,9 +1,10 @@
 // src/pages/UserManagement.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Icon from "@mdi/react";
 import { mdiMagnify } from "@mdi/js";
 // import { mdiMagnify, mdiAccountPlus } from "@mdi/js";
 import { User } from "../../types/user";
+import { useUserStore } from "../../store/UserStore";
 import DeleteUserDialog from "../../components/Managements/User/DeleteUserDialog";
 import UserDialog from "../../components/Managements/User/UserDialog";
 
@@ -13,41 +14,24 @@ const UserManagement: React.FC = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [userDialogOpen, setUserDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User>({
-        user_id: 0,
-        user_name: '',
-        user_position: '',
-        user_username: '',
-        user_password: '',
-      });
+    user_id: 0,
+    user_name: "",
+    user_position: "",
+    user_username: "",
+    user_password: "",
+  });
   const itemsPerPage = 10;
-
-  const userData: User[] = [
-    {
-      user_id: 10,
-      user_username: "User1",
-      user_name: "เมษา ใจดี",
-      user_position: "หัวหน้าพยาบาล",
-      user_password: "secret",
-    },
-    {
-      user_id: 2,
-      user_username: "User2",
-      user_name: "ญานิน กิตติรันต์",
-      user_position: "พยาบาล",
-      user_password: "secret",
-    },
-    {
-      user_id: 3,
-      user_username: "User3",
-      user_name: "ปานวาด มีสุข",
-      user_position: "ผู้ดูแลระบบ",
-      user_password: "secret",
-    },
-    // เพิ่ม mock data ตามต้องการเพื่อให้เห็น pagination
-  ];
+  const userStore = useUserStore();
+  const userData = userStore.users;
 
   const openAddUserDialog = () => {
-     // สำหรับเพิ่มใหม่ ไม่ใส่ user
+    setSelectedUser({
+      user_id: 0,
+      user_name: "",
+      user_position: "",
+      user_username: "",
+      user_password: "",
+    });
     setUserDialogOpen(true);
   };
 
@@ -60,8 +44,8 @@ const UserManagement: React.FC = () => {
     setUserDialogOpen(false);
   };
 
-  const openDeleteDialog = (user:User) => {
-    setSelectedUser(user); 
+  const openDeleteDialog = (user: User) => {
+    setSelectedUser(user);
     setDeleteDialogOpen(true);
   };
 
@@ -110,6 +94,10 @@ const UserManagement: React.FC = () => {
     return pages;
   };
 
+  useEffect(() => {
+    userStore.getUsers();
+  }, []);
+
   return (
     <div className="p-6 bg-[#e7f0f3] min-h-screen">
       <h1 className="text-3xl font-bold text-[#2E5361] mb-4">ผู้ใช้งานระบบ</h1>
@@ -134,12 +122,16 @@ const UserManagement: React.FC = () => {
           />
         </div>
 
-        <button 
+        <button
           id="btnAddUser"
           onClick={openAddUserDialog}
           className="flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] drop-shadow-md cursor-pointer"
         >
-          <img src="/src/assets/btnManagement/AddUser.png" alt="addUser" className="w-5" />
+          <img
+            src="/src/assets/btnManagement/AddUser.png"
+            alt="addUser"
+            className="w-5"
+          />
           <span>เพิ่มผู้ใช้งานระบบ</span>
         </button>
       </div>
@@ -167,7 +159,7 @@ const UserManagement: React.FC = () => {
               <td className="p-2 h-14">{user.user_name}</td>
               <td className="p-2 h-14">{user.user_position}</td>
               <td className="p-2 h-14 flex justify-center gap-2">
-                <button 
+                <button
                   id="edit"
                   onClick={() => openEditUserDialog(user)}
                   className="w-7 h-7 transform hover:scale-110 transition"

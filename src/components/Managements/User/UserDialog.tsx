@@ -1,10 +1,9 @@
-// UserDialog.tsx
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
 import AddUserIcon from "../../../assets/btnManagement/AddUser.png";
 import { User } from "../../../types/user";
-
+import { useUserStore } from "../../../store/UserStore";
 
 interface UserDialogProps {
   isOpen: boolean;
@@ -12,7 +11,50 @@ interface UserDialogProps {
   onCancel: () => void;
 }
 
-const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onCancel,user }) => {
+const UserDialog: React.FC<UserDialogProps> = ({ isOpen, user, onCancel }) => {
+  const [formData, setFormData] = useState<Omit<User, "user_id">>({
+    user_name: "",
+    user_position: "",
+    user_username: "",
+    user_password: "",
+  });
+
+  const userStore = useUserStore();
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        user_name: user.user_name,
+        user_position: user.user_position,
+        user_username: user.user_username,
+        user_password: user.user_password,
+      });
+    }
+  }, [user]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSave = async () => {
+    if (!formData.user_name || !formData.user_username) {
+      alert("กรุณากรอกข้อมูลให้ครบ");
+      return;
+    }
+
+    try {
+      if (user?.user_id === 0) {
+        await userStore.addUser(formData);
+      } else if (user?.user_id) {
+        await userStore.editUser(user.user_id, formData);
+      }
+      onCancel(); // ปิด dialog
+    } catch (err) {
+      console.error("❌ Failed to save user", err);
+    }
+  };
+
   if (!isOpen) return null;
 
   return ReactDOM.createPortal(
@@ -39,9 +81,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onCancel,user }) => {
           onClick={(e) => e.stopPropagation()}
         >
           <h2 className="text-2xl font-semibold mb-4 text-center">
-            {user?.user_id !== 0
-              ? "แก้ไขข้อมูลผู้ใช้"
-              : "เพิ่มข้อมูลผู้ใช้"}
+            {user?.user_id !== 0 ? "แก้ไขข้อมูลผู้ใช้" : "เพิ่มข้อมูลผู้ใช้"}
           </h2>
 
           <div className="flex gap-6 mb-4">
@@ -63,49 +103,57 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onCancel,user }) => {
 
             {/* ฟอร์มข้อมูลผู้ใช้ */}
             <div className="grid grid-cols-2 gap-4 flex-grow">
-              {/* Username */}
               <div>
                 <label className="block mb-1 text-sm text-gray-700">
                   Username
                 </label>
                 <input
+                  name="user_username"
                   type="text"
+                  value={formData.user_username}
+                  onChange={handleChange}
                   placeholder="กรุณากรอก Username"
                   className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
                 />
               </div>
 
-              {/* Password */}
               <div>
                 <label className="block mb-1 text-sm text-gray-700">
                   รหัสผ่าน
                 </label>
                 <input
+                  name="user_password"
                   type="password"
+                  value={formData.user_password}
+                  onChange={handleChange}
                   placeholder="กรุณากรอกรหัสผ่าน"
                   className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
                 />
               </div>
 
-              {/* ชื่อผู้ใช้งาน */}
               <div>
                 <label className="block mb-1 text-sm text-gray-700">
                   ชื่อผู้ใช้งาน
                 </label>
                 <input
+                  name="user_name"
                   type="text"
+                  value={formData.user_name}
+                  onChange={handleChange}
                   placeholder="กรุณากรอกชื่อผู้ใช้งาน"
                   className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
                 />
               </div>
 
-              {/* ตำแหน่งงาน */}
               <div>
                 <label className="block mb-1 text-sm text-gray-700">
                   ตำแหน่ง
                 </label>
                 <input
+                  name="user_position"
                   type="text"
+                  value={formData.user_position}
+                  onChange={handleChange}
                   placeholder="กรุณากรอกตำแหน่งงาน"
                   className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
                 />
@@ -113,7 +161,6 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onCancel,user }) => {
             </div>
           </div>
 
-          {/* ปุ่ม */}
           <div className="flex justify-end gap-4 mt-6">
             <button
               onClick={onCancel}
@@ -122,6 +169,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onCancel,user }) => {
               ยกเลิก
             </button>
             <button
+              onClick={handleSave}
               className="px-6 py-2 rounded-xl bg-[#95BAC3] text-white hover:bg-[#5E8892] transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
             >
               บันทึก
