@@ -44,7 +44,7 @@ const menus: MenuItem[] = [
       { name: "เซนเซอร์", link: "/sensor-management", icon: MdOutlineSensors },
       { name: "ผู้ป่วย", link: "/patient-management", icon: FaUserInjured },
       { name: "ผู้ใช้งานระบบ", link: "/user-management", icon: FaUserCog },
-      { name: "จัดการสถานที่", link: "/bed-management", icon: RiHospitalFill },
+      { name: "สถานที่", link: "/bed-management", icon: RiHospitalFill },
       { name: "ประวัติการแจ้งเตือน", link: "/noti-history", icon: VscBellDot },
     ],
   },

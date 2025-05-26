@@ -3,7 +3,7 @@ import { History_Value_Sensor } from "../../types/history_value_sensor";
 
 const NotificationHistory: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState(""); // ไม่ตั้งค่าเริ่มต้น
-  const [selectedZone, setSelectedZone] = useState("เซ็นเซอร์ทั้งหมด");
+  const [selectedZone, setSelectedZone] = useState("เซนเซอร์ทั้งหมด");
   const [currentPage, setCurrentPage] = useState(1);
 
   const itemsPerPage = 10;
@@ -61,7 +61,7 @@ const NotificationHistory: React.FC = () => {
     )
     .filter(
       (h) =>
-        selectedZone === "เซ็นเซอร์ทั้งหมด" ||
+        selectedZone === "เซนเซอร์ทั้งหมด" ||
         h.history_value_sensor_value.includes(selectedZone)
     )
     .sort((a, b) =>
@@ -125,7 +125,7 @@ const NotificationHistory: React.FC = () => {
             setCurrentPage(1);
           }}
         >
-          <option>เซ็นเซอร์ทั้งหมด</option>
+          <option>เซนเซอร์ทั้งหมด</option>
           <option>Bed Sensor</option>
           <option>SpO2 Sensor</option>
           <option>Respiration Sensor</option>

@@ -158,7 +158,7 @@ const PatientManagement: React.FC = () => {
         >
           {/* <Icon path={mdiPlus} size={1} /> */}
           <img src="/src/assets/btnManagement/AddUser.png" alt="abbPatient" className="w-5" />
-          <span>เพิ่มผู้ป่วย</span>
+          <span>เพิ่มผู้ป่วยใหม่</span>
         </button>
       </div>
 

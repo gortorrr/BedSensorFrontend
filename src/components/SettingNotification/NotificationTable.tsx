@@ -174,7 +174,7 @@ const NotificationTable: React.FC<NotificationTableProps> = ({
             ) : (
               <tr>
                 <td colSpan={6} className="p-4 text-center text-gray-500">
-                  ไม่มีข้อมูลแจ้งเตือนสำหรับเซ็นเซอร์นี้
+                  ไม่มีข้อมูลแจ้งเตือนสำหรับเซนเซอร์นี้
                 </td>
               </tr>
             )}

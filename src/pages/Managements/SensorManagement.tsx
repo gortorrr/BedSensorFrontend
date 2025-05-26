@@ -128,7 +128,7 @@ const SensorManagement: React.FC = () => {
     <div className="p-6 bg-[#e7f0f3] min-h-screen ">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-3xl font-bold text-[#2E5361]">
-          จัดการเซ็นเซอร์
+          จัดการเซนเซอร์
         </h1>
       </div>
 
@@ -138,7 +138,7 @@ const SensorManagement: React.FC = () => {
           <input
             id="searchSensor"
             type="text"
-            placeholder="ค้นหาเซ็นเซอร์"
+            placeholder="ค้นหาเซนเซอร์"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="input input-bordered border-2 border-solid border-gray-400 rounded-lg p-2 pr-10 bg-white w-full inset-shadow"
@@ -150,7 +150,7 @@ const SensorManagement: React.FC = () => {
           />
         </div>
 
-        {/* Dialog เพิ่มเซ็นเซอร์ */}
+        {/* Dialog เพิ่มเซนเซอร์ */}
         <SensorDialog
           isOpen={isDialogOpen}
           onClose={() => setIsDialogOpen(false)}
@@ -166,7 +166,7 @@ const SensorManagement: React.FC = () => {
         >
           {/* <Icon path={mdiPlus} size={1} /> */}
           <img src="/src/assets/btnManagement/AddSensor.png" alt="abbSensor" className="w-7" />
-          <span>เพิ่มเซ็นเซอร์</span>
+          <span>เพิ่มเซนเซอร์ใหม่</span>
         </button>
       </div>
 
@@ -179,7 +179,7 @@ const SensorManagement: React.FC = () => {
             <th className="p-2">อาคาร</th>
             <th className="p-2">ห้อง</th>
             <th className="p-2">หมายเลขเตียง</th>
-            <th className="p-2">ประเภทเซ็นเซอร์</th>
+            <th className="p-2">ประเภทเซนเซอร์</th>
             <th className="p-2">หน่วย</th>
             <th className="p-2 text-center">สถานะ</th>
             <th className="p-2 text-center"></th>

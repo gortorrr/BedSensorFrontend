@@ -74,11 +74,11 @@ const SensorDialog: React.FC<SensorDialogProps> = ({
         <div className="bg-white p-6 rounded-lg shadow-lg w-[800px] max-h-[90vh] overflow-auto">
           {initialSensorData.sensor_id !== 0 || undefined ? (
             <h2 className="text-2xl font-semibold mb-4 text-center">
-              ตั้งค่าข้อมูลเซ็นเซอร์
+              ตั้งค่าข้อมูลเซนเซอร์
             </h2>
           ) : (
             <h2 className="text-2xl font-semibold mb-4 text-center">
-              เพิ่มข้อมูลเซ็นเซอร์
+              เพิ่มข้อมูลเซนเซอร์
             </h2>
           )}
           <div className="grid grid-cols-2 gap-4">
@@ -122,13 +122,13 @@ const SensorDialog: React.FC<SensorDialogProps> = ({
             {/* Sensor Name */}
             <div>
               <label className="block mb-1 text-sm text-gray-700">
-                ชื่อเซ็นเซอร์
+                ชื่อเซนเซอร์
               </label>
               <input
                 id="sensor_name"
                 type="text"
                 value={sensorData.sensor_name}
-                placeholder="กรุณากรอกชื่อเซ็นเซอร์"
+                placeholder="กรุณากรอกชื่อเซนเซอร์"
                 onChange={(e) =>
                   setSensorData({ ...sensorData, sensor_name: e.target.value })
                 }
@@ -143,7 +143,7 @@ const SensorDialog: React.FC<SensorDialogProps> = ({
                 id="sensor_unit"
                 type="text"
                 value={sensorData.sensor_unit}
-                placeholder="กรุณากรอกหน่วยของเซ็นเซอร์"
+                placeholder="กรุณากรอกหน่วยของเซนเซอร์"
                 onChange={(e) =>
                   setSensorData({ ...sensorData, sensor_unit: e.target.value })
                 }
@@ -154,7 +154,7 @@ const SensorDialog: React.FC<SensorDialogProps> = ({
             {/* ประเภท */}
             <div>
               <label className="block mb-1 text-sm text-gray-700">
-                ประเภทเซ็นเซอร์
+                ประเภทเซนเซอร์
               </label>
               <select
                 id="sensorType"
@@ -167,7 +167,7 @@ const SensorDialog: React.FC<SensorDialogProps> = ({
                 }
               >
                 <option value="" disabled hidden>
-                  กรุณาเลือกประเภทเซ็นเซอร์
+                  กรุณาเลือกประเภทเซนเซอร์
                 </option>
                 {sensorTypeOptions.map((type) => (
                   <option key={type} value={type} className="text-black">
@@ -216,7 +216,7 @@ const SensorDialog: React.FC<SensorDialogProps> = ({
                 </label>
               ) : (
                 <label className="block mb-1 text-sm text-red-500 ">
-                  ยังไม่ติดตั้งเซ็นเซอร์
+                  ยังไม่ติดตั้งเซนเซอร์
                 </label>
               )}
             </div>
