@@ -62,24 +62,25 @@ const BedDialog: React.FC<BedDialogProps> = ({
         className="fixed inset-0 z-50 flex justify-center items-center"
       >
         <div
-          className="bg-white p-6 rounded-lg shadow-lg w-[800px] max-h-[90vh] overflow-auto"
+          className="bg-white p-6 rounded-lg shadow-lg w-[600px] max-h-[90vh] overflow-auto"
           onClick={(e) => e.stopPropagation()}
         >
           <h2 className="text-2xl font-semibold mb-4 text-center">
             {bedData.bed_id === 0 ? "เพิ่มข้อมูลเตียง" : "แก้ไขข้อมูลเตียง"}
           </h2>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-4">
             {/* อาคาร */}
-            <div>
-              <label className="block mb-1 text-sm text-gray-700">
-                ชื่ออาคาร
+            <div className="flex items-center">
+              <label
+                htmlFor="building"
+                className="w-40 text-right mr-4 font-semibold text-gray-700"
+              >
+                อาคาร :
               </label>
-              <input
-                id="buildingName"
-                type="text"
+              <select
+                id="building"
                 value={bedData.room.floor.building.building_name}
-                placeholder="กรุณากรอกชื่ออาคาร"
                 onChange={(e) =>
                   setBedData({
                     ...bedData,
@@ -95,18 +96,25 @@ const BedDialog: React.FC<BedDialogProps> = ({
                     },
                   })
                 }
-                className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
-              />
+                className="w-60 p-2 border border-gray-300 rounded-md h-10"
+              >
+                <option value="">เลือกอาคาร</option>
+                <option value="อาคารผู้ป่วยใน">อาคารผู้ป่วยใน</option>
+                <option value="อาคารผู้ป่วยนอก">อาคารผู้ป่วยนอก</option>
+              </select>
             </div>
 
             {/* ชั้น */}
-            <div>
-              <label className="block mb-1 text-sm text-gray-700">ชั้น</label>
-              <input
-                id="floorName"
-                type="text"
+            <div className="flex items-center">
+              <label
+                htmlFor="floor"
+                className="w-40 text-right mr-4 font-semibold text-gray-700"
+              >
+                ชั้น :
+              </label>
+              <select
+                id="floor"
                 value={bedData.room.floor.floor_name}
-                placeholder="กรุณากรอกชั้น"
                 onChange={(e) =>
                   setBedData({
                     ...bedData,
@@ -119,20 +127,24 @@ const BedDialog: React.FC<BedDialogProps> = ({
                     },
                   })
                 }
-                className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
-              />
+                className="w-60 p-2 border border-gray-300 rounded-md h-10"
+              >
+                <option value="1">1</option>
+                <option value="2">2</option>
+              </select>
             </div>
 
             {/* ห้อง */}
-            <div>
-              <label className="block mb-1 text-sm text-gray-700">
-                ชื่อห้อง
+            <div className="flex items-center">
+              <label
+                htmlFor="room"
+                className="w-40 text-right mr-4 font-semibold text-gray-700"
+              >
+                ห้อง :
               </label>
-              <input
-                id="roomName"
-                type="text"
+              <select
+                id="room"
                 value={bedData.room.room_name}
-                placeholder="กรุณากรอกชื่อห้อง"
                 onChange={(e) =>
                   setBedData({
                     ...bedData,
@@ -142,32 +154,45 @@ const BedDialog: React.FC<BedDialogProps> = ({
                     },
                   })
                 }
-                className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
-              />
+                className="w-60 p-2 border border-gray-300 rounded-md h-10"
+              >
+                <option value="1610">1610</option>
+                <option value="1620">1620</option>
+              </select>
             </div>
 
             {/* หมายเลขเตียง */}
-            <div>
-              <label className="block mb-1 text-sm text-gray-700">
-                หมายเลขเตียง
+            <div className="flex items-center">
+              <label
+                htmlFor="bed"
+                className="w-40 text-right mr-4 font-semibold text-gray-700"
+              >
+                หมายเลขเตียง :
               </label>
-              <input
-                id="bed_name"
-                type="text"
+              <select
+                id="bed"
                 value={bedData.bed_name}
-                placeholder="กรุณากรอกหมายเลขเตียง"
                 onChange={(e) =>
                   setBedData({ ...bedData, bed_name: e.target.value })
                 }
-                className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
-              />
+                className="w-60 p-2 border border-gray-300 rounded-md h-10"
+              >
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="5">5</option>
+              </select>
             </div>
 
-            {/* สถานะเตียง */}
-            <div>
-              <label className="block mb-1 text-sm text-gray-700">สถานะ</label>
+            {/* สถานะ */}
+            <div className="flex items-center">
+              <label
+                htmlFor="status"
+                className="w-40 text-right mr-4 font-semibold text-gray-700"
+              >
+                สถานะ :
+              </label>
               <select
-                id="bed_status"
+                id="status"
                 value={bedData.bed_activated ? "Active" : "Inactive"}
                 onChange={(e) =>
                   setBedData({
@@ -175,37 +200,36 @@ const BedDialog: React.FC<BedDialogProps> = ({
                     bed_activated: e.target.value === "Active",
                   })
                 }
-                className={`p-2 border border-gray-300 rounded-md w-full h-11 cursor-pointer ${
-                  bedData.bed_activated ? "text-green-600" : "text-red-600"
+                className={`w-60  p-2 border rounded-md h-10 ${
+                  bedData.bed_activated
+                    ? "text-green-600 border-green-500"
+                    : "text-red-600 border-red-500"
                 }`}
               >
-                <option value="Inactive" className="text-red-600">
-                  Inactive
-                </option>
                 <option value="Active" className="text-green-600">
                   Active
+                </option>
+                <option value="Inactive" className="text-red-600">
+                  Inactive
                 </option>
               </select>
             </div>
           </div>
 
-          <div className="flex items-center justify-end mt-6">
-            <div className="flex gap-4">
-              <button
-                id="btnCancel"
-                onClick={handleClose}
-                className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400 cursor-pointer transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
-              >
-                ยกเลิก
-              </button>
-              <button
-                id="btnSave"
-                className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] cursor-pointer transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
-                onClick={saveBed}
-              >
-                บันทึก
-              </button>
-            </div>
+          {/* ปุ่มบันทึก/ยกเลิก */}
+          <div className="flex justify-center gap-6 mt-6">
+            <button
+              onClick={saveBed}
+              className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] transform transition-transform hover:-translate-y-1 hover:scale-110"
+            >
+              บันทึก
+            </button>
+            <button
+              onClick={handleClose}
+              className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400 transform transition-transform hover:-translate-y-1 hover:scale-110"
+            >
+              ยกเลิก
+            </button>
           </div>
         </div>
       </motion.div>

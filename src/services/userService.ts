@@ -1,5 +1,6 @@
 import http from "./http";
 import { User } from "../types/user";
+import axios from "axios";
 
 export const userService = {
   async getUsers(): Promise<User[]> {
@@ -14,6 +15,14 @@ export const userService = {
 
   async editUser(userId: number, user: Partial<User>) {
     const res = await http.put(`/user/edit/${userId}`, user);
+    return res.data;
+  },
+
+  async addImageToUser(formData: FormData, user_id: number) {
+    const res = await http.post(
+      `http://localhost:8000/users/${user_id}/upload-image`,
+      formData
+    );
     return res.data;
   },
 };

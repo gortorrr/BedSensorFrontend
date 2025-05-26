@@ -18,10 +18,13 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, user, onCancel }) => {
     user_username: "",
     user_password: "",
   });
-
+  const [image, setImage] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
   const userStore = useUserStore();
 
   useEffect(() => {
+    console.log("👤 Current user data:", user);
+
     if (user) {
       setFormData({
         user_name: user.user_name,
@@ -29,8 +32,31 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, user, onCancel }) => {
         user_username: user.user_username,
         user_password: user.user_password,
       });
+
+      if (user.image_path) {
+        setPreview(`http://localhost:8000${user.image_path}`);
+      } else {
+        setPreview(null);
+      }
+    } else {
+      setFormData({
+        user_name: "",
+        user_position: "",
+        user_username: "",
+        user_password: "",
+      });
+      setPreview(null);
+      setImage(null);
     }
-  }, [user]);
+  }, [isOpen]);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file);
+      setPreview(URL.createObjectURL(file));
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -44,12 +70,23 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, user, onCancel }) => {
     }
 
     try {
-      if (user?.user_id === 0) {
-        await userStore.addUser(formData);
-      } else if (user?.user_id) {
+      if (!user) {
+        // เพิ่มผู้ใช้ใหม่
+        const newUser = await userStore.addUser(formData);
+        if (image) {
+          const imageUrl = await userStore.addUserImage(newUser.user_id, image);
+          setPreview(`http://localhost:8000${imageUrl}`);
+        }
+      } else {
+        // แก้ไขผู้ใช้
         await userStore.editUser(user.user_id, formData);
+        if (image) {
+          const imageUrl = await userStore.addUserImage(user.user_id, image);
+          setPreview(`http://localhost:8000${imageUrl}`);
+        }
       }
-      onCancel(); // ปิด dialog
+
+      onCancel();
     } catch (err) {
       console.error("❌ Failed to save user", err);
     }
@@ -88,15 +125,23 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, user, onCancel }) => {
             {/* รูปโปรไฟล์ */}
             <div className="flex-shrink-0">
               <label className="cursor-pointer relative w-32 h-32 rounded-md border border-gray-300 flex items-center justify-center overflow-hidden shadow-md hover:shadow-lg transition">
-                <img
-                  src={AddUserIcon}
-                  alt="default"
-                  className="w-20 h-23 opacity-50"
-                />
+                {preview ? (
+                  <img
+                    src={preview}
+                    alt="preview"
+                    className="object-cover w-full h-full"
+                  />
+                ) : (
+                  <img
+                    src={AddUserIcon}
+                    alt="default"
+                    className="w-20 h-23 opacity-50"
+                  />
+                )}
                 <input
-                  id="addImg"
                   type="file"
                   accept="image/*"
+                  onChange={handleImageChange}
                   className="absolute inset-0 opacity-0 cursor-pointer"
                 />
               </label>
@@ -111,6 +156,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, user, onCancel }) => {
                 </label>
                 <input
                   id="username"
+                  name="user_username"
                   type="text"
                   value={formData.user_username}
                   onChange={handleChange}
@@ -125,6 +171,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, user, onCancel }) => {
                 </label>
                 <input
                   id="pass"
+                  name="user_password"
                   type="password"
                   value={formData.user_password}
                   onChange={handleChange}
@@ -139,6 +186,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, user, onCancel }) => {
                 </label>
                 <input
                   id="name"
+                  name="user_name"
                   type="text"
                   value={formData.user_name}
                   onChange={handleChange}
@@ -153,6 +201,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, user, onCancel }) => {
                 </label>
                 <input
                   id="position"
+                  name="user_position"
                   type="text"
                   value={formData.user_position}
                   onChange={handleChange}

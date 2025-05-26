@@ -4,4 +4,5 @@ export interface User {
   user_position: string;
   user_username: string;
   user_password: string;
+  image_path?: string;
 }
