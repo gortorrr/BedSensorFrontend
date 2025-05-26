@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import BedCard from "../components/Home/bedCard";
 import { useBedStore } from "../store/bedStore";
 import Icon from "@mdi/react";
-import { mdiMagnify, mdiPlus } from "@mdi/js";
+import { mdiMagnify } from "@mdi/js";
 import { Bed } from "../types/bed";
 import { useNotificationStore } from "../store/notificationStore";
 import { useNavigate } from "react-router-dom";
@@ -89,7 +89,12 @@ const Home: React.FC = () => {
           }`}
           onClick={handleAddPatientClick} // เรียกใช้ handleAddPatientClick เมื่อคลิก
         >
-          <Icon path={mdiPlus} size={1} />
+          {/* <Icon path={mdiPlus} size={1} /> */}
+          <img
+            src="/src/assets/btnaddpatienthome.png"
+            alt="abbPatient"
+            className="w-6"
+          />
           <span>เพิ่มผู้ป่วย</span>
         </button>
       </div>

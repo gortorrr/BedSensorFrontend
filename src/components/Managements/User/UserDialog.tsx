@@ -167,7 +167,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, user, onCancel }) => {
 
               <div>
                 <label className="block mb-1 text-sm text-gray-700">
-                  รหัสผ่าน
+                  Password
                 </label>
                 <input
                   id="pass"
@@ -175,7 +175,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, user, onCancel }) => {
                   type="password"
                   value={formData.user_password}
                   onChange={handleChange}
-                  placeholder="กรุณากรอกรหัสผ่าน"
+                  placeholder="กรุณากรอก Password"
                   className="p-2 pl-3 border border-gray-300 rounded-md w-full  h-11 placeholder:text-gray-400"
                 />
               </div>

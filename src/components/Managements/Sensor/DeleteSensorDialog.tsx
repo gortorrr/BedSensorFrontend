@@ -67,7 +67,7 @@ const DeleteSensorDialog: React.FC<DeleteSensorDialogProps> = ({
           ยืนยันการลบข้อมูล
         </h2>
         <p className="text-lg text-gray-600 mb-6">
-          คุณต้องการลบเซ็นเซอร์นี้หรือไม่?
+          คุณต้องการลบเซนเซอร์นี้หรือไม่?
         </p>
         <div className="flex justify-around">
           <button

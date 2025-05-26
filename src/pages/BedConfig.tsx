@@ -70,7 +70,7 @@ const BedConfig: React.FC = () => {
     sensorStore.sensorsFree = [targetSensor, ...sensorStore.sensorsFree];
     setSensor((prevSensors) => {
       if (prevSensors) {
-        // ใช้ filter เพื่อลบเซ็นเซอร์ที่ไม่ตรงกับ sensorToDelete
+        // ใช้ filter เพื่อลบเซนเซอร์ที่ไม่ตรงกับ sensorToDelete
         return prevSensors.filter(
           (sensor) => sensor.sensor_id !== targetSensor.sensor_id
         );
@@ -141,7 +141,7 @@ const BedConfig: React.FC = () => {
           id="btnAdd"
         >
           <Icon path={mdiPlus} size={1} />
-          <span className="cursor-pointer">เพิ่มเซ็นเซอร์ใหม่</span>
+          <span className="cursor-pointer">เพิ่มเซนเซอร์ใหม่</span>
         </button>
       </div>
       {/* Content */}

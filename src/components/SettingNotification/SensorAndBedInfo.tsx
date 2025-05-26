@@ -17,9 +17,9 @@ const SensorAndBedInfo: React.FC<SensorAndBedInfoProps> = ({
 }) => {
   return (
     <div className="flex gap-2 mb-4">
-      {/* Dropdown สำหรับเลือกเซ็นเซอร์ */}
+      {/* Dropdown สำหรับเลือกเซนเซอร์ */}
       <label htmlFor="sensor-select" className="sr-only">
-        เลือกเซ็นเซอร์
+        เลือกเซนเซอร์
       </label>
       <select
         id="sensor-select"

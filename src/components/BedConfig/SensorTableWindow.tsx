@@ -11,7 +11,7 @@ interface Props {
 
 // useEffect(()=>{
 //         loadAllSensorFree().then((data: Sensor[]) => {
-//           setSensors(data); // เซ็ตค่าข้อมูลเซ็นเซอร์จาก store
+//           setSensors(data); // เซ็ตค่าข้อมูลเซนเซอร์จาก store
 //         });
 // },[])
 
@@ -22,7 +22,7 @@ const SensorTableWindow: React.FC<Props> = ({ sensors, onDeleteSensor }) => {
         <div className="flex flex-col border-2 border-gray-300 p-4 bg-[#F0F0F0] rounded-md min-h-[620px]">
           <h2 className="flex text-xl font-semibold mb-4 items-center">
             <MdSensors className="mr-2 text-3xl text-[#2E5361]" />
-            รายการเซ็นเซอร์
+            รายการเซนเซอร์
           </h2>
           <div className="overflow-x-auto ">
             <table className="min-w-full divide-y divide-gray-200">
@@ -32,7 +32,7 @@ const SensorTableWindow: React.FC<Props> = ({ sensors, onDeleteSensor }) => {
                     scope="col"
                     className="px-6 py-3 text-left  font-medium  text-black uppercase tracking-wider font-extrabold text-base"
                   >
-                    เซ็นเซอร์
+                    เซนเซอร์
                   </th>
                   <th
                     scope="col"
