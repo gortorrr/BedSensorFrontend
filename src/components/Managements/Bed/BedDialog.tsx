@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
-import { Bed } from "../../../types/bed";
+import { AddBed, Bed } from "../../../types/bed";
 import { useBedStore } from "../../../store/bedStore";
+import { Building } from "../../../types/building";
+import { Floor } from "../../../types/floor";
 
 interface BedDialogProps {
   isOpen: boolean;
@@ -16,13 +18,38 @@ const BedDialog: React.FC<BedDialogProps> = ({
   initialBedData,
 }) => {
   const [bedData, setBedData] = useState<Bed>(initialBedData);
+  const [locations, setLocations] = useState<Building[]>([]);
+  const [selectedBuilding, setSelectedBuilding] = useState<Building | null>(
+    null
+  );
+  const [selectedFloor, setSelectedFloor] = useState<Floor | null>(null);
+
   const bedStore = useBedStore();
+
+  useEffect(() => {
+    const fetchLocationsData = async () => {
+      const res = await bedStore.getLocations();
+      setLocations(res);
+    };
+    fetchLocationsData();
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
       setBedData(initialBedData);
+
+      // Preselect building and floor from initialBedData
+      const building = locations.find(
+        (b) => b.building_id === initialBedData.room.floor.building.building_id
+      );
+      setSelectedBuilding(building || null);
+
+      const floor = building?.floor?.find(
+        (f) => f.floor_id === initialBedData.room.floor.floor_id
+      );
+      setSelectedFloor(floor || null);
     }
-  }, [isOpen, initialBedData]);
+  }, [isOpen, initialBedData, locations]);
 
   const handleClose = () => {
     onClose();
@@ -31,13 +58,17 @@ const BedDialog: React.FC<BedDialogProps> = ({
   const saveBed = async () => {
     try {
       if (!bedData.bed_id) {
-        console.log(bedData.bed_name);
-        await bedStore.addBed(bedData);
+        const addBedPayload: AddBed = {
+          bed_name: bedData.bed_name,
+          room_id: bedData.room.room_id,
+        };
+        console.log("จะส่ง:", addBedPayload);
+        await bedStore.addBed(addBedPayload); // <-- ส่งแค่ข้อมูลที่จำเป็น
       } else {
         await bedStore.editBed(bedData.bed_id, bedData);
       }
       handleClose();
-      window.location.reload(); // คุณสามารถเปลี่ยนเป็นการ refresh state แทน reload ก็ได้
+      window.location.reload(); // เปลี่ยนเป็น refresh state ได้หากต้องการ
     } catch (err) {
       console.error("❌ Failed to save bed:", err);
     }
@@ -72,128 +103,142 @@ const BedDialog: React.FC<BedDialogProps> = ({
           <div className="space-y-4">
             {/* อาคาร */}
             <div className="flex items-center">
-              <label
-                htmlFor="building"
-                className="w-40 text-right mr-4 font-semibold text-gray-700"
-              >
+              <label className="w-40 text-right mr-4 font-semibold text-gray-700">
                 อาคาร :
               </label>
               <select
-                id="building"
                 value={bedData.room.floor.building.building_name}
-                onChange={(e) =>
+                onChange={(e) => {
+                  const building =
+                    locations.find((b) => b.building_name === e.target.value) ||
+                    null;
+                  setSelectedBuilding(building);
+                  setSelectedFloor(null);
                   setBedData({
                     ...bedData,
                     room: {
-                      ...bedData.room,
+                      room_id: 0,
+                      room_name: "",
                       floor: {
-                        ...bedData.room.floor,
+                        floor_id: 0,
+                        floor_name: "",
                         building: {
-                          ...bedData.room.floor.building,
-                          building_name: e.target.value,
+                          building_id: building?.building_id ?? 0,
+                          building_name: building?.building_name ?? "",
                         },
                       },
                     },
-                  })
-                }
+                  });
+                }}
                 className="w-60 p-2 border border-gray-300 rounded-md h-10"
               >
                 <option value="">เลือกอาคาร</option>
-                <option value="อาคารผู้ป่วยใน">อาคารผู้ป่วยใน</option>
-                <option value="อาคารผู้ป่วยนอก">อาคารผู้ป่วยนอก</option>
+                {locations.map((b) => (
+                  <option key={b.building_id} value={b.building_name}>
+                    {b.building_name}
+                  </option>
+                ))}
               </select>
             </div>
 
             {/* ชั้น */}
             <div className="flex items-center">
-              <label
-                htmlFor="floor"
-                className="w-40 text-right mr-4 font-semibold text-gray-700"
-              >
+              <label className="w-40 text-right mr-4 font-semibold text-gray-700">
                 ชั้น :
               </label>
               <select
-                id="floor"
                 value={bedData.room.floor.floor_name}
-                onChange={(e) =>
+                onChange={(e) => {
+                  const floor =
+                    selectedBuilding?.floor?.find(
+                      (f) => f.floor_name === e.target.value
+                    ) || null;
+                  setSelectedFloor(floor);
                   setBedData({
                     ...bedData,
                     room: {
-                      ...bedData.room,
+                      room_id: 0,
+                      room_name: "",
                       floor: {
-                        ...bedData.room.floor,
-                        floor_name: e.target.value,
+                        floor_id: floor?.floor_id ?? 0,
+                        floor_name: floor?.floor_name ?? "",
+                        building: {
+                          building_id: selectedBuilding?.building_id ?? 0,
+                          building_name: selectedBuilding?.building_name ?? "",
+                        },
                       },
                     },
-                  })
-                }
+                  });
+                }}
+                disabled={!selectedBuilding}
                 className="w-60 p-2 border border-gray-300 rounded-md h-10"
               >
-                <option value="1">1</option>
-                <option value="2">2</option>
+                <option value="">เลือกชั้น</option>
+                {selectedBuilding?.floor?.map((f) => (
+                  <option key={f.floor_id} value={f.floor_name}>
+                    {f.floor_name}
+                  </option>
+                ))}
               </select>
             </div>
 
             {/* ห้อง */}
             <div className="flex items-center">
-              <label
-                htmlFor="room"
-                className="w-40 text-right mr-4 font-semibold text-gray-700"
-              >
+              <label className="w-40 text-right mr-4 font-semibold text-gray-700">
                 ห้อง :
               </label>
               <select
-                id="room"
-                value={bedData.room.room_name}
-                onChange={(e) =>
+                value={bedData.room.room_id}
+                onChange={(e) => {
+                  const roomId = parseInt(e.target.value, 10);
+                  const room =
+                    selectedFloor?.room?.find((r) => r.room_id === roomId) ||
+                    null;
                   setBedData({
                     ...bedData,
                     room: {
                       ...bedData.room,
-                      room_name: e.target.value,
+                      room_id: room?.room_id ?? 0,
+                      room_name: room?.room_name ?? "",
                     },
-                  })
-                }
+                  });
+                }}
+                disabled={!selectedFloor}
                 className="w-60 p-2 border border-gray-300 rounded-md h-10"
               >
-                <option value="1610">1610</option>
-                <option value="1620">1620</option>
+                <option value="">เลือกห้อง</option>
+                {selectedFloor?.room?.map((r) => (
+                  <option key={r.room_id} value={r.room_id}>
+                    {r.room_name}
+                  </option>
+                ))}
               </select>
             </div>
 
             {/* หมายเลขเตียง */}
             <div className="flex items-center">
-              <label
-                htmlFor="bed"
-                className="w-40 text-right mr-4 font-semibold text-gray-700"
-              >
+              <label className="w-40 text-right mr-4 font-semibold text-gray-700">
                 หมายเลขเตียง :
               </label>
-              <select
-                id="bed"
+              <input
+                type="text"
                 value={bedData.bed_name}
                 onChange={(e) =>
                   setBedData({ ...bedData, bed_name: e.target.value })
                 }
                 className="w-60 p-2 border border-gray-300 rounded-md h-10"
-              >
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="5">5</option>
-              </select>
+                placeholder="กรุณากรอกหมายเลขเตียง"
+              />
             </div>
 
             {/* สถานะ */}
             <div className="flex items-center">
-              <label
-                htmlFor="status"
-                className="w-40 text-right mr-4 font-semibold text-gray-700"
-              >
+              <label className="w-40 text-right mr-4 font-semibold text-gray-700">
                 สถานะ :
               </label>
               <select
-                id="status"
                 value={bedData.bed_activated ? "Active" : "Inactive"}
+                disabled={!bedData.bed_id} // ✅ ปิดตอนเพิ่ม
                 onChange={(e) =>
                   setBedData({
                     ...bedData,
@@ -216,7 +261,7 @@ const BedDialog: React.FC<BedDialogProps> = ({
             </div>
           </div>
 
-          {/* ปุ่มบันทึก/ยกเลิก */}
+          {/* ปุ่ม */}
           <div className="flex justify-center gap-6 mt-6">
             <button
               onClick={saveBed}
