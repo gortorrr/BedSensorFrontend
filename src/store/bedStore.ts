@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Bed, BedSaveConfig } from "../types/bed";
+import { AddBed, Bed, BedSaveConfig } from "../types/bed";
 import { bedService } from "../services/bedService";
 import { Building } from "../types/building";
 
@@ -20,7 +20,7 @@ interface BedStore {
   getBed: (bed_id: number) => Promise<Bed>;
   getBeds: () => Promise<Bed[]>;
   deleteBed: (bed_id: number) => Promise<void>;
-  addBed: (bed: Bed) => Promise<void>;
+  addBed: (bed: AddBed) => Promise<void>;
   editBed: (bed_id: number, bed: Bed) => Promise<void>;
   // removePatientFromBed: (bed_id: number, patient_id: number) => Promise<void>;
 }
@@ -88,8 +88,7 @@ export const useBedStore = create<BedStore>((set) => ({
   deleteBed: async (bed_id: number) => {
     await bedService.deleteBed(bed_id);
   },
-  addBed: async (bed: Bed) => {
-    bed.selectedShowSensorId = null;
+  addBed: async (bed: AddBed) => {
     await bedService.addBed(bed);
   },
   editBed: async (bed_id: number, bed: Bed) => {

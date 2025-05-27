@@ -1,4 +1,4 @@
-import { Bed, BedSaveConfig } from "../types/bed";
+import { AddBed, Bed, BedSaveConfig } from "../types/bed";
 import http from "./http";
 
 export const bedService = {
@@ -105,7 +105,7 @@ export const bedService = {
     const res = await http.delete(`/beds/${bed_id}`);
     return res.data;
   },
-  async addBed(bed: Bed): Promise<Bed> {
+  async addBed(bed: AddBed): Promise<AddBed> {
     try {
       const response = await http.post("beds", bed);
       return response.data;

@@ -13,6 +13,10 @@ export interface Bed {
   selectedShowSensorId?: number[] | null;
 }
 
+export interface AddBed {
+  bed_name: string;
+  room_id?: number;
+}
 export interface BedSaveConfig {
   bed_id: number;
   patient_id: number | null;
