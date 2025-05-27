@@ -136,7 +136,7 @@ const NotificationHistory: React.FC = () => {
       <table className="w-full border-collapse shadow-md">
         <thead className="bg-[#B7D6DE] h-16 font-bold text-center">
           <tr>
-            <th className="p-2 text-left">การแจ้งเตือน</th>
+            <th className="p-2 text-left pl-16">การแจ้งเตือน</th>
             <th className="p-2">วันที่/เวลา</th>
             <th className="p-2">รายละเอียด</th>
           </tr>
@@ -147,7 +147,7 @@ const NotificationHistory: React.FC = () => {
               key={h.history_value_sensor_id}
               className="text-center bg-white shadow-sm even:bg-gradient-to-r even:from-[#A1B5BC] even:via-[#D1DFE5] even:to-[#e4ecef]"
             >
-              <td className="p-2 h-16 text-left">
+              <td className="p-2 h-16 text-left pl-16">
                 {h.history_value_sensor_value}
               </td>
               <td className="p-2 h-16">{h.history_value_sensor_time}</td>

@@ -150,7 +150,7 @@ const UserManagement: React.FC = () => {
           {paginatedUsers.map((user, index) => (
             <tr
               key={user.user_id}
-              className="text-center bg-white even:bg-[#edf3f6]"
+              className="text-center bg-gradient-to-r from-white via-gray-100 to-white shadow-md even:bg-gradient-to-r even:from-[#A1B5BC] even:via-[#D1DFE5] even:to-[#e4ecef]"
             >
               <td className="p-2 h-14">
                 {(currentPage - 1) * itemsPerPage + index + 1}
