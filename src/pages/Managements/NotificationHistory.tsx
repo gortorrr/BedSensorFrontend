@@ -1,56 +1,88 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { History_Value_Sensor } from "../../types/history_value_sensor";
+import { Sensor } from "../../types/sensor";
+import { useSensorStore } from "../../store/sensorStore";
 
 const NotificationHistory: React.FC = () => {
-  const [selectedDate, setSelectedDate] = useState(""); // ไม่ตั้งค่าเริ่มต้น
-  const [selectedZone, setSelectedZone] = useState("เซนเซอร์ทั้งหมด");
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedZone, setSelectedZone] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [sensors, setSensors] = useState<Sensor[]>([]);
+  const sensorStore = useSensorStore();
   const itemsPerPage = 10;
+
+  const fetchSensors = async () => {
+    try {
+      const data = await sensorStore.getSensors();
+      console.log("✅ Sensors fetched:", data);
+      setSensors(data);
+    } catch (error) {
+      console.error("❌ Error fetching sensors:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSensors();
+  }, []);
 
   const mockHistory: History_Value_Sensor[] = [
     {
+      sensor_id: 3,
       history_value_sensor_id: 1,
       history_value_sensor_value:
         "อัตราการหายใจต่ำ (9 ครั้ง/นาที) ที่ ห้อง: RM205 เตียง: 26",
       history_value_sensor_time: "2025-01-01 13:20",
     },
     {
+      sensor_id: 2,
       history_value_sensor_id: 2,
       history_value_sensor_value:
         "อัตราการเต้นของหัวใจ: หัวใจเต้นเร็ว (124 bpm) ที่ ห้อง: RM203 เตียง: 23",
       history_value_sensor_time: "2025-01-01 12:41",
     },
     {
+      sensor_id: 2,
       history_value_sensor_id: 3,
       history_value_sensor_value:
         "อัตราการเต้นของหัวใจ: หัวใจเต้นช้า (48 bpm) ที่ ห้อง: RM108 เตียง: 18",
       history_value_sensor_time: "2025-01-01 11:23",
     },
     {
+      sensor_id: 3,
       history_value_sensor_id: 4,
       history_value_sensor_value:
         "อัตราการหายใจต่ำ (8 ครั้ง/นาที) ที่ ห้อง: RM116 เตียง: 15",
       history_value_sensor_time: "2025-01-01 10:17",
     },
     {
+      sensor_id: 3,
       history_value_sensor_id: 5,
       history_value_sensor_value:
         "อัตราการหายใจสูง (29 ครั้ง/นาที) ที่ ห้อง: RM112 เตียง: 11",
       history_value_sensor_time: "2025-01-02 09:56",
     },
     {
+      sensor_id: 3,
       history_value_sensor_id: 6,
       history_value_sensor_value:
         "อัตราการหายใจต่ำ (10 ครั้ง/นาที) ที่ ห้อง: RM108 เตียง: 5",
       history_value_sensor_time: "2025-01-02 09:18",
     },
     {
+      sensor_id: 2,
       history_value_sensor_id: 7,
       history_value_sensor_value:
         "อัตราการเต้นของหัวใจ: หัวใจเต้นเร็ว (120 bpm) ที่ ห้อง: RM105 เตียง: 2",
       history_value_sensor_time: "2025-01-03 08:35",
     },
+  ];
+  //ถ้าจะ test ว่ากรองได้จริงไหม sensor id bed = 1 hert rate id = 7
+  const sensorOptions = [
+    { label: "เซนเซอร์ทั้งหมด", value: "all" },
+    { label: "Bed Sensor", value: "bed_sensor" },
+    { label: "SpO2 Sensor", value: "spo2" },
+    { label: "Respiration Sensor", value: "respiration" },
+    { label: "Heart Rate Sensor", value: "heart_rate" },
   ];
 
   const filteredData = mockHistory
@@ -59,11 +91,12 @@ const NotificationHistory: React.FC = () => {
         selectedDate === "" ||
         h.history_value_sensor_time?.startsWith(selectedDate)
     )
-    .filter(
-      (h) =>
-        selectedZone === "เซนเซอร์ทั้งหมด" ||
-        h.history_value_sensor_value.includes(selectedZone)
-    )
+    .filter((h) => {
+      if (selectedZone === "all") return true;
+
+      const matchedSensor = sensors.find((s) => s.sensor_id === h.sensor_id);
+      return matchedSensor?.sensor_type === selectedZone;
+    })
     .sort((a, b) =>
       (b.history_value_sensor_time ?? "").localeCompare(
         a.history_value_sensor_time ?? ""
@@ -104,7 +137,6 @@ const NotificationHistory: React.FC = () => {
       </h1>
 
       <div className="flex gap-4 flex-wrap md:flex-nowrap items-center mb-6">
-        {/* Date Picker */}
         <input
           type="date"
           className="input input-bordered border-2 border-gray-400 rounded-lg p-2 bg-white w-full md:w-auto"
@@ -113,10 +145,8 @@ const NotificationHistory: React.FC = () => {
             setSelectedDate(e.target.value);
             setCurrentPage(1);
           }}
-          placeholder="dd-mm-yyyy"
         />
 
-        {/* Dropdown */}
         <select
           className="select select-bordered border-2 border-gray-400 rounded-lg bg-white p-2 w-full md:w-auto"
           value={selectedZone}
@@ -125,13 +155,14 @@ const NotificationHistory: React.FC = () => {
             setCurrentPage(1);
           }}
         >
-          <option>เซนเซอร์ทั้งหมด</option>
-          <option>Bed Sensor</option>
-          <option>SpO2 Sensor</option>
-          <option>Respiration Sensor</option>
+          {sensorOptions.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
         </select>
       </div>
-
+      
       {/* Table */}
       <table className="w-full border-collapse shadow-md">
         <thead className="bg-[#B7D6DE] h-16 font-bold text-center">
