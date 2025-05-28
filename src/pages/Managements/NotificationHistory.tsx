@@ -1,81 +1,61 @@
 import React, { useEffect, useState } from "react";
-import { History_Value_Sensor } from "../../types/history_value_sensor";
 import { Sensor } from "../../types/sensor";
 import { useSensorStore } from "../../store/sensorStore";
+import DateRangePicker from "../../components/Managements/NotificationsHistory/DateRangePicker";
+import { useNotificationStore } from "../../store/notificationStore";
+import { Notification } from "../../types/notification";
 
 const NotificationHistory: React.FC = () => {
-  const [selectedDate, setSelectedDate] = useState("");
+  const [data, setData] = useState<Notification[]>([]);
   const [selectedZone, setSelectedZone] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [sensors, setSensors] = useState<Sensor[]>([]);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const sensorStore = useSensorStore();
   const itemsPerPage = 10;
+  const notificationStore = useNotificationStore();
 
   const fetchSensors = async () => {
     try {
       const data = await sensorStore.getSensors();
-      console.log("✅ Sensors fetched:", data);
+      // console.log("✅ Sensors fetched:", data);
       setSensors(data);
     } catch (error) {
       console.error("❌ Error fetching sensors:", error);
     }
   };
 
+  const setLocalDate = async () => {
+    const today = new Date();
+
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0"); // เดือนเริ่มที่ 0
+    const day = String(today.getDate()).padStart(2, "0");
+
+    const formattedDate = `${year}-${month}-${day}`;
+    setStartDate(formattedDate);
+    setEndDate(formattedDate);
+    fetchData(formattedDate, formattedDate);
+  };
+
+  const fetchData = async (start_date: string, end_date: string) => {
+    const fetchData = await notificationStore.getNotificationsByDate(
+      start_date,
+      end_date
+    );
+    setData(fetchData);
+  };
+
+  useEffect(() => {
+    console.log("📦 Data updated:", data);
+  }, [data]);
+
   useEffect(() => {
     fetchSensors();
+    setLocalDate();
   }, []);
 
-  const mockHistory: History_Value_Sensor[] = [
-    {
-      sensor_id: 3,
-      history_value_sensor_id: 1,
-      history_value_sensor_value:
-        "อัตราการหายใจต่ำ (9 ครั้ง/นาที) ที่ ห้อง: RM205 เตียง: 26",
-      history_value_sensor_time: "2025-01-01 13:20",
-    },
-    {
-      sensor_id: 2,
-      history_value_sensor_id: 2,
-      history_value_sensor_value:
-        "อัตราการเต้นของหัวใจ: หัวใจเต้นเร็ว (124 bpm) ที่ ห้อง: RM203 เตียง: 23",
-      history_value_sensor_time: "2025-01-01 12:41",
-    },
-    {
-      sensor_id: 2,
-      history_value_sensor_id: 3,
-      history_value_sensor_value:
-        "อัตราการเต้นของหัวใจ: หัวใจเต้นช้า (48 bpm) ที่ ห้อง: RM108 เตียง: 18",
-      history_value_sensor_time: "2025-01-01 11:23",
-    },
-    {
-      sensor_id: 3,
-      history_value_sensor_id: 4,
-      history_value_sensor_value:
-        "อัตราการหายใจต่ำ (8 ครั้ง/นาที) ที่ ห้อง: RM116 เตียง: 15",
-      history_value_sensor_time: "2025-01-01 10:17",
-    },
-    {
-      sensor_id: 3,
-      history_value_sensor_id: 5,
-      history_value_sensor_value:
-        "อัตราการหายใจสูง (29 ครั้ง/นาที) ที่ ห้อง: RM112 เตียง: 11",
-      history_value_sensor_time: "2025-01-02 09:56",
-    },
-    {
-      sensor_id: 3,
-      history_value_sensor_id: 6,
-      history_value_sensor_value:
-        "อัตราการหายใจต่ำ (10 ครั้ง/นาที) ที่ ห้อง: RM108 เตียง: 5",
-      history_value_sensor_time: "2025-01-02 09:18",
-    },
-    {
-      sensor_id: 2,
-      history_value_sensor_id: 7,
-      history_value_sensor_value:
-        "อัตราการเต้นของหัวใจ: หัวใจเต้นเร็ว (120 bpm) ที่ ห้อง: RM105 เตียง: 2",
-      history_value_sensor_time: "2025-01-03 08:35",
-    },
-  ];
   //ถ้าจะ test ว่ากรองได้จริงไหม sensor id bed = 1 hert rate id = 7
   const sensorOptions = [
     { label: "เซนเซอร์ทั้งหมด", value: "all" },
@@ -85,21 +65,18 @@ const NotificationHistory: React.FC = () => {
     { label: "Heart Rate Sensor", value: "heart_rate" },
   ];
 
-  const filteredData = mockHistory
-    .filter(
-      (h) =>
-        selectedDate === "" ||
-        h.history_value_sensor_time?.startsWith(selectedDate)
-    )
+  const filteredData = data
     .filter((h) => {
       if (selectedZone === "all") return true;
 
-      const matchedSensor = sensors.find((s) => s.sensor_id === h.sensor_id);
+      const matchedSensor = sensors.find(
+        (s) => s.sensor_id === h.sensor_notifications_config.sensor_id
+      );
       return matchedSensor?.sensor_type === selectedZone;
     })
     .sort((a, b) =>
-      (b.history_value_sensor_time ?? "").localeCompare(
-        a.history_value_sensor_time ?? ""
+      (b.notification_createdate ?? "").localeCompare(
+        a.notification_createdate ?? ""
       )
     );
 
@@ -130,6 +107,26 @@ const NotificationHistory: React.FC = () => {
     );
   };
 
+  function formatDateTime(datetimeString: string) {
+    const dt = new Date(datetimeString);
+
+    const dd = String(dt.getDate()).padStart(2, "0");
+    const mm = String(dt.getMonth() + 1).padStart(2, "0"); // เดือนนับจาก 0
+    const yyyy = dt.getFullYear();
+
+    const hh = String(dt.getHours()).padStart(2, "0");
+    const min = String(dt.getMinutes()).padStart(2, "0");
+
+    return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
+  }
+
+  // ทำงานเมื่อเปลี่ยนวันที่
+  const handleDateChange = (range: { startDate: string; endDate: string }) => {
+    setStartDate(range.startDate);
+    setEndDate(range.endDate);
+    fetchData(range.startDate, range.endDate);
+  };
+
   return (
     <div className="p-6 bg-[#e7f0f3] min-h-screen">
       <h1 className="text-3xl font-bold text-[#2E5361] mb-4">
@@ -137,14 +134,11 @@ const NotificationHistory: React.FC = () => {
       </h1>
 
       <div className="flex gap-4 flex-wrap md:flex-nowrap items-center mb-6">
-        <input
-          type="date"
-          className="input input-bordered border-2 border-gray-400 rounded-lg p-2 bg-white w-full md:w-auto"
-          value={selectedDate}
-          onChange={(e) => {
-            setSelectedDate(e.target.value);
-            setCurrentPage(1);
-          }}
+        {/* date picker */}
+        <DateRangePicker
+          startDate={startDate}
+          endDate={endDate}
+          onDateChange={handleDateChange}
         />
 
         <select
@@ -162,12 +156,12 @@ const NotificationHistory: React.FC = () => {
           ))}
         </select>
       </div>
-      
+
       {/* Table */}
       <table className="w-full border-collapse shadow-md">
         <thead className="bg-[#B7D6DE] h-16 font-bold text-center">
           <tr>
-            <th className="p-2 text-left pl-16">การแจ้งเตือน</th>
+            <th className="p-2 text-left pl-6">การแจ้งเตือน</th>
             <th className="p-2">วันที่/เวลา</th>
             <th className="p-2">รายละเอียด</th>
           </tr>
@@ -175,13 +169,39 @@ const NotificationHistory: React.FC = () => {
         <tbody>
           {paginatedData.map((h) => (
             <tr
-              key={h.history_value_sensor_id}
+              key={h.notification_id}
               className="text-center bg-white shadow-sm even:bg-gradient-to-r even:from-[#A1B5BC] even:via-[#D1DFE5] even:to-[#e4ecef]"
             >
-              <td className="p-2 h-16 text-left pl-16">
-                {h.history_value_sensor_value}
+              <td className="p-2 h-16 text-left pl-6">
+                <span
+                  style={{
+                    color:
+                      h.notification_category === "Emergency"
+                        ? "darkorange" // สีเหลืองเข้ม (จะใช้ #FF8C00 ก็ได้)
+                        : h.notification_category === "SOS"
+                        ? "red"
+                        : "inherit", // กรณีอื่นๆ ใช้สีปกติ
+                  }}
+                >
+                  {h.notification_category}
+                </span>{" "}
+                {
+                  h.sensor_notifications_config
+                    .sensor_notifications_config_event
+                }{" "}
+                {"ที่ "}
+                {
+                  h.log_bed_patient_sensor?.bed?.room.floor.building
+                    .building_name
+                }{" "}
+                {h.log_bed_patient_sensor?.bed?.room.floor.floor_name}{" "}
+                {h.log_bed_patient_sensor?.bed?.room.room_name}{" "}
+                {h.log_bed_patient_sensor?.bed?.bed_name}
               </td>
-              <td className="p-2 h-16">{h.history_value_sensor_time}</td>
+
+              <td className="p-2 h-16">
+                {formatDateTime(h.notification_createdate || "")}
+              </td>
               <td className="p-2 h-16 py-4 text-center flex justify-center gap-2">
                 <button
                   id="detail"

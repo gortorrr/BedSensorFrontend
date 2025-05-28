@@ -122,4 +122,14 @@ export const notificationService = {
       throw error;
     }
   },
+
+  async getNotificationsByDate(
+    start_date: string,
+    end_date: string
+  ): Promise<Notification[]> {
+    const res = await http.get(
+      `notifications/by_date_range/?start_date=${start_date}&end_date=${end_date}`
+    );
+    return res.data;
+  },
 };

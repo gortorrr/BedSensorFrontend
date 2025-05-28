@@ -30,6 +30,10 @@ interface NotificationStore {
   loadSosNotSuccessed: () => Promise<void>;
   sosDatas: Notification[];
   sosDataWithAccepted: Notification[];
+  getNotificationsByDate: (
+    start_date: string,
+    end_date: string
+  ) => Promise<Notification[]>;
 }
 
 export const useNotificationStore = create<NotificationStore>((set) => ({
@@ -82,6 +86,13 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
   },
   successSos: async (notification_id: number) => {
     notificationService.successSos(notification_id);
+  },
+  getNotificationsByDate: async (start_date: string, end_date: string) => {
+    const data = notificationService.getNotificationsByDate(
+      start_date,
+      end_date
+    );
+    return data;
   },
 }));
 // loadAllNotificationByPatient: async (patient_id: number, sensor_id: number) => {
