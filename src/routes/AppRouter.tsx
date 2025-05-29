@@ -11,6 +11,7 @@ import BedManagement from "../pages/Managements/BedManagement.tsx";
 import UserManagement from "../pages/Managements/UserManagement.tsx";
 import NotificationHistory from "../pages/Managements/NotificationHistory.tsx";
 import PatientInformation from "../pages/Managements/PatientManagement/PatientInformation.tsx";
+import ProtectedRoute from "./ProtectedRoute"; // ✅ import
 // import EmergencyAlert from "../pages/EmergencyAlert.tsx";
 // import { useNotificationStore } from "../store/notificationStore.ts"; // Import ตัวแจ้งเตือนฉุกเฉิน
 
@@ -21,7 +22,7 @@ const AppRouter: React.FC = () => {
 
   return (
     <div className={`bg-white ${isHome ? "overflow-auto flex" : ""}`}>
-      <Routes>
+      {/* <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/bed-config/:bed_id" element={<BedConfig />} />
@@ -36,6 +37,22 @@ const AppRouter: React.FC = () => {
         <Route path="/user-management" element={<UserManagement />} />
         <Route path="/noti-history" element={<NotificationHistory />} />
         <Route path="/add-patient-home" element={<AddPatientHome />} />
+      </Routes> */}
+      <Routes>
+        {/* ❌ ไม่ต้องล็อกอิน */}
+        <Route path="/login" element={<Login />} />
+
+        {/* ✅ ต้องล็อกอินก่อน */}
+        <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route path="/bed-config/:bed_id" element={<ProtectedRoute><BedConfig /></ProtectedRoute>} />
+        <Route path="/setting-noti/:bed_id" element={<ProtectedRoute><SettingNoti /></ProtectedRoute>} />
+        <Route path="/sensor-management" element={<ProtectedRoute><SensorManagement /></ProtectedRoute>} />
+        <Route path="/patient-management" element={<ProtectedRoute><PatientManagement /></ProtectedRoute>} />
+        <Route path="/patient-management/:patient_id/patient-information" element={<ProtectedRoute><PatientInformation /></ProtectedRoute>} />
+        <Route path="/bed-management" element={<ProtectedRoute><BedManagement /></ProtectedRoute>} />
+        <Route path="/user-management" element={<ProtectedRoute><UserManagement /></ProtectedRoute>} />
+        <Route path="/noti-history" element={<ProtectedRoute><NotificationHistory /></ProtectedRoute>} />
+        <Route path="/add-patient-home" element={<ProtectedRoute><AddPatientHome /></ProtectedRoute>} />
       </Routes>
 
       {/* Emergency Alert - ปรับการแสดงผลตาม path */}

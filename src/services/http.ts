@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useAuthStore } from "../store/authStore";
 
 export const baseURL = "http://127.0.0.1:8000/";
 // สร้าง instance ของ Axios
@@ -21,6 +22,11 @@ instance.interceptors.response.use(
     return res;
   },
   (error) => {
+    if (error.response?.status === 401) {
+      const { clearAuth } = useAuthStore.getState(); // ✅ ดึง method ได้ตรงๆ
+      clearAuth();
+      window.location.href = "/login";
+    }
     return Promise.reject(error);
   }
 );
