@@ -160,38 +160,38 @@ const PersonalBehavior: React.FC<PersonalBehaviorProps> = ({
       <div className="max-h-100 overflow-y-auto">
         {" "}
         {/* 60 = ประมาณ 9 แถว */}
-        <table className="min-w-full bg-white rounded-xl shadow text-sm">
-          <thead className="bg-[#2E5361] text-white sticky top-0">
+        <table className="min-w-full bg-white rounded-xl shadow">
+          <thead className="bg-[#B7D6DE] h-16 font-bold text-center text-black sticky top-0">
             <tr>
-              <th className="py-2 px-4 text-left">วันที่</th>
-              <th className="py-2 px-4 text-left">เวลาตื่น</th>
-              <th className="py-2 px-4 text-left">เวลาหลับ</th>
-              <th className="py-2 px-4 text-left">ระยะเวลาการนอน</th>
-              <th className="py-2 px-4 text-left">ท่าทางขณะนอน</th>
-              <th className="py-2 px-4 text-left">จำนวนครั้งที่ตื่น</th>
-              <th className="py-2 px-4 text-left">เสียงรบกวน</th>
-              <th className="py-2 px-4 text-left">อยู่นอกห้องพัก (รวม)</th>
+              <th className="py-2 px-4 text-center">วันที่</th>
+              <th className="py-2 px-4 text-center">เวลาตื่น</th>
+              <th className="py-2 px-4 text-center">เวลาหลับ</th>
+              <th className="py-2 px-4 text-center">ระยะเวลาการนอน</th>
+              <th className="py-2 px-4 text-center">ท่าทางขณะนอน</th>
+              <th className="py-2 px-4 text-center">จำนวนครั้งที่ตื่น</th>
+              <th className="py-2 px-4 text-center">เสียงรบกวน</th>
+              <th className="py-2 px-4 text-center">อยู่นอกห้องพัก (รวม)</th>
             </tr>
           </thead>
           <tbody>
             {patientBehaviorList.map((item) => (
-              <tr key={item.personal_behavior_id} className="border-t">
-                <td className="py-2 px-4">{item.personal_behavior_date}</td>
-                <td className="py-2 px-4">
+              <tr key={item.personal_behavior_id} className="border-t h-16 bg-gradient-to-r from-white via-gray-100 to-white shadow-md even:bg-gradient-to-r even:from-[#A1B5BC] even:via-[#D1DFE5] even:to-[#e4ecef]">
+                <td className="py-2 px-4 text-center">{item.personal_behavior_date}</td>
+                <td className="py-2 px-4 text-center">
                   {item.personal_behavior_wake_time}
                 </td>
-                <td className="py-2 px-4">
+                <td className="py-2 px-4 text-center">
                   {item.personal_behavior_fall_asleep_time}
                 </td>
-                <td className="py-2 px-4">{item.personal_behavior_duration}</td>
-                <td className="py-2 px-4">{item.personal_behavior_position}</td>
-                <td className="py-2 px-4">
+                <td className="py-2 px-4 text-center">{item.personal_behavior_duration}</td>
+                <td className="py-2 px-4 text-center">{item.personal_behavior_position}</td>
+                <td className="py-2 px-4 text-center">
                   {item.personal_behavior_sleep_interruption_count}
                 </td>
-                <td className="py-2 px-4">
+                <td className="py-2 px-4 text-center">
                   {item.personal_behavior_noise_disruption_count}
                 </td>
-                <td className="py-2 px-4">
+                <td className="py-2 px-4 text-center">
                   {item.personal_behavior_out_of_bed_duration}
                 </td>
               </tr>
