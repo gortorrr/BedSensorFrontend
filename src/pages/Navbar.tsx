@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { HiMenu } from "react-icons/hi";
 import { GoHome } from "react-icons/go";
@@ -15,6 +15,7 @@ import { RiHospitalFill } from "react-icons/ri";
 import { VscBellDot } from "react-icons/vsc";
 import { IoLogOut } from "react-icons/io5";
 import { useAuthStore } from "../store/authStore";
+import { useUserStore } from "../store/UserStore";
 
 
 interface MenuItem {
@@ -56,16 +57,17 @@ const Navbar: React.FC<NavbarProps> = ({ setUser, setIsOnline, user }) => {
   const [open, setOpen] = useState(true);
   const [expanded, setExpanded] = useState(false);
   const clearAuth = useAuthStore((state) => state.clearAuth);
+  const userStore = useUserStore();
   const navigate = useNavigate();
-
+  const userId = useAuthStore((state) => state.userId); 
   const handleLogin = () => {
-    const userData = {
-      name: "User1",
-      role: "พยาบาล",
-      profilePic: "/src/assets/Male User.png",
-    };
-    setUser(userData);
-    setIsOnline(true);
+    // const userData = {
+    //   name: "User1",
+    //   role: "พยาบาล",
+    //   profilePic: "/src/assets/Male User.png",
+    // };
+    // setUser(userData);
+    // setIsOnline(true);
 
     //navigation to login
     navigate("/login");
@@ -77,6 +79,29 @@ const Navbar: React.FC<NavbarProps> = ({ setUser, setIsOnline, user }) => {
   setIsOnline(false);   // ตั้งสถานะ offline
   navigate("/login");   // กลับไปหน้า login
 };
+
+useEffect(() => {
+  const fetchUser = async () => {
+    if (userId === null) return; // ✅ ป้องกัน null ก่อนเรียกใช้
+
+    try {
+      const res = await userStore.getUser(userId); // ตอนนี้ TypeScript ไม่ error แล้ว
+      setUser({
+        name: res.user_name,
+        role: res.user_position,
+        profilePic: res.image_path || "/src/assets/Male User.png",
+      });
+      setIsOnline(true);
+    } catch (err) {
+      console.error("❌ Failed to fetch user:", err);
+    }
+  };
+
+  fetchUser();
+}, [userId]);
+
+
+
 
 
   return (
