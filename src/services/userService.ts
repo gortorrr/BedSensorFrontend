@@ -6,7 +6,7 @@ export const userService = {
     const res = await http.get("/users");
     return res.data;
   },
-   async getUser(userId: number):Promise<User> {
+  async getUser(userId: number): Promise<User> {
     const res = await http.get(`/users/${userId}`);
     return res.data;
   },
@@ -17,7 +17,7 @@ export const userService = {
   },
 
   async editUser(userId: number, user: Partial<User>) {
-    const res = await http.put(`/user/edit/${userId}`, user);
+    const res = await http.patch(`/users/edit/${userId}`, user);
     return res.data;
   },
 
@@ -26,12 +26,8 @@ export const userService = {
     return res.data;
   },
 
-
   async addImageToUser(formData: FormData, user_id: number) {
-    const res = await http.post(
-      `http://localhost:8000/users/${user_id}/upload-image`,
-      formData
-    );
+    const res = await http.post(`/users/${user_id}/upload-image`, formData);
     return res.data;
   },
 };

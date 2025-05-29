@@ -70,7 +70,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, user, onCancel }) => {
     }
 
     try {
-      if (!user) {
+      if (user?.user_id === 0) {
         // เพิ่มผู้ใช้ใหม่
         const newUser = await userStore.addUser(formData);
         if (image) {
@@ -79,6 +79,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, user, onCancel }) => {
         }
       } else {
         // แก้ไขผู้ใช้
+        console.log("📤 Saving user data:", formData);
         await userStore.editUser(user.user_id, formData);
         if (image) {
           const imageUrl = await userStore.addUserImage(user.user_id, image);
