@@ -136,20 +136,12 @@ const PatientInformation: React.FC = () => {
 
         {activeTab === "behavior" && <PersonalBehavior />}
       </div>
-      <button
+      {/* <button
         onClick={() => window.history.back()}
         className="bg-[#B3B3B3] px-4 py-2 rounded shadow flex items-center"
       >
-        <span className="text-xl mr-2">⬅</span> ย้อนกลับ{" "}
-        {
-          "(ฝากถึงไหม คิดว่าน่าจะต้องมีปุ่มย้อนกลับ แล้วก็อยู่ชิดขวานะ เรื่อง design ค่อยแก้ทีหลังๆ)"
-        }
-      </button>
-      <div>
-        ฝากถึงไหมอีกรอบๆ ข้อมูลอาคารเตียง ถ้าไม่แสดง
-        ให้ไปผูกผู้ป่วยเข้ากับเตียงก่อนนะ
-        ลบข้อความได้เลยถ้าจัดการส่วนที่กล่าวถึงข้างต้นเสร็จแล้ว
-      </div>
+        <span className="text-xl mr-2">⬅</span> ย้อนกลับ
+      </button> */}
     </div>
   );
 };
