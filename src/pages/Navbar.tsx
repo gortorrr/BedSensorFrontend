@@ -14,6 +14,8 @@ import { MdOutlineSensors } from "react-icons/md";
 import { RiHospitalFill } from "react-icons/ri";
 import { VscBellDot } from "react-icons/vsc";
 import { IoLogOut } from "react-icons/io5";
+import { useAuthStore } from "../store/authStore";
+
 
 interface MenuItem {
   name: string;
@@ -53,6 +55,7 @@ const menus: MenuItem[] = [
 const Navbar: React.FC<NavbarProps> = ({ setUser, setIsOnline, user }) => {
   const [open, setOpen] = useState(true);
   const [expanded, setExpanded] = useState(false);
+  const clearAuth = useAuthStore((state) => state.clearAuth);
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -69,9 +72,12 @@ const Navbar: React.FC<NavbarProps> = ({ setUser, setIsOnline, user }) => {
   };
 
   const handleLogout = () => {
-    setUser(null);
-    setIsOnline(false);
-  };
+  clearAuth();          // ล้าง token ใน store
+  setUser(null);        // ล้าง user จาก props
+  setIsOnline(false);   // ตั้งสถานะ offline
+  navigate("/login");   // กลับไปหน้า login
+};
+
 
   return (
     <div

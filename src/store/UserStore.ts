@@ -8,6 +8,7 @@ interface UserStore {
   addUser: (user: Omit<User, "user_id">) => Promise<User>;
   editUser: (userId: number, user: Partial<User>) => Promise<void>;
   deleteUser: (userId: number) => Promise<void>;
+  getUser: (userId: number) => Promise<User>;
   addUserImage: (userId: number, image: File) => void;
 }
 
@@ -50,6 +51,10 @@ export const useUserStore = create<UserStore>((set, get) => ({
     } catch (err) {
       console.error("❌ deleteUser failed:", err);
     }
+  },
+  getUser: async (user_id:number) => {
+      const res = await userService.getUser(user_id);
+      return res as User
   },
 
   addUserImage: async (userId: number, image: File) => {
