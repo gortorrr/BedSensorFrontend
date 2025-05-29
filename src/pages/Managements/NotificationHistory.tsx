@@ -159,7 +159,7 @@ const NotificationHistory: React.FC = () => {
           <tr>
             <th className="p-2 text-left pl-6">การแจ้งเตือน</th>
             <th className="p-2">วันที่/เวลา</th>
-            <th className="p-2">รายละเอียด</th>
+            {/* <th className="p-2">รายละเอียด</th> */}
           </tr>
         </thead>
         <tbody>
@@ -198,6 +198,7 @@ const NotificationHistory: React.FC = () => {
               <td className="p-2 h-16">
                 {formatDateTime(h.notification_createdate || "")}
               </td>
+              {/*
               <td className="p-2 h-16 py-4 text-center flex justify-center gap-2">
                 <button
                   id="detail"
@@ -206,6 +207,7 @@ const NotificationHistory: React.FC = () => {
                   <img src="/src/assets/review.png" alt="review" />
                 </button>
               </td>
+              */}
             </tr>
           ))}
         </tbody>
