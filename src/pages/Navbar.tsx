@@ -89,7 +89,7 @@ useEffect(() => {
       setUser({
         name: res.user_name,
         role: res.user_position,
-        profilePic: res.image_path || "/src/assets/Male User.png",
+        profilePic: res.image_path ? `http://localhost:8000${res.image_path}`: "/src/assets/Male User.png",
       });
       setIsOnline(true);
     } catch (err) {
