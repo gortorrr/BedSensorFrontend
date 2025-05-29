@@ -3,6 +3,7 @@ import { Patient } from "../../../types/patient";
 import { useParams } from "react-router-dom";
 import { usePatientStore } from "../../../store/patientStore";
 import PersonalBehavior from "../../../components/Managements/Patient/PersonalBehavior";
+import MedicalHistory from "../../../components/Managements/Patient/MedicalHistory";
 
 const PatientInformation: React.FC = () => {
   const { patient_id } = useParams();
@@ -11,7 +12,7 @@ const PatientInformation: React.FC = () => {
   const patientStore = usePatientStore();
   const [activeTab, setActiveTab] = useState<
     "history" | "medical" | "behavior"
-  >("behavior");
+  >("history");
 
   const fetchPatientData = async (patient_id: number) => {
     const data = await patientStore.getPatientWithDetail(patient_id);
@@ -131,7 +132,8 @@ const PatientInformation: React.FC = () => {
       </div>
 
       <div>
-        {activeTab === "history" && <div>history</div>}
+        {activeTab === "history" && <MedicalHistory />}
+
         {activeTab === "medical" && <div>medical</div>}
 
         {activeTab === "behavior" && <PersonalBehavior />}
