@@ -1,3 +1,5 @@
+import { Bed } from "./bed";
+
 export interface Patient {
   patient_id?: number;
   patient_name: string;
@@ -8,5 +10,6 @@ export interface Patient {
   patient_status?: string;
   patient_date_in?: string;
   patient_bloodtype?: string;
-  image_path?:string;
+  image_path?: string;
+  bed?: Bed;
 }

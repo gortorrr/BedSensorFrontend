@@ -11,6 +11,7 @@ interface PatientStore {
   addImageToPatient: (image: File, patient_id: number) => void;
   addPatient: (patient: Patient) => Promise<Patient>;
   editPatient: (patient: Patient) => void;
+  getPatientWithDetail: (patient_id: number) => Promise<Patient>;
 }
 
 export const usePatientStore = create<PatientStore>((set) => ({
@@ -48,5 +49,9 @@ export const usePatientStore = create<PatientStore>((set) => ({
   },
   editPatient: async (patient: Patient) => {
     await patientService.editPatient(patient.patient_id ?? 0, patient);
+  },
+  getPatientWithDetail: async (patient_id: number) => {
+    const data = patientService.getPatientWithDetail(patient_id);
+    return data;
   },
 }));

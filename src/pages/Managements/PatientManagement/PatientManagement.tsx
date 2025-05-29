@@ -3,22 +3,23 @@ import React, { useEffect, useState } from "react";
 import Icon from "@mdi/react";
 // import { mdiMagnify, mdiPlus } from "@mdi/js";
 import { mdiMagnify } from "@mdi/js";
-import { Patient } from "../../types/patient";
-import DeletePatientDialog from "../../components/Managements/Patient/DeletePatientDialog";
-import PatientDialog from "../../components/Managements/Patient/PatientDialog";
-import { usePatientStore } from "../../store/patientStore";
-import { Bed } from "../../types/bed";
-import { bedService } from "../../services/bedService";
-
+import { Patient } from "../../../types/patient";
+import DeletePatientDialog from "../../../components/Managements/Patient/DeletePatientDialog";
+import PatientDialog from "../../../components/Managements/Patient/PatientDialog";
+import { usePatientStore } from "../../../store/patientStore";
+import { Bed } from "../../../types/bed";
+import { bedService } from "../../../services/bedService";
+import { useNavigate } from "react-router-dom";
 
 const PatientManagement: React.FC = () => {
   const [search, setSearch] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const patientStore = usePatientStore()
+  const patientStore = usePatientStore();
   const [patientData, setpatientData] = useState<Patient[]>([]);
   const [bedData, setBedData] = useState<Bed[]>([]);
   const [isClicked] = useState(false);
+  const navigate = useNavigate();
   const [selectedPatient, setSelectedPatient] = useState<Patient>({
     patient_id: 0,
     patient_name: "",
@@ -35,7 +36,6 @@ const PatientManagement: React.FC = () => {
     p.patient_name.toLowerCase().includes(search.toLowerCase())
   );
 
-  
   function openAddForm(): void {
     setSelectedPatient({
       patient_id: 0,
@@ -52,18 +52,21 @@ const PatientManagement: React.FC = () => {
   }
 
   useEffect(() => {
-  const fetchAllData = async () => {
-    const resPatients = await patientStore.getPatients();
-    setpatientData(resPatients);
-    setBedData(await bedService.loadBedActivatedAll());
-  };
-  fetchAllData();
-}, []);
+    const fetchAllData = async () => {
+      const resPatients = await patientStore.getPatients();
+      setpatientData(resPatients);
+      setBedData(await bedService.loadBedActivatedAll());
+    };
+    fetchAllData();
+  }, []);
 
-    
   const openEditForm = (patient: Patient): void => {
     setSelectedPatient(patient);
     setIsFormOpen(true);
+  };
+
+  const patientInformationPage = (patient_id: number) => {
+    navigate(`${patient_id}/patient-information`);
   };
 
   const [patientIdDeleteTarget, setPatientIdDeleteTarget] = useState<number>(0);
@@ -157,7 +160,11 @@ const PatientManagement: React.FC = () => {
           onClick={openAddForm}
         >
           {/* <Icon path={mdiPlus} size={1} /> */}
-          <img src="/src/assets/btnManagement/AddUser.png" alt="abbPatient" className="w-5" />
+          <img
+            src="/src/assets/btnManagement/AddUser.png"
+            alt="abbPatient"
+            className="w-5"
+          />
           <span>เพิ่มผู้ป่วยใหม่</span>
         </button>
       </div>
@@ -180,58 +187,73 @@ const PatientManagement: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-  {paginatedPatients.map((p, index) => {
-    const bedInfo = bedData.find((b) => b.patient_id === p.patient_id);
+          {paginatedPatients.map((p, index) => {
+            const bedInfo = bedData.find((b) => b.patient_id === p.patient_id);
 
-    return (
-      <tr
-        key={p.patient_id}
-        className="text-center bg-gradient-to-r from-white via-gray-100 to-white shadow-md even:bg-gradient-to-r even:from-[#A1B5BC] even:via-[#D1DFE5] even:to-[#e4ecef]"
-      >
-        <td className="p-2 h-16 py-4 text-center">
-          {(currentPage - 1) * itemsPerPage + index + 1}
-        </td>
-        <td className="p-2 h-16 py-4 text-center">{p.patient_name ?? "-"}</td>
-        <td className="p-2 h-16 py-4 text-center">{p.patient_age ?? "-"}</td>
-        <td className="p-2 h-16 py-4 text-center">{p.patient_gender ?? "-"}</td>
-        <td className="p-2 h-16 py-4 text-center">{p.patient_bloodtype ?? "-"}</td>
-        <td className="p-2 h-16 py-4 text-center">{p.patient_disease ?? "-"}</td>
-        <td className="p-2 h-16 py-4 text-center">{p.patient_status ?? "-"}</td>
-        <td className="p-2 h-16 py-4 text-center">{p.patient_date_in ?? "-"}</td>
+            return (
+              <tr
+                key={p.patient_id}
+                className="text-center bg-gradient-to-r from-white via-gray-100 to-white shadow-md even:bg-gradient-to-r even:from-[#A1B5BC] even:via-[#D1DFE5] even:to-[#e4ecef]"
+              >
+                <td className="p-2 h-16 py-4 text-center">
+                  {(currentPage - 1) * itemsPerPage + index + 1}
+                </td>
+                <td className="p-2 h-16 py-4 text-center">
+                  {p.patient_name ?? "-"}
+                </td>
+                <td className="p-2 h-16 py-4 text-center">
+                  {p.patient_age ?? "-"}
+                </td>
+                <td className="p-2 h-16 py-4 text-center">
+                  {p.patient_gender ?? "-"}
+                </td>
+                <td className="p-2 h-16 py-4 text-center">
+                  {p.patient_bloodtype ?? "-"}
+                </td>
+                <td className="p-2 h-16 py-4 text-center">
+                  {p.patient_disease ?? "-"}
+                </td>
+                <td className="p-2 h-16 py-4 text-center">
+                  {p.patient_status ?? "-"}
+                </td>
+                <td className="p-2 h-16 py-4 text-center">
+                  {p.patient_date_in ?? "-"}
+                </td>
 
-        {/* ✅ เพิ่มข้อมูลอาคาร ห้อง เตียง */}
-        <td className="p-2 h-16">
-          {bedInfo?.room?.floor?.building.building_name ?? "-"}
-        </td>
-        <td className="p-2 h-16">{bedInfo?.room?.room_name ?? "-"}</td>
-        <td className="p-2 h-16">{bedInfo?.bed_name ?? "-"}</td>
+                {/* ✅ เพิ่มข้อมูลอาคาร ห้อง เตียง */}
+                <td className="p-2 h-16">
+                  {bedInfo?.room?.floor?.building.building_name ?? "-"}
+                </td>
+                <td className="p-2 h-16">{bedInfo?.room?.room_name ?? "-"}</td>
+                <td className="p-2 h-16">{bedInfo?.bed_name ?? "-"}</td>
 
-        <td className="p-2 h-16 py-4 text-center flex justify-center gap-2">
-          <button 
-            id="detail" 
-            className="mx-1 cursor-pointer w-7 h-7 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110">
-            <img src="/src/assets/review.png" alt="review" />
-          </button>
-          <button
-            id="edit"
-            onClick={() => openEditForm(p)}
-            className="mx-1 cursor-pointer w-7 h-7 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
-          >
-            <img src="/src/assets/edit.png" alt="edit" />
-          </button>
-          <button
-            id="delete"
-            onClick={() => openDeleteDialog(p.patient_id ?? 0)}
-            className="mx-1 cursor-pointer w-7 h-7 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
-          >
-            <img src="/src/assets/delete.png" alt="delete" />
-          </button>
-        </td>
-      </tr>
-    );
-  })}
-</tbody>
-
+                <td className="p-2 h-16 py-4 text-center flex justify-center gap-2">
+                  <button
+                    id="detail"
+                    className="mx-1 cursor-pointer w-7 h-7 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
+                    onClick={() => patientInformationPage(p.patient_id ?? 0)}
+                  >
+                    <img src="/src/assets/review.png" alt="review" />
+                  </button>
+                  <button
+                    id="edit"
+                    onClick={() => openEditForm(p)}
+                    className="mx-1 cursor-pointer w-7 h-7 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
+                  >
+                    <img src="/src/assets/edit.png" alt="edit" />
+                  </button>
+                  <button
+                    id="delete"
+                    onClick={() => openDeleteDialog(p.patient_id ?? 0)}
+                    className="mx-1 cursor-pointer w-7 h-7 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
+                  >
+                    <img src="/src/assets/delete.png" alt="delete" />
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
       </table>
 
       {/* Pagination แบบ dynamic */}

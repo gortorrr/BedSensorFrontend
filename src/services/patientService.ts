@@ -22,6 +22,10 @@ export const patientService = {
       throw error;
     }
   },
+  async getPatientWithDetail(patient_id: number): Promise<Patient> {
+    const res = await http.get(`patients/${patient_id}/full_details`);
+    return res.data;
+  },
 
   // Function to edit patient details
   async editPatient(patient_id: number, patient: Patient): Promise<Patient> {

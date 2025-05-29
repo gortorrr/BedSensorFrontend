@@ -1,8 +1,9 @@
 import axios from "axios";
 
+export const baseURL = "http://127.0.0.1:8000/";
 // สร้าง instance ของ Axios
 const instance = axios.create({
-  baseURL: "http://127.0.0.1:8000/", // เปลี่ยนเป็น API ของคุณ
+  baseURL: baseURL, // เปลี่ยนเป็น API ของคุณ
   // baseURL: "http://dekdee3.informatics.buu.ac.th:8030/",
 });
 

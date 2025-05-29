@@ -48,10 +48,6 @@ const NotificationHistory: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log("📦 Data updated:", data);
-  }, [data]);
-
-  useEffect(() => {
     fetchSensors();
     setLocalDate();
   }, []);
