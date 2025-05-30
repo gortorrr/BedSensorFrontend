@@ -160,22 +160,23 @@ const PersonalBehavior: React.FC<PersonalBehaviorProps> = ({
       <div className="max-h-100 overflow-y-auto">
         {" "}
         {/* 60 = ประมาณ 9 แถว */}
-        <table className="min-w-full bg-white rounded-xl shadow">
-          <thead className="bg-[#B7D6DE] h-16 font-bold text-center text-black sticky top-0">
+        <table className="min-w-full bg-white rounded-xl text-base">
+          <thead className="bg-[#2E5361] text-white sticky top-0">
             <tr>
-              <th className="py-2 px-4 text-center">วันที่</th>
-              <th className="py-2 px-4 text-center">เวลาตื่น</th>
-              <th className="py-2 px-4 text-center">เวลาหลับ</th>
-              <th className="py-2 px-4 text-center">ระยะเวลาการนอน</th>
-              <th className="py-2 px-4 text-center">ท่าทางขณะนอน</th>
-              <th className="py-2 px-4 text-center">จำนวนครั้งที่ตื่น</th>
-              <th className="py-2 px-4 text-center">เสียงรบกวน</th>
-              <th className="py-2 px-4 text-center">อยู่นอกห้องพัก (รวม)</th>
+              <th className="py-4 px-4 text-center">วันที่</th>
+              <th className="py-4 px-4 text-center">เวลาตื่น</th>
+              <th className="py-4 px-4 text-center">เวลาหลับ</th>
+              <th className="py-4 px-4 text-center">ระยะเวลาการนอน</th>
+              <th className="py-4 px-4 text-center">ท่าทางขณะนอน</th>
+              <th className="py-4 px-4 text-center">จำนวนครั้งที่ตื่น</th>
+              <th className="py-4 px-4 text-center">เสียงรบกวน</th>
+              <th className="py-4 px-4 text-center">อยู่นอกห้องพัก (รวม)</th>
             </tr>
           </thead>
           <tbody>
             {patientBehaviorList.map((item) => (
-              <tr key={item.personal_behavior_id} className="border-t h-16 bg-gradient-to-r from-white via-gray-100 to-white shadow-md even:bg-gradient-to-r even:from-[#A1B5BC] even:via-[#D1DFE5] even:to-[#e4ecef]">
+              <tr key={item.personal_behavior_id} 
+                  className="border-t bg-gradient-to-r from-white via-gray-100 to-white shadow-md even:bg-gradient-to-r even:from-[#A1B5BC] even:via-[#D1DFE5] even:to-[#e4ecef]">
                 <td className="py-2 px-4 text-center">{item.personal_behavior_date}</td>
                 <td className="py-2 px-4 text-center">
                   {item.personal_behavior_wake_time}
