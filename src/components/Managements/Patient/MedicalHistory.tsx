@@ -117,21 +117,24 @@ const MedicalHistory: React.FC<MedicalHistoryProps> = ({
       <div className="max-h-100 overflow-y-auto">
         {" "}
         {/* 60 = ประมาณ 9 แถว */}
-        <table className="min-w-full bg-white rounded-xl shadow text-sm">
+        <table className="min-w-full bg-white rounded-xl shadow text-base">
           <thead className="bg-[#2E5361] text-white sticky top-0">
             <tr>
-              <th className="py-2 px-4 text-left">วันที่ตรวจ</th>
-              <th className="py-2 px-4 text-left">โรค/ปัญหาสุขภาพ</th>
-              <th className="py-2 px-4 text-left">แพทย์ผู้วินิจฉัย</th>
-              <th className="py-2 px-4 text-left">ประเภทการรักษา</th>
-              <th className="py-2 px-4 text-left">ยาที่ใช้/ยาประจำตัว</th>
-              <th className="py-2 px-4 text-left">แพ้ยา/อาหาร</th>
-              <th className="py-2 px-4 text-left">สถานะการรักษา/ผลลัพธ์</th>
+              <th className="py-4 px-4 text-left">วันที่ตรวจ</th>
+              <th className="py-4 px-4 text-left">โรค/ปัญหาสุขภาพ</th>
+              <th className="py-4 px-4 text-left">แพทย์ผู้วินิจฉัย</th>
+              <th className="py-4 px-4 text-left">ประเภทการรักษา</th>
+              <th className="py-4 px-4 text-left">ยาที่ใช้/ยาประจำตัว</th>
+              <th className="py-4 px-4 text-left">แพ้ยา/อาหาร</th>
+              <th className="py-4 px-4 text-left">สถานะการรักษา/ผลลัพธ์</th>
             </tr>
           </thead>
           <tbody>
             {medicalHistoryList.map((item) => (
-              <tr key={item.medical_history_id} className="border-t">
+              <tr
+                key={item.medical_history_id}
+                className="even:bg-gradient-to-r even:from-[#A1B5BC] even:via-[#D1DFE5] even:to-[#e4ecef]"
+              >
                 <td className="py-2 px-4">
                   {item.medical_history_inspect_date}
                 </td>
