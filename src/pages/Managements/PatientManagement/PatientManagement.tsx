@@ -9,7 +9,7 @@ import PatientDialog from "../../../components/Managements/Patient/PatientDialog
 import { usePatientStore } from "../../../store/patientStore";
 import { Bed } from "../../../types/bed";
 import { bedService } from "../../../services/bedService";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 
 const PatientManagement: React.FC = () => {
   const [search, setSearch] = useState("");
@@ -19,7 +19,7 @@ const PatientManagement: React.FC = () => {
   const [patientData, setpatientData] = useState<Patient[]>([]);
   const [bedData, setBedData] = useState<Bed[]>([]);
   const [isClicked] = useState(false);
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const [selectedPatient, setSelectedPatient] = useState<Patient>({
     patient_id: 0,
     patient_name: "",
@@ -65,9 +65,9 @@ const PatientManagement: React.FC = () => {
     setIsFormOpen(true);
   };
 
-  const patientInformationPage = (patient_id: number) => {
+  {/*const patientInformationPage = (patient_id: number) => {
     navigate(`${patient_id}/patient-information`);
-  };
+  };*/}
 
   const [patientIdDeleteTarget, setPatientIdDeleteTarget] = useState<number>(0);
   const openDeleteDialog = (patient_id: number) => {
@@ -228,13 +228,13 @@ const PatientManagement: React.FC = () => {
                 <td className="p-2 h-16">{bedInfo?.bed_name ?? "-"}</td>
 
                 <td className="p-2 h-16 py-4 text-center flex justify-center gap-2">
-                  <button
+                  {/*<button
                     id="detail"
                     className="mx-1 cursor-pointer w-7 h-7 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
                     onClick={() => patientInformationPage(p.patient_id ?? 0)}
                   >
                     <img src="/src/assets/review.png" alt="review" />
-                  </button>
+                  </button>*/}
                   <button
                     id="edit"
                     onClick={() => openEditForm(p)}

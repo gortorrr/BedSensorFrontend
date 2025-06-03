@@ -130,6 +130,9 @@ const NotificationHistory: React.FC = () => {
       </h1>
 
       <div className="flex gap-4 flex-wrap md:flex-nowrap items-center mb-6">
+        <label className="mb-1 text-xl text-gray-700 font-medium">
+          เลือกช่วงวันที่
+        </label>
         {/* date picker */}
         <DateRangePicker
           startDate={startDate}
@@ -138,7 +141,7 @@ const NotificationHistory: React.FC = () => {
         />
 
         <select
-          className="select select-bordered border-2 border-gray-400 rounded-lg bg-white p-2 w-full md:w-auto"
+          className="select select-bordered border-2 border-gray-400 rounded-lg bg-white p-2 w-full md:w-auto ml-auto"
           value={selectedZone}
           onChange={(e) => {
             setSelectedZone(e.target.value);
