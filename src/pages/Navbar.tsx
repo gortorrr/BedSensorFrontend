@@ -11,7 +11,7 @@ import {
 } from "react-icons/fa";
 import { GrSettingsOption } from "react-icons/gr";
 import { MdOutlineSensors } from "react-icons/md";
-import { RiHospitalFill } from "react-icons/ri";
+import { RiBuildingFill, RiHospitalFill } from "react-icons/ri";
 import { VscBellDot } from "react-icons/vsc";
 import { IoLogOut } from "react-icons/io5";
 import { useAuthStore } from "../store/authStore";
@@ -48,6 +48,7 @@ const menus: MenuItem[] = [
       { name: "ผู้ป่วย", link: "/patient-management", icon: FaUserInjured },
       { name: "ผู้ใช้งานระบบ", link: "/user-management", icon: FaUserCog },
       { name: "สถานที่", link: "/bed-management", icon: RiHospitalFill },
+      { name: "อาคาร", link: "/ward-mangement", icon: RiBuildingFill },
       { name: "ประวัติการแจ้งเตือน", link: "/noti-history", icon: VscBellDot },
     ],
   },

@@ -12,6 +12,7 @@ import UserManagement from "../pages/Managements/UserManagement.tsx";
 import NotificationHistory from "../pages/Managements/NotificationHistory.tsx";
 import PatientInformation from "../pages/Managements/PatientManagement/PatientInformation.tsx";
 import ProtectedRoute from "./ProtectedRoute"; // ✅ import
+import WardManagement from "../pages/Managements/WardManagement.tsx";
 // import EmergencyAlert from "../pages/EmergencyAlert.tsx";
 // import { useNotificationStore } from "../store/notificationStore.ts"; // Import ตัวแจ้งเตือนฉุกเฉิน
 
@@ -53,6 +54,7 @@ const AppRouter: React.FC = () => {
         <Route path="/user-management" element={<ProtectedRoute><UserManagement /></ProtectedRoute>} />
         <Route path="/noti-history" element={<ProtectedRoute><NotificationHistory /></ProtectedRoute>} />
         <Route path="/add-patient-home" element={<ProtectedRoute><AddPatientHome /></ProtectedRoute>} />
+        <Route path="/ward-mangement" element={<ProtectedRoute><WardManagement /></ProtectedRoute>} />
       </Routes>
 
       {/* Emergency Alert - ปรับการแสดงผลตาม path */}
