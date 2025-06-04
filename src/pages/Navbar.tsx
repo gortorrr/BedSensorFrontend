@@ -127,12 +127,16 @@ useEffect(() => {
                   id="navbar-user-avatar"
                   src={user.profilePic}
                   alt="User Profile"
-                  className="w-15 h-15 cursor-pointer absolute left-0 transition-transform hover:scale-110"
+                  className="w-14 h-14 rounded-full object-cover cursor-pointer absolute left-0 transition-transform hover:scale-110"
                 />
               )}
               {open && (
                 <div id="navbar-user-info" className="ml-16">
-                  <p id="navbar-user-name" className="text-sm font-semibold">
+                  <p
+                    id="navbar-user-name"
+                    className="text-sm font-semibold max-w-[140px] truncate"
+                    title={user.name}
+                  >
                     {user.name}
                   </p>
                   <div className="flex">

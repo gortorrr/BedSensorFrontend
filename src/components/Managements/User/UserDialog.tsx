@@ -70,12 +70,13 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, user, onCancel }) => {
     }
 
     try {
-      if (user?.user_id === 0) {
+      if (!user || user?.user_id === 0) {
         // เพิ่มผู้ใช้ใหม่
         const newUser = await userStore.addUser(formData);
         if (image) {
           const imageUrl = await userStore.addUserImage(newUser.user_id, image);
           setPreview(`http://localhost:8000${imageUrl}`);
+          window.location.reload();
         }
       } else {
         // แก้ไขผู้ใช้
@@ -85,6 +86,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, user, onCancel }) => {
           const imageUrl = await userStore.addUserImage(user.user_id, image);
           setPreview(`http://localhost:8000${imageUrl}`);
         }
+        window.location.reload();
       }
 
       onCancel();
