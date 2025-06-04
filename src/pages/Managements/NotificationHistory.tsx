@@ -4,6 +4,7 @@ import { useSensorStore } from "../../store/sensorStore";
 import DateRangePicker from "../../components/Managements/NotificationsHistory/DateRangePicker";
 import { useNotificationStore } from "../../store/notificationStore";
 import { Notification } from "../../types/notification";
+import { BellRing } from "lucide-react";
 
 const NotificationHistory: React.FC = () => {
   const [data, setData] = useState<Notification[]>([]);
@@ -172,18 +173,21 @@ const NotificationHistory: React.FC = () => {
               className="text-center bg-white shadow-sm even:bg-gradient-to-r even:from-[#A1B5BC] even:via-[#D1DFE5] even:to-[#e4ecef]"
             >
               <td className="p-2 h-16 text-left pl-6">
-                <span
-                  style={{
-                    color:
-                      h.notification_category === "Emergency"
-                        ? "darkorange" // สีเหลืองเข้ม (จะใช้ #FF8C00 ก็ได้)
-                        : h.notification_category === "SOS"
-                        ? "red"
-                        : "inherit", // กรณีอื่นๆ ใช้สีปกติ
-                  }}
-                >
-                  {h.notification_category}
-                </span>{" "}
+                {/* แสดงไอคอนตามประเภทการแจ้งเตือน */}
+                {h.notification_category === "Emergency" && (
+                  <BellRing
+                    id="bell-icon"
+                    className="inline-block mr-2 w-6 h-6 text-yellow-500 fill-yellow-500 transition-all drop-shadow-lg"
+                  />
+                )}
+                {h.notification_category === "SOS" && (
+                  <span
+                    id="sos-label"
+                    className="inline-flex items-center justify-center mr-2 bg-red-700 text-xs text-white w-8 h-8 rounded-full shadow-md transition-all"
+                  >
+                    SOS
+                  </span>
+                )}
                 {
                   h.sensor_notifications_config
                     .sensor_notifications_config_event
