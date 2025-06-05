@@ -7,11 +7,14 @@ import {
   mdiChevronRight,
 } from "@mdi/js";
 import { Ward } from "../../types/ward";
+import WardDialog from "../../components/Managements/Ward/WardDialog";
 
 const WardManagement: React.FC = () => {
   const [search, setSearch] = useState("");
   const [wards, setWards] = useState<Ward[]>([]);
   const [expandedWards, setExpandedWards] = useState<Set<number>>(new Set());
+  const [showDialog, setShowDialog] = useState(false);
+  const [editingWard, setEditingWard] = useState<Ward | null | undefined>(null);
   useEffect(() => {
     setWards([
       {
@@ -99,11 +102,23 @@ const WardManagement: React.FC = () => {
     });
   };
 
+  const handleAddWard = () => {
+    setEditingWard(null);
+    setShowDialog(true);
+  };
+
+  const handleEditWard = (ward: Ward) => {
+    setEditingWard(ward);
+    setShowDialog(true);
+  };
+
   const filteredWards = wards.filter((ward) => ward.ward_name.includes(search));
 
   return (
     <div className="p-6 bg-[#e7f0f3] min-h-screen">
-      <h1 className="text-3xl font-bold text-[#2E5361] mb-4">จัดการวอร์ดผู้ป่วย</h1>
+      <h1 className="text-3xl font-bold text-[#2E5361] mb-4">
+        จัดการวอร์ดผู้ป่วย
+      </h1>
 
       <div className="flex space-x-4 justify-between mb-6">
         <div className="relative flex-auto">
@@ -121,9 +136,12 @@ const WardManagement: React.FC = () => {
           />
         </div>
 
-        <button className="ml-4 flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] shadow-md transform hover:-translate-y-1 hover:scale-105 transition-transform">
+        <button
+          className="ml-4 flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] shadow-md transform hover:-translate-y-1 hover:scale-105 transition-transform"
+          onClick={handleAddWard}
+        >
           <Icon path={mdiHomePlus} size={1} />
-          เพิ่มวอร์ดใหม่
+          เพิ่มวอร์ด
         </button>
       </div>
 
@@ -146,6 +164,7 @@ const WardManagement: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <button
                     id="edit"
+                    onClick={() => handleEditWard(ward)}
                     className="mx-1 cursor-pointer w-7 h-7 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
                   >
                     <img src="/src/assets/edit.png" alt="edit" />
@@ -179,6 +198,11 @@ const WardManagement: React.FC = () => {
           );
         })}
       </div>
+      <WardDialog
+        open={showDialog}
+        onClose={() => setShowDialog(false)}
+        initialData={editingWard}
+      />
     </div>
   );
 };
