@@ -8,6 +8,7 @@ import {
 } from "@mdi/js";
 import { Ward } from "../../types/ward";
 import WardDialog from "../../components/Managements/Ward/WardDialog";
+import DeleteWardDialog from "../../components/Managements/Ward/DeleteWardDialog";
 
 const WardManagement: React.FC = () => {
   const [search, setSearch] = useState("");
@@ -15,6 +16,8 @@ const WardManagement: React.FC = () => {
   const [expandedWards, setExpandedWards] = useState<Set<number>>(new Set());
   const [showDialog, setShowDialog] = useState(false);
   const [editingWard, setEditingWard] = useState<Ward | null | undefined>(null);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [deletingWard, setDeletingWard] = useState<Ward | null>(null);
   useEffect(() => {
     setWards([
       {
@@ -112,6 +115,16 @@ const WardManagement: React.FC = () => {
     setShowDialog(true);
   };
 
+  const handleDeleteWard = (ward: Ward) => {
+    setDeletingWard(ward);
+    setShowDeleteDialog(true);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setShowDeleteDialog(false);
+    setDeletingWard(null);
+  };
+
   const filteredWards = wards.filter((ward) => ward.ward_name.includes(search));
 
   return (
@@ -171,6 +184,10 @@ const WardManagement: React.FC = () => {
                   </button>
                   <button
                     id="delete"
+                    onClick={(e) => {
+                      e.stopPropagation(); // ป้องกัน toggle expand ด้วย
+                      handleDeleteWard(ward);
+                    }}
                     className="mx-1 cursor-pointer w-7 h-7 transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
                   >
                     <img src="/src/assets/delete.png" alt="delete" />
@@ -203,6 +220,14 @@ const WardManagement: React.FC = () => {
         onClose={() => setShowDialog(false)}
         initialData={editingWard}
       />
+      {/* DeleteWardDialog */}
+      {deletingWard && (
+        <DeleteWardDialog
+          isOpen={showDeleteDialog}
+          onCancel={handleCloseDeleteDialog}
+          initialWardData={deletingWard}
+        />
+      )}
     </div>
   );
 };

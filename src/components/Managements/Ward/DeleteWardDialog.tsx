@@ -1,48 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { User } from "../../../types/user";
-import { useUserStore } from "../../../store/UserStore";
+import { Ward } from "../../../types/ward";
 
-interface DeleteUserDialogProps {
+interface DeleteWardDialogProps {
   isOpen: boolean;
-  //onConfirm: () => void;
   onCancel: () => void;
-  initialUserData: User;
+  initialWardData: Ward;
 }
 
-const DeleteUserDialog: React.FC<DeleteUserDialogProps> = ({
+const DeleteWardDialog: React.FC<DeleteWardDialogProps> = ({
   isOpen,
   onCancel,
-  initialUserData,
-  //onConfirm,
+  initialWardData,
 }) => {
-  const [UserData, setUserData] = useState<User>(initialUserData);
-  const userStore = useUserStore();
+  const [wardData, setWardData] = useState<Ward>(initialWardData);
+
   useEffect(() => {
     if (isOpen) {
-      setUserData(initialUserData);
+      setWardData(initialWardData);
     }
-    console.log(initialUserData);
-  }, [isOpen]);
+  }, [isOpen, initialWardData]);
+
   const handleCancel = () => {
-    const clearUserData: User = {
-      user_id: 0,
-      user_name: "",
-      user_position: "",
-      user_username: "",
-      user_password: "",
-    };
-    setUserData(clearUserData);
+    setWardData({
+      ward_id: 0,
+      ward_name: "",
+      room: [],
+    });
     onCancel();
   };
-  const saveDeleteUser = () => {
-    if (initialUserData.user_id > 0) {
-      userStore.deleteUser(UserData.user_id);
-      handleCancel();
-      window.location.reload();
-    }
-  };
+
   if (!isOpen) return null;
+
   return (
     <AnimatePresence>
       <motion.div
@@ -64,11 +53,10 @@ const DeleteUserDialog: React.FC<DeleteUserDialogProps> = ({
             ยืนยันการลบข้อมูล
           </h2>
           <p className="text-lg text-gray-600 mb-6">
-            คุณต้องการลบผู้ใช้งานหรือไม่?
+            คุณต้องการลบ "{wardData.ward_name}" หรือไม่?
           </p>
           <div className="flex justify-around">
             <button
-              onClick={saveDeleteUser}
               className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] cursor-pointer"
             >
               ยืนยัน
@@ -86,4 +74,4 @@ const DeleteUserDialog: React.FC<DeleteUserDialogProps> = ({
   );
 };
 
-export default DeleteUserDialog;
+export default DeleteWardDialog;
