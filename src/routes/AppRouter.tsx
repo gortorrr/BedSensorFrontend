@@ -54,7 +54,7 @@ const AppRouter: React.FC = () => {
         <Route path="/user-management" element={<ProtectedRoute><UserManagement /></ProtectedRoute>} />
         <Route path="/noti-history" element={<ProtectedRoute><NotificationHistory /></ProtectedRoute>} />
         <Route path="/add-patient-home" element={<ProtectedRoute><AddPatientHome /></ProtectedRoute>} />
-        <Route path="/ward-mangement" element={<ProtectedRoute><WardManagement /></ProtectedRoute>} />
+        <Route path="/building-mangement" element={<ProtectedRoute><WardManagement /></ProtectedRoute>} />
       </Routes>
 
       {/* Emergency Alert - ปรับการแสดงผลตาม path */}

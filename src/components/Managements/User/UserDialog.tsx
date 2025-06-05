@@ -21,6 +21,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, user, onCancel }) => {
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const userStore = useUserStore();
+  const positions = ["Admin", "Nurse", "Doctor"];
 
   useEffect(() => {
     console.log("👤 Current user data:", user);
@@ -58,7 +59,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, user, onCancel }) => {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -202,15 +203,28 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, user, onCancel }) => {
                 <label className="block mb-1 text-sm text-gray-700">
                   ตำแหน่ง
                 </label>
-                <input
+                <select
                   id="position"
                   name="user_position"
-                  type="text"
                   value={formData.user_position}
                   onChange={handleChange}
-                  placeholder="กรุณากรอกตำแหน่งงาน"
-                  className="p-2 pl-3 border border-gray-300 rounded-md w-full  h-11 placeholder:text-gray-400"
-                />
+                  className={`p-2 border border-gray-300 rounded-md w-full h-11 cursor-pointer ${
+                    formData.user_position ? "text-black" : "text-gray-400"
+                  }`}
+                >
+                  <option value="" disabled hidden>
+                    กรุณาเลือกตำแหน่งงาน
+                  </option>
+                  {positions.map((position) => (
+                    <option
+                      key={position}
+                      value={position}
+                      className="text-black"
+                    >
+                      {position}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
           </div>
