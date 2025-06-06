@@ -1,26 +1,38 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "../store/authStore"; // import store ให้ถูก path
+import { useAuthStore } from "../store/authStore"; // แก้ path ให้ถูก
 import { authService } from "../services/authService";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const setAuth = useAuthStore((state) => state.setAuth);
+  const setCurrentUser = useAuthStore((state) => state.setCurrentUser); // เพิ่มตรงนี้
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
- const handleLogin = async () => {
+  const handleLogin = async () => {
     try {
-      const { access_token, token_type, user_id } = await authService.login(username, password);
+      // 🔐 Login API
+      const { access_token, token_type, user_id } = await authService.login(
+        username,
+        password
+      );
+
+      // 🧠 เก็บ token ใน store
       setAuth(access_token, token_type, user_id);
+
+      // 👤 ดึง current user
+      const user = await authService.getCurrentUser();
+      setCurrentUser(user);
+
+      // ✅ ไปหน้าแรก
       navigate("/");
     } catch (error) {
       alert("เข้าสู่ระบบไม่สำเร็จ กรุณาตรวจสอบชื่อผู้ใช้และรหัสผ่าน");
       console.error(error);
     }
   };
-
 
   return (
     <div
@@ -79,7 +91,7 @@ const Login: React.FC = () => {
             border: "1px solid rgba(200, 200, 200, 0.8)",
           }}
         />
-         {/* <button
+        {/* <button
             type="button"
             className="absolute right-2 top-2 text-sm text-gray-500 hover:text-gray-700"
           >

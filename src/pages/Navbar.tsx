@@ -60,6 +60,7 @@ const Navbar: React.FC<NavbarProps> = ({ setUser, setIsOnline, user }) => {
   const [expanded, setExpanded] = useState(false);
   const clearAuth = useAuthStore((state) => state.clearAuth);
   const userStore = useUserStore();
+  const authStore = useAuthStore();
   const navigate = useNavigate();
   const userId = useAuthStore((state) => state.userId); 
   const handleLogin = () => {
@@ -84,6 +85,7 @@ const Navbar: React.FC<NavbarProps> = ({ setUser, setIsOnline, user }) => {
 
 useEffect(() => {
   const fetchUser = async () => {
+    console.log("ตรงนี้ current",authStore.currentUser?.name);
     if (userId === null) return; // ✅ ป้องกัน null ก่อนเรียกใช้
 
     try {
