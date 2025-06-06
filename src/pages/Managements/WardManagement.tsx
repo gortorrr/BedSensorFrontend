@@ -9,6 +9,7 @@ import {
 import { Ward } from "../../types/ward";
 import WardDialog from "../../components/Managements/Ward/WardDialog";
 import DeleteWardDialog from "../../components/Managements/Ward/DeleteWardDialog";
+import { useWardStore } from "../../store/wardStore";
 
 const WardManagement: React.FC = () => {
   const [search, setSearch] = useState("");
@@ -18,80 +19,94 @@ const WardManagement: React.FC = () => {
   const [editingWard, setEditingWard] = useState<Ward | null | undefined>(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deletingWard, setDeletingWard] = useState<Ward | null>(null);
+
+  const fetchWards = async () => {
+    try {
+      const data = await useWardStore.getState().getWards();
+      setWards(data);
+    } catch (error) {
+      console.error("Failed to fetch wards:", error);
+    }
+  };
+
   useEffect(() => {
-    setWards([
-      {
-        ward_id: 1,
-        ward_name: "วอร์ดอายุรกรรม",
-        room: [
-          {
-            room_id: 101,
-            room_name: "ห้อง 101",
-            floor: {
-              floor_id: 1,
-              floor_name: "ชั้น 1",
-              building: {
-                building_id: 1,
-                building_name: "อาคาร A",
-              },
-            },
-          },
-          {
-            room_id: 102,
-            room_name: "ห้อง 102",
-            floor: {
-              floor_id: 2,
-              floor_name: "ชั้น 2",
-              building: {
-                building_id: 1,
-                building_name: "อาคาร A",
-              },
-            },
-          },
-        ],
-      },
-      {
-        ward_id: 2,
-        ward_name: "วอร์ดศัลยกรรม",
-        room: [
-          {
-            room_id: 101,
-            room_name: "ห้อง 103",
-            floor: {
-              floor_id: 3,
-              floor_name: "ชั้น 1",
-              building: {
-                building_id: 3,
-                building_name: "อาคาร A",
-              },
-            },
-          },
-          {
-            room_id: 102,
-            room_name: "ห้อง 104",
-            floor: {
-              floor_id: 4,
-              floor_name: "ชั้น 2",
-              building: {
-                building_id: 3,
-                building_name: "อาคาร A",
-              },
-            },
-          },
-        ],
-      },
-      {
-        ward_id: 3,
-        ward_name: "วอร์ดผู้ป่วยหนัก",
-        room: [],
-      },
-      {
-        ward_id: 4,
-        ward_name: "วอร์ดเวชศาสตร์ฟื้นฟู",
-        room: [],
-      },
-    ]);
+    fetchWards();
   }, []);
+
+  // useEffect(() => {
+  //   setWards([
+  //     {
+  //       ward_id: 1,
+  //       ward_name: "วอร์ดอายุรกรรม",
+  //       room: [
+  //         {
+  //           room_id: 101,
+  //           room_name: "ห้อง 101",
+  //           floor: {
+  //             floor_id: 1,
+  //             floor_name: "ชั้น 1",
+  //             building: {
+  //               building_id: 1,
+  //               building_name: "อาคาร A",
+  //             },
+  //           },
+  //         },
+  //         {
+  //           room_id: 102,
+  //           room_name: "ห้อง 102",
+  //           floor: {
+  //             floor_id: 2,
+  //             floor_name: "ชั้น 2",
+  //             building: {
+  //               building_id: 1,
+  //               building_name: "อาคาร A",
+  //             },
+  //           },
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       ward_id: 2,
+  //       ward_name: "วอร์ดศัลยกรรม",
+  //       room: [
+  //         {
+  //           room_id: 101,
+  //           room_name: "ห้อง 103",
+  //           floor: {
+  //             floor_id: 3,
+  //             floor_name: "ชั้น 1",
+  //             building: {
+  //               building_id: 3,
+  //               building_name: "อาคาร A",
+  //             },
+  //           },
+  //         },
+  //         {
+  //           room_id: 102,
+  //           room_name: "ห้อง 104",
+  //           floor: {
+  //             floor_id: 4,
+  //             floor_name: "ชั้น 2",
+  //             building: {
+  //               building_id: 3,
+  //               building_name: "อาคาร A",
+  //             },
+  //           },
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       ward_id: 3,
+  //       ward_name: "วอร์ดผู้ป่วยหนัก",
+  //       room: [],
+  //     },
+  //     {
+  //       ward_id: 4,
+  //       ward_name: "วอร์ดเวชศาสตร์ฟื้นฟู",
+  //       room: [],
+  //     },
+  //   ]);
+  // }, []);
 
   const toggleWard = (wardId: number) => {
     setExpandedWards((prev) => {
