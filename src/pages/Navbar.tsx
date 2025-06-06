@@ -16,7 +16,7 @@ import { VscBellDot } from "react-icons/vsc";
 import { IoLogOut } from "react-icons/io5";
 import { useAuthStore } from "../store/authStore";
 import { useUserStore } from "../store/UserStore";
-
+import { FaProcedures } from "react-icons/fa";
 
 interface MenuItem {
   name: string;
@@ -49,7 +49,7 @@ const menus: MenuItem[] = [
       { name: "ผู้ใช้งานระบบ", link: "/user-management", icon: FaUserCog },
       { name: "สถานที่", link: "/bed-management", icon: RiHospitalFill },
       { name: "อาคาร", link: "/building-mangement", icon: RiBuildingFill },
-      { name: "วอร์ด", link: "/ward-mangement", icon: RiBuildingFill },
+      { name: "วอร์ด", link: "/ward-mangement", icon: FaProcedures },
       { name: "ประวัติการแจ้งเตือน", link: "/noti-history", icon: VscBellDot },
     ],
   },
@@ -60,8 +60,9 @@ const Navbar: React.FC<NavbarProps> = ({ setUser, setIsOnline, user }) => {
   const [expanded, setExpanded] = useState(false);
   const clearAuth = useAuthStore((state) => state.clearAuth);
   const userStore = useUserStore();
+  const authStore = useAuthStore();
   const navigate = useNavigate();
-  const userId = useAuthStore((state) => state.userId); 
+  const userId = useAuthStore((state) => state.userId);
   const handleLogin = () => {
     // const userData = {
     //   name: "User1",
@@ -76,35 +77,34 @@ const Navbar: React.FC<NavbarProps> = ({ setUser, setIsOnline, user }) => {
   };
 
   const handleLogout = () => {
-  clearAuth();          // ล้าง token ใน store
-  setUser(null);        // ล้าง user จาก props
-  setIsOnline(false);   // ตั้งสถานะ offline
-  navigate("/login");   // กลับไปหน้า login
-};
-
-useEffect(() => {
-  const fetchUser = async () => {
-    if (userId === null) return; // ✅ ป้องกัน null ก่อนเรียกใช้
-
-    try {
-      const res = await userStore.getUser(userId); // ตอนนี้ TypeScript ไม่ error แล้ว
-      setUser({
-        name: res.user_name,
-        role: res.user_position,
-        profilePic: res.image_path ? `http://localhost:8000${res.image_path}`: "/src/assets/Male User.png",
-      });
-      setIsOnline(true);
-    } catch (err) {
-      console.error("❌ Failed to fetch user:", err);
-    }
+    clearAuth(); // ล้าง token ใน store
+    setUser(null); // ล้าง user จาก props
+    setIsOnline(false); // ตั้งสถานะ offline
+    navigate("/login"); // กลับไปหน้า login
   };
 
-  fetchUser();
-}, [userId]);
+  useEffect(() => {
+    const fetchUser = async () => {
+      console.log("ตรงนี้ current", authStore.currentUser?.name);
+      if (userId === null) return; // ✅ ป้องกัน null ก่อนเรียกใช้
 
+      try {
+        const res = await userStore.getUser(userId); // ตอนนี้ TypeScript ไม่ error แล้ว
+        setUser({
+          name: res.user_name,
+          role: res.user_position,
+          profilePic: res.image_path
+            ? `http://localhost:8000${res.image_path}`
+            : "/src/assets/Male User.png",
+        });
+        setIsOnline(true);
+      } catch (err) {
+        console.error("❌ Failed to fetch user:", err);
+      }
+    };
 
-
-
+    fetchUser();
+  }, [userId]);
 
   return (
     <div

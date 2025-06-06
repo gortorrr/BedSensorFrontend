@@ -1,3 +1,4 @@
+import { useAuthStore } from "../store/authStore";
 import { AddBed, Bed, BedSaveConfig } from "../types/bed";
 import http from "./http";
 
@@ -7,16 +8,22 @@ export const bedService = {
   //     setTimeout(() => resolve(beds), 500);
   //   });
   // },
-  async loadBedActivatedAll(): Promise<Bed[]> {
-    try {
-      const response = await http.get("beds/activated/all");
-      // const response = await http.get("beds");
-      return response.data; // นำข้อมูลที่ได้จาก response มาใช้
-    } catch (error) {
-      console.error("Error loading activated beds:", error);
-      throw error; // หากเกิดข้อผิดพลาดให้โยนข้อผิดพลาดออกไป
-    }
-  },
+async loadBedActivatedAll(): Promise<Bed[]> {
+  try {
+    const { token, tokenType } = useAuthStore.getState(); // ✅ ดึง token จาก store
+
+    const response = await http.get("beds/activated/all", {
+      headers: {
+        Authorization: `${tokenType} ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error loading activated beds:", error);
+    throw error;
+  }
+},
 
   async saveSelectedShowSensorId(
     bed_id: number,

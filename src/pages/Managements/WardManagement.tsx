@@ -188,6 +188,9 @@ const WardManagement: React.FC = () => {
                     size={1}
                   />
                   {ward.ward_name}
+                  <span className="text-sm text-gray-700 ml-2">
+                    ({ward.room.length} ห้อง)
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
