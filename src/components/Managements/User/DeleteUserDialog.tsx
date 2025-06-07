@@ -68,12 +68,14 @@ const DeleteUserDialog: React.FC<DeleteUserDialogProps> = ({
           </p>
           <div className="flex justify-around">
             <button
+              id="btnOk"
               onClick={saveDeleteUser}
               className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] cursor-pointer"
             >
               ยืนยัน
             </button>
             <button
+              id="btnCancel"
               onClick={handleCancel}
               className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400 cursor-pointer"
             >

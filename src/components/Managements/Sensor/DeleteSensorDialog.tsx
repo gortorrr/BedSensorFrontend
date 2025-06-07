@@ -71,12 +71,14 @@ const DeleteSensorDialog: React.FC<DeleteSensorDialogProps> = ({
         </p>
         <div className="flex justify-around">
           <button
+            id="btnOk"
             onClick={saveDeleteSensor}
             className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] cursor-pointer transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
           >
             ยืนยัน
           </button>
           <button
+            id="btnCancel"
             onClick={handleCancel}
             className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400 cursor-pointer transform transition-transform duration-200 hover:-translate-y-1 hover:scale-110"
           >
