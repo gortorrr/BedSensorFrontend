@@ -38,7 +38,7 @@ const DeleteWardDialog: React.FC<DeleteWardDialogProps> = ({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-40 bg-transparent backdrop-blur-sm"
+        className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
         onClick={onCancel}
       />
       <motion.div
@@ -57,11 +57,13 @@ const DeleteWardDialog: React.FC<DeleteWardDialogProps> = ({
           </p>
           <div className="flex justify-around">
             <button
+              id="btnOk"
               className="px-6 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] cursor-pointer"
             >
               ยืนยัน
             </button>
             <button
+              id="btnCancel"
               onClick={handleCancel}
               className="px-6 py-2 bg-gray-300 text-gray-700 rounded-xl hover:bg-gray-400 cursor-pointer"
             >

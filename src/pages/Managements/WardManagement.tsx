@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Icon from "@mdi/react";
 import {
-  mdiHomePlus,
+  // mdiHomePlus,
   mdiMagnify,
   mdiChevronDown,
   mdiChevronRight,
@@ -151,11 +151,12 @@ const WardManagement: React.FC = () => {
       <div className="flex space-x-4 justify-between mb-6">
         <div className="relative flex-auto">
           <input
+            id="searchWard"
             type="text"
             placeholder="ค้นหาวอร์ด"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="input input-bordered border-2 border-gray-400 rounded-lg p-2 pr-10 bg-white w-full"
+            className="input input-bordered border-2 border-gray-400 rounded-lg p-2 pr-10 bg-white w-full inset-shadow"
           />
           <Icon
             path={mdiMagnify}
@@ -165,11 +166,17 @@ const WardManagement: React.FC = () => {
         </div>
 
         <button
-          className="ml-4 flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] shadow-md transform hover:-translate-y-1 hover:scale-105 transition-transform"
+          id="btnAddWard"
+          className="ml-4 flex items-center gap-2 px-4 py-2 bg-[#95BAC3] text-white rounded-xl hover:bg-[#5E8892] shadow-md transform hover:-translate-y-1 hover:scale-105 transition-transform cursor-pointer"
           onClick={handleAddWard}
         >
-          <Icon path={mdiHomePlus} size={1} />
-          เพิ่มวอร์ด
+          {/* <Icon path={mdiHomePlus} size={1} /> */}
+          <img 
+            src="/src/assets/btnManagement/AddWard.png" 
+            alt="addWard"
+            className="w-7" 
+          />
+          เพิ่มวอร์ดใหม่
         </button>
       </div>
 
