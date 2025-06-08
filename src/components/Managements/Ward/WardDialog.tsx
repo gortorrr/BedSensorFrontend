@@ -88,7 +88,7 @@ const WardDialog: React.FC<WardDialogProps> = ({
               <input
                 id="wardName"
                 type="text"
-                className="p-2 pl-3 border border-black rounded-md w-full h-11 placeholder:text-gray-400"
+                className="p-2 pl-3 border border-gray-300 rounded-md w-full h-11 placeholder:text-gray-400"
                 value={wardName}
                 onChange={(e) => setWardName(e.target.value)}
                 placeholder="กรุณากรอกชื่อวอร์ด"
@@ -102,7 +102,7 @@ const WardDialog: React.FC<WardDialogProps> = ({
                   id="building"
                   value={building}
                   onChange={(e) => setBuilding(e.target.value)}
-                  className={`p-2 border border-black rounded-md w-full h-11 cursor-pointer ${
+                  className={`p-2 border border-gray-300 rounded-md w-full h-11 cursor-pointer ${
                   building ? "text-black" : "text-gray-400"
                 }`}
                 >
@@ -117,7 +117,7 @@ const WardDialog: React.FC<WardDialogProps> = ({
                   id="floor"
                   value={floor}
                   onChange={(e) => setFloor(e.target.value)}
-                  className={`p-2 border border-black rounded-md w-full h-11 cursor-pointer ${
+                  className={`p-2 border border-gray-300 rounded-md w-full h-11 cursor-pointer ${
                   floor ? "text-black" : "text-gray-400"
                 }`}
                 >
