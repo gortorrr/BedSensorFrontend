@@ -43,9 +43,16 @@ const WardDialog: React.FC<WardDialogProps> = ({ open, onClose, initialData }) =
     }
   }, [open, initialData]);
 
+  // เมื่อเปลี่ยน building: ล้าง floor และ selectedRooms
   useEffect(() => {
-    setSelectedRooms([]); // reset เมื่อเลือก building หรือ floor ใหม่
-  }, [buildingId, floorId]);
+    setFloorId("");
+    setSelectedRooms([]);
+  }, [buildingId]);
+
+  // เมื่อเปลี่ยน floor: ล้าง selectedRooms
+  useEffect(() => {
+    setSelectedRooms([]);
+  }, [floorId]);
 
   const allSelected = selectedRooms.length === roomOptions.length;
 
