@@ -3,8 +3,8 @@ import ReactDOM from "react-dom";
 import { Ward } from "../../../types/ward";
 import { AnimatePresence, motion } from "framer-motion";
 import { Building } from "../../../types/building";
-import { useBedStore } from "../../../store/bedStore";
 import { useWardStore } from "../../../store/wardStore";
+import { useLocationStore } from "../../../store/locationStore";
 
 interface WardDialogProps {
   open: boolean;
@@ -18,7 +18,7 @@ const WardDialog: React.FC<WardDialogProps> = ({ open, onClose, initialData }) =
   const [buildingId, setBuildingId] = useState<number | "">("");
   const [locations, setLocations] = useState<Building[]>([]);
   const [floorId, setFloorId] = useState<number | "">("");
-  const bedStore = useBedStore();
+  const locationStore = useLocationStore();
   const wardStore = useWardStore();
   const buildingOptions = locations;
   const selectedBuilding = buildingOptions.find((b) => b.building_id === buildingId);
@@ -28,7 +28,7 @@ const WardDialog: React.FC<WardDialogProps> = ({ open, onClose, initialData }) =
 
   useEffect(() => {
       const fetchLocationsData = async () => {
-        const res = await bedStore.getLocations();
+        const res = await locationStore.getLocations();
         setLocations(res);
       };
       fetchLocationsData();
