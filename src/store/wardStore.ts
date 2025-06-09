@@ -1,10 +1,11 @@
 import { create } from "zustand";
 import { wardService } from "../services/wardService";
-import { Ward } from "../types/ward";
+import { AddWard, Ward } from "../types/ward";
 
 interface WardStore {
   wards: Ward[];
   getWards: () => Promise<Ward[]>;
+  addWard: (addWard: AddWard) => Promise<void>;
 }
 
 export const useWardStore = create<WardStore>((set) => ({
@@ -19,5 +20,8 @@ export const useWardStore = create<WardStore>((set) => ({
       console.error("Failed to fetch wards:", err);
       return [];
     }
+  },
+  addWard: async (addWard: AddWard) => {
+    await wardService.addWard(addWard);
   },
 }));
